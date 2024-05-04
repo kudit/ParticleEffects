@@ -1,7 +1,7 @@
 import Foundation
 
-public extension ParticleBehavior {
-    static let version = "1.0.0"
+public struct MotionEffects {
+    public static let version = "1.0.1"
 }
 
 public struct Particle<Configuration: ParticleConfiguration>: Hashable {

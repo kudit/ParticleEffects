@@ -15,7 +15,7 @@ public struct ParticleSystemView<ParticleView: View & ParticleConfiguration>: Vi
         self.particleSystem = particleSystem
         self.particleView = particleView
     }
-        
+            
     public var body: some View {
         TimelineView(.animation) { timeline in
             let _ = {
@@ -32,6 +32,13 @@ public struct ParticleSystemView<ParticleView: View & ParticleConfiguration>: Vi
                         .blur(radius: particle.blur)
                 }
             }
+        }
+    }
+}
+extension ParticleSystemView where ParticleView == StringConfiguration {
+    public init(behavior: ParticleBehavior = .fountain, string: String = "Hello,World", coloring: Coloring = .none) {
+        self.init(particleSystem: ParticleSystem(behavior: behavior)) {
+            StringConfiguration(string: string, coloring: coloring)
         }
     }
 }

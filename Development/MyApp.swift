@@ -13,7 +13,7 @@ struct MyApp: App {
 #else
                 ContentView()
 #endif
-                Text("MotionEffects v\(ParticleBehavior.version) © 2024 Kudit LLC").font(.caption).padding().foregroundStyle(.white)
+                Text("MotionEffects v\(MotionEffects.version) © 2024 Kudit LLC").font(.caption).padding().foregroundStyle(.white)
             }
         }
     }

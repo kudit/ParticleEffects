@@ -139,17 +139,13 @@ public extension Image {
         blur: .none
     )
     return VStack {
-        ParticleSystemView(particleSystem: ParticleSystem(behavior: behavior)) {
-            StringConfiguration(string: "😊,👍,☺️,👏,🙌")
-        }
+        ParticleSystemView(behavior: behavior, string: "😊,👍,☺️,👏,🙌")
         Color.clear
     }
 }
 
 #Preview("Fire Example") {
-    ParticleSystemView(particleSystem: ParticleSystem(behavior: .fire)) {
-        StringConfiguration(string: "drop.fill", coloring: .fire)
-    }
+    ParticleSystemView(behavior: .fire, string: "drop.fill", coloring: .fire)
 }
 
 #endif

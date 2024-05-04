@@ -4,9 +4,10 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Xcode project version (normal target)
 - [ ] Xcode project version (watch target)
 - [ ] Package.swift iOSApplication product displayVersion.
-- [ ] Device.version constant (must be hard coded since inaccessible in code)
+- [ ] ParticleBehavior.version (in Particle.swift) constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.0.1 5/4/2024 Changed version to MotionEffects.version for clarity/simplicity.  Added convenience initializer for ParticleSystemView.
 v1.0.0 5/3/2024 Initial code and features.
 
 

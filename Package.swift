@@ -27,7 +27,7 @@ let package = Package(
             name: "MotionEffects", // needs to match package name to open properly in Swift Playgrounds
             targets: ["MotionEffectsTestAppModule"],
             teamIdentifier: "3QPV894C33",
-            displayVersion: "1.0.0",
+            displayVersion: "1.0.1",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.yellow),

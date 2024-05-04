@@ -53,16 +53,12 @@ Here are some usage examples.
 
 ### Create a simple fire emitter.
 ```swift
-ParticleSystemView(particleSystem: ParticleSystem(behavior: .fire)) {
-    StringConfiguration(string: "drop.fill", coloring: .fire)
-}
+ParticleSystemView(behavior: .fire, string: "drop.fill", coloring: .fire)
 ```
 
 ### Create an emoji confetti emitter.
 ```swift
-ParticleSystemView(particleSystem: ParticleSystem(behavior: .fountain)) {
-    StringConfiguration(string: "😊,👍,☺️,👏,🙌")
-}
+ParticleSystemView(behavior: .fountain, string: "😊,👍,☺️,👏,🙌")
 ```
 
 ## Thanks
