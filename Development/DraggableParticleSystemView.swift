@@ -1,5 +1,5 @@
 import SwiftUI
-import MotionEffects
+import ParticleEffects
 
 struct DraggableParticleSystemView: View {
     public var particleSystem: ParticleSystem<StringConfiguration>

@@ -1,7 +1,7 @@
 <img src="/Development/Resources/Assets.xcassets/AppIcon.appiconset/Icon.png" height="128">
 
-# MotionEffects.swiftpm
-MotionEffects allows developers to create particle systems with minimal effort that are compatible with macOS, iOS, iPadOS, visionOS, tvOS, and watchOS.
+# ParticleEffects.swiftpm
+ParticleEffects allows developers to create particle systems with minimal effort that are compatible with macOS, iOS, iPadOS, visionOS, tvOS, and watchOS.
 
 The primary goals are to be easily maintainable by multiple individuals and be able to be used across all of Apple's platforms.
 
@@ -36,17 +36,17 @@ Install by adding this as a package dependency to your code.  This can be done i
 #### Swift 5
 ```swift
 dependencies: [
-    .package(url: "https://github.com/kudit/MotionEffects.git", from: "1.0.0"),
+    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "1.0.0"),
     /// ...
 ]
 ```
 
-You can try these examples in a Swift Playground by adding package: https://github.com/kudit/MotionEffects
+You can try these examples in a Swift Playground by adding package: https://github.com/kudit/ParticleEffects
 
 ## Usage
 First make sure to import the framework:
 ```swift
-import MotionEffects
+import ParticleEffects
 ```
 
 Here are some usage examples.
@@ -71,5 +71,5 @@ If you have the need for a specific feature that you want implemented or if you 
 This was a lot of work.  If you find this useful particularly if you use this in a commercial product, please consider making a donation to http://paypal.me/kudit
 
 ## Contributors
-The complete list of people who contributed to this project is available [here](https://github.com/kudit/MotionEffects/graphs/contributors).
+The complete list of people who contributed to this project is available [here](https://github.com/kudit/ParticleEffects/graphs/contributors).
 A big thanks to everyone who has contributed! 🙏

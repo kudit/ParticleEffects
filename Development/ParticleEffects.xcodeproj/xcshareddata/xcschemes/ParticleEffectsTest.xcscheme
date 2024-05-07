@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B5DD79B22BC94C8800457681"
-            BuildableName = "MotionEffectsTest.app"
-            BlueprintName = "MotionEffectsTest"
-            ReferencedContainer = "container:MotionEffects.xcodeproj">
+            BuildableName = "ParticleEffectsTest.app"
+            BlueprintName = "ParticleEffectsTest"
+            ReferencedContainer = "container:ParticleEffects.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <MacroExpansion>

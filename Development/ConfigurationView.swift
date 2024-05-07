@@ -1,12 +1,12 @@
 //
 //  ConfigurationView.swift
-//  MotionEffects
+//  ParticleEffects
 //
 //  Created by Ben Ku on 5/4/24.
 //
 
 import SwiftUI
-import MotionEffects
+import ParticleEffects
 
 struct ConfigurationView: View {
     @Binding var behavior: ParticleBehavior

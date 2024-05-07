@@ -9,7 +9,7 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "MotionEffects",
+    name: "ParticleEffects",
     platforms: [ // minimums for Date.now
         .iOS("15.2"),
         .macOS("12.0"),
@@ -20,14 +20,14 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "MotionEffects Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
-            targets: ["MotionEffects"]
+            name: "ParticleEffects Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
+            targets: ["ParticleEffects"]
         ),
         .iOSApplication(
-            name: "MotionEffects", // needs to match package name to open properly in Swift Playgrounds
-            targets: ["MotionEffectsTestAppModule"],
+            name: "ParticleEffects", // needs to match package name to open properly in Swift Playgrounds
+            targets: ["ParticleEffectsTestAppModule"],
             teamIdentifier: "3QPV894C33",
-            displayVersion: "1.0.1",
+            displayVersion: "1.0.2",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.yellow),
@@ -48,16 +48,16 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "MotionEffects",
+            name: "ParticleEffects",
             path: "Sources"
 //            ,resources: [
 //	            .process("Resources"),
 //            ]
         ),
         .executableTarget(
-            name: "MotionEffectsTestAppModule",
+            name: "ParticleEffectsTestAppModule",
             dependencies: [
-                "MotionEffects",
+                "ParticleEffects",
             ],
             path: "Development",
             resources: [

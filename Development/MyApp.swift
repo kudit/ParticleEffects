@@ -1,5 +1,5 @@
 import SwiftUI
-import MotionEffects
+import ParticleEffects
 
 @main
 struct MyApp: App {
@@ -13,7 +13,7 @@ struct MyApp: App {
 #else
                 ContentView()
 #endif
-                Text("MotionEffects v\(MotionEffects.version) © 2024 Kudit LLC").font(.caption).padding().foregroundStyle(.white)
+                Text("ParticleEffects v\(ParticleEffects.version) © 2024 Kudit LLC").font(.caption).padding().foregroundStyle(.white)
             }
         }
     }

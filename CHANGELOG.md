@@ -7,7 +7,12 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleBehavior.version (in Particle.swift) constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+Optimized so that entire view isn't included with particles and just values to keep things light.
+
+v1.0.2 5/7/2024  Fixed spacing in ChangeLog.  Updated icon to prevent confusion with KuditFrameworks.  Renamed from MotionEffects to ParticleEffects.
+
 v1.0.1 5/4/2024 Changed version to MotionEffects.version for clarity/simplicity.  Added convenience initializer for ParticleSystemView.
+
 v1.0.0 5/3/2024 Initial code and features.
 
 
@@ -21,6 +26,7 @@ Planned features and anticipated API changes.  If you want to contribute, this i
 
 - [ ] If you know how to best create the flame effect, please help!
 - [ ] Create fire effects.
+- [ ] Add actual gravity option to link to device gravity for fun.
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.
