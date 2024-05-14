@@ -19,6 +19,8 @@
 		B5EC71842BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */; };
 		B5EC71872BE2C85600D380BA /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71862BE2C85600D380BA /* Compatibility.swift */; };
 		B5EC71882BE2C85600D380BA /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71862BE2C85600D380BA /* Compatibility.swift */; };
+		B5ED38152BEC39D900642C40 /* SimpleDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */; };
+		B5ED38162BEC39D900642C40 /* SimpleDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */; };
 		B5F71F4B2BE9F40600BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4A2BE9F40600BA22FA /* ParticleEffects Library */; };
 		B5F71F4D2BE9F40C00BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4C2BE9F40C00BA22FA /* ParticleEffects Library */; };
 /* End PBXBuildFile section */
@@ -75,6 +77,7 @@
 		B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableParticleSystemView.swift; sourceTree = "<group>"; };
 		B5EC71852BE2BD7400D380BA /* ParticleEffectsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParticleEffectsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EC71862BE2C85600D380BA /* Compatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
+		B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDemoView.swift; sourceTree = "<group>"; };
 		B5F4F0532BD6E328009486AC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B5F71F492BE9F38700BA22FA /* ParticleEffects.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ParticleEffects.swiftpm; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,6 +115,7 @@
 			children = (
 				B56E285B2BD7575F0041A567 /* Resources */,
 				B56E285C2BD7575F0041A567 /* ContentView.swift */,
+				B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */,
 				B5C8AA232BE5F27900D4B436 /* ConfigurationView.swift */,
 				B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */,
 				B5EC71862BE2C85600D380BA /* Compatibility.swift */,
@@ -251,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56E28662BD7575F0041A567 /* ContentView.swift in Sources */,
+				B5ED38152BEC39D900642C40 /* SimpleDemoView.swift in Sources */,
 				B5C8AA242BE5F27900D4B436 /* ConfigurationView.swift in Sources */,
 				B56E28682BD7575F0041A567 /* MyApp.swift in Sources */,
 				B5EC71832BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */,
@@ -263,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56E28672BD7575F0041A567 /* ContentView.swift in Sources */,
+				B5ED38162BEC39D900642C40 /* SimpleDemoView.swift in Sources */,
 				B5C8AA252BE5F27900D4B436 /* ConfigurationView.swift in Sources */,
 				B56E28692BD7575F0041A567 /* MyApp.swift in Sources */,
 				B5EC71842BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */,
@@ -440,7 +446,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -481,7 +487,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -514,7 +520,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.watchkitapp;
 				PRODUCT_NAME = ParticleEffectsWatchTest;
 				SDKROOT = watchos;
@@ -544,7 +550,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.watchkitapp;
 				PRODUCT_NAME = ParticleEffectsWatchTest;
 				SDKROOT = watchos;

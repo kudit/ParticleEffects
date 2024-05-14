@@ -19,13 +19,10 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>MotionEffects.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>ParticleEffects Library.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
@@ -36,6 +33,8 @@
 		</dict>
 		<key>ParticleEffects.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
@@ -48,6 +47,16 @@
 			<true/>
 		</dict>
 		<key>My App</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ParticleEffects</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ParticleEffects Library</key>
 		<dict>
 			<key>primary</key>
 			<true/>

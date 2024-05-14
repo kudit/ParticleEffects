@@ -6,10 +6,72 @@
 // Do not edit it by hand because the contents will be replaced.
 
 import PackageDescription
+
+var packageLibraryName = "ParticleEffects"
+
+// Products define the executables and libraries a package produces, making them visible to other packages.
+var products = [
+	Product.library(
+        name: "\(packageLibraryName) Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
+        targets: [packageLibraryName]
+    ),
+]
+
+// Targets are the basic building blocks of a package, defining a module or a test suite.
+// Targets can depend on other targets in this package and products from dependencies.
+var targets = [
+	Target.target(
+		name: packageLibraryName,
+		path: "Sources"
+	),
+]
+
+#if canImport(AppleProductTypes) // swift package dump-package fails because of this
 import AppleProductTypes
 
+products += [
+	.iOSApplication(
+		name: packageLibraryName, // needs to match package name to open properly in Swift Playgrounds
+		targets: ["\(packageLibraryName)TestAppModule"],
+		teamIdentifier: "3QPV894C33",
+		displayVersion: "1.0.3",
+		bundleVersion: "1",
+		appIcon: .asset("AppIcon"),
+		accentColor: .presetColor(.yellow),
+		supportedDeviceFamilies: [
+			.pad,
+			.phone
+		],
+		supportedInterfaceOrientations: [
+			.portrait,
+			.landscapeRight,
+			.landscapeLeft,
+			.portraitUpsideDown(.when(deviceFamilies: [.pad]))
+		],
+		appCategory: .developerTools
+	),
+]
+
+targets += [
+	.executableTarget(
+		name: "\(packageLibraryName)TestAppModule",
+		dependencies: [
+			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal
+		],
+		path: "Development",
+		resources: [
+			.process("Resources")
+		],
+		swiftSettings: [
+			.enableUpcomingFeature("BareSlashRegexLiterals")
+		]
+	),
+]
+
+#endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
+
 let package = Package(
-    name: "ParticleEffects",
+    name: packageLibraryName,
     platforms: [ // minimums for Date.now
         .iOS("15.2"),
         .macOS("12.0"),
@@ -17,55 +79,6 @@ let package = Package(
         .watchOS("8.0"),
         .visionOS("1.0"),
     ],
-    products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "ParticleEffects Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
-            targets: ["ParticleEffects"]
-        ),
-        .iOSApplication(
-            name: "ParticleEffects", // needs to match package name to open properly in Swift Playgrounds
-            targets: ["ParticleEffectsTestAppModule"],
-            teamIdentifier: "3QPV894C33",
-            displayVersion: "1.0.2",
-            bundleVersion: "1",
-            appIcon: .asset("AppIcon"),
-            accentColor: .presetColor(.yellow),
-            supportedDeviceFamilies: [
-                .pad,
-                .phone
-            ],
-            supportedInterfaceOrientations: [
-                .portrait,
-                .landscapeRight,
-                .landscapeLeft,
-                .portraitUpsideDown(.when(deviceFamilies: [.pad]))
-            ],
-            appCategory: .developerTools
-        ),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "ParticleEffects",
-            path: "Sources"
-//            ,resources: [
-//	            .process("Resources"),
-//            ]
-        ),
-        .executableTarget(
-            name: "ParticleEffectsTestAppModule",
-            dependencies: [
-                "ParticleEffects",
-            ],
-            path: "Development",
-            resources: [
-                .process("Resources")
-            ],
-            swiftSettings: [
-                .enableUpcomingFeature("BareSlashRegexLiterals")
-            ]
-        )
-    ]
+    products: products,
+    targets: targets
 )

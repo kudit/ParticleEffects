@@ -1,9 +1,5 @@
 import Foundation
 
-public struct ParticleEffects {
-    public static let version = "1.0.2"
-}
-
 public struct Particle<Configuration: ParticleConfiguration>: Hashable {
     public let creationDate = Date.now.timeIntervalSinceReferenceDate
 
