@@ -26,15 +26,25 @@ var targets = [
 	),
 ]
 
+var platforms: [SupportedPlatform] = [] // leave blank for more compatibility with swiftpackageindex?
+
 #if canImport(AppleProductTypes) // swift package dump-package fails because of this
 import AppleProductTypes
+
+platforms += [ // minimums for Date.now
+	.iOS("15.2"),
+	.macOS("12.0"),
+	.tvOS("15.0"),
+	.watchOS("8.0"),
+	.visionOS("1.0"),
+]
 
 products += [
 	.iOSApplication(
 		name: packageLibraryName, // needs to match package name to open properly in Swift Playgrounds
 		targets: ["\(packageLibraryName)TestAppModule"],
 		teamIdentifier: "3QPV894C33",
-		displayVersion: "1.0.3",
+		displayVersion: "1.0.4",
 		bundleVersion: "1",
 		appIcon: .asset("AppIcon"),
 		accentColor: .presetColor(.yellow),
@@ -72,13 +82,7 @@ targets += [
 
 let package = Package(
     name: packageLibraryName,
-    platforms: [ // minimums for Date.now
-        .iOS("15.2"),
-        .macOS("12.0"),
-        .tvOS("15.0"),
-        .watchOS("8.0"),
-        .visionOS("1.0"),
-    ],
+    platforms: platforms,
     products: products,
     targets: targets
 )

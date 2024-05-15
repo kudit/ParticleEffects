@@ -1,5 +1,7 @@
 <img src="/Development/Resources/Assets.xcassets/AppIcon.appiconset/Icon.png" height="128">
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fkudit%2FParticleEffects%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/kudit/ParticleEffects)
+
 # ParticleEffects.swiftpm
 ParticleEffects allows developers to create particle systems with minimal effort that are compatible with macOS, iOS, iPadOS, visionOS, tvOS, and watchOS.
 
