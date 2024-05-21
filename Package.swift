@@ -26,18 +26,16 @@ var targets = [
 	),
 ]
 
-var platforms: [SupportedPlatform] = [] // leave blank for more compatibility with swiftpackageindex?
-
-#if canImport(AppleProductTypes) // swift package dump-package fails because of this
-import AppleProductTypes
-
-platforms += [ // minimums for Date.now
+var platforms: [SupportedPlatform] = [ // minimums for Date.now
 	.iOS("15.2"),
 	.macOS("12.0"),
 	.tvOS("15.0"),
 	.watchOS("8.0"),
 	.visionOS("1.0"),
 ]
+
+#if canImport(AppleProductTypes) // swift package dump-package fails because of this
+import AppleProductTypes
 
 products += [
 	.iOSApplication(
