@@ -5,6 +5,7 @@
 //  Created by Ben Ku on 5/4/24.
 //
 
+#if canImport(SwiftUI)
 import SwiftUI
 import ParticleEffects
 
@@ -100,3 +101,4 @@ struct ConfigurationView: View {
 #Preview {
     ConfigurationView(behavior: .constant(.bubbles), string: .constant("F,U,N"), coloring: .constant(.rainbow), showConfiguration: .constant(false))
 }
+#endif

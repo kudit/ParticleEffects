@@ -5,6 +5,7 @@
 //  Created by Ben Ku on 5/8/24.
 //
 
+#if canImport(SwiftUI)
 import SwiftUI
 import ParticleEffects
 
@@ -25,3 +26,4 @@ struct SimpleDemoView: View {
 #Preview {
     SimpleDemoView()
 }
+#endif

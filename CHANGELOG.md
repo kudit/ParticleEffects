@@ -7,6 +7,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.0.6 5/25/2024 Added checks for SwiftUI to add support for Linux.
+
 v1.0.5 5/25/2024 Fixed so that SwiftPackageIndex.com tests work on all platforms (thank you @finestructure!).
 
 v1.0.4 5/15/2024 Attempted to re-work Package.swift for more platform compatibility with swiftpackageindex.com.

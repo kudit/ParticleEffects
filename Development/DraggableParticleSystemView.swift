@@ -1,3 +1,4 @@
+#if canImport(SwiftUI)
 import SwiftUI
 import ParticleEffects
 
@@ -26,3 +27,4 @@ struct DraggableParticleSystemView: View {
         }
     }
 }
+#endif

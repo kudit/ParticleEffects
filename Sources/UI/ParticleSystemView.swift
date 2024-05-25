@@ -1,3 +1,4 @@
+#if canImport(SwiftUI)
 import SwiftUI
 
 public extension Vector {
@@ -59,3 +60,4 @@ extension ParticleSystemView where ParticleView == StringConfiguration {
             .foregroundStyle(.blue)
     }.ignoresSafeArea()
 }
+#endif

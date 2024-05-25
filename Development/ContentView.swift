@@ -1,3 +1,4 @@
+#if canImport(SwiftUI)
 import SwiftUI
 import ParticleEffects
 
@@ -43,3 +44,4 @@ struct ContentView: View {
         #endif
     }
 }
+#endif

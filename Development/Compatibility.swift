@@ -1,5 +1,6 @@
 // This has been a godsend! https://davedelong.com/blog/2021/10/09/simplifying-backwards-compatibility-in-swift/
 
+#if canImport(SwiftUI)
 import SwiftUI
 
 public struct Backport<Content> {
@@ -91,3 +92,4 @@ public struct BackportNavigationStack<Content: View>: ContainerView {
         }
     }
 }
+#endif

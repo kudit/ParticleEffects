@@ -1,3 +1,4 @@
+#if canImport(SwiftUI)
 import SwiftUI
 
 public extension UnitPoint {
@@ -72,3 +73,4 @@ extension Array {
         self.removeLast(self.distance(from: writeIndex, to: self.endIndex))
     }
 }
+#endif
