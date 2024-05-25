@@ -61,6 +61,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>ParticleEffects.swiftpm</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>

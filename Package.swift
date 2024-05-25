@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 // WARNING:
@@ -7,6 +7,7 @@
 
 import PackageDescription
 
+var version = "1.0.5"
 var packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -31,8 +32,13 @@ var platforms: [SupportedPlatform] = [ // minimums for Date.now
 	.macOS("12.0"),
 	.tvOS("15.0"),
 	.watchOS("8.0"),
-	.visionOS("1.0"),
 ]
+
+#if os(visionOS)
+platforms += [
+    .visionOS("1.0"),
+]
+#endif
 
 #if canImport(AppleProductTypes) // swift package dump-package fails because of this
 import AppleProductTypes
@@ -42,7 +48,7 @@ products += [
 		name: packageLibraryName, // needs to match package name to open properly in Swift Playgrounds
 		targets: ["\(packageLibraryName)TestAppModule"],
 		teamIdentifier: "3QPV894C33",
-		displayVersion: "1.0.4",
+		displayVersion: version,
 		bundleVersion: "1",
 		appIcon: .asset("AppIcon"),
 		accentColor: .presetColor(.yellow),
@@ -69,9 +75,6 @@ targets += [
 		path: "Development",
 		resources: [
 			.process("Resources")
-		],
-		swiftSettings: [
-			.enableUpcomingFeature("BareSlashRegexLiterals")
 		]
 	),
 ]
