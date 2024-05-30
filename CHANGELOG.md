@@ -1,11 +1,12 @@
 # ChangeLog
 
 NOTE: Version needs to be updated in the following places:
-- [ ] Xcode project version (normal target)
-- [ ] Xcode project version (watch target)
+- [ ] Xcode project version (in build settings - normal and watch targets should inherit)
 - [ ] Package.swift iOSApplication product displayVersion.
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
+
+v1.0.7 5/29/2024 Fixed project so only one version check is needed not per target.  Set Swift version minimum to 5.9 since that's needed for #Preview {} functionality.
 
 v1.0.6 5/25/2024 Added checks for SwiftUI to add support for Linux.
 
