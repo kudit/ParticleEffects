@@ -37,9 +37,37 @@ public struct ParticleSystemView<ParticleView: View & ParticleConfiguration>: Vi
     }
 }
 extension ParticleSystemView where ParticleView == StringConfiguration {
-    public init(behavior: ParticleBehavior = .fountain, string: String = "Hello,World", coloring: Coloring = .none) {
-        self.init(particleSystem: ParticleSystem(behavior: behavior)) {
+    public init(particleSystem: ParticleSystem<ParticleView>, string: String = "Hello,World", coloring: Coloring = .none) {
+        self.init(particleSystem: particleSystem) {
             StringConfiguration(string: string, coloring: coloring)
+        }
+    }
+    public init(behavior: ParticleBehavior = .fountain, string: String = "Hello,World", coloring: Coloring = .none) {
+        self.init(particleSystem: ParticleSystem(behavior: behavior), string: string, coloring: coloring)
+    }
+}
+
+#if swift(>=5.9)
+struct TestAnimatedParticleView: View {
+    var particleSystem = ParticleSystem<StringConfiguration>(center: .leading, behavior: ParticleBehavior(
+        birthRate: .frequent,
+        lifetime: .brief,
+        fadeOut: .lengthy,
+        emissionAngle: .top,
+        spread: .complete,
+        initialVelocity: .slow,
+        acceleration: .sun,
+        blur: .none
+    ))
+    
+    var body: some View {
+        TimelineView(.animation) { context in
+            let _ = {
+                let pos = (sin(context.date.timeIntervalSinceReferenceDate) + 1) / 2
+                self.particleSystem.center.x = pos
+            }()
+            ParticleSystemView(particleSystem: particleSystem, string: "star.fill", coloring: .none)
+                .foregroundStyle(.red)
         }
     }
 }
@@ -58,6 +86,10 @@ extension ParticleSystemView where ParticleView == StringConfiguration {
             .border(.green, width: 5)
             .background(.black)
             .foregroundStyle(.blue)
+        TestAnimatedParticleView()
+            .aspectRatio(contentMode: .fit)
+//            .border(.red, width: 5)
     }.ignoresSafeArea()
 }
+#endif
 #endif

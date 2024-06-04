@@ -127,6 +127,7 @@ public extension Image {
     }
 }
 
+#if swift(>=5.9)
 #Preview("Confetti Demo") {
     let behavior = ParticleBehavior(
         birthRate: .frequent,
@@ -147,5 +148,5 @@ public extension Image {
 #Preview("Fire Example") {
     ParticleSystemView(behavior: .fire, string: "drop.fill", coloring: .fire)
 }
-
+#endif
 #endif

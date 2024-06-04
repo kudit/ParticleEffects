@@ -98,7 +98,9 @@ struct ConfigurationView: View {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     ConfigurationView(behavior: .constant(.bubbles), string: .constant("F,U,N"), coloring: .constant(.rainbow), showConfiguration: .constant(false))
 }
+#endif
 #endif

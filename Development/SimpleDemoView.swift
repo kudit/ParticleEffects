@@ -23,7 +23,9 @@ struct SimpleDemoView: View {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     SimpleDemoView()
 }
+#endif
 #endif

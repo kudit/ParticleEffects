@@ -6,6 +6,12 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+
+TODO: change Swift tools version and add in checks for Previews.
+
+
+v1.0.8 6/3/2024 Improved documentation for case parameters.  Added simplified example code for animated particle along a line.  Restored Swift version to 5.7 using checks for #Preview and @Published values.
+
 v1.0.7 5/29/2024 Fixed project so only one version check is needed not per target.  Set Swift version minimum to 5.9 since that's needed for #Preview {} functionality.
 
 v1.0.6 5/25/2024 Added checks for SwiftUI to add support for Linux.

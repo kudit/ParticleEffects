@@ -15,8 +15,6 @@ public class ParticleSystem<Configuration: ParticleConfiguration> {
     public var center = UnitPoint.center
     public var behavior: ParticleBehavior
     
-    private var frame = 0
-    
     public init(center: UnitPoint = .center, behavior: ParticleBehavior = .default) {
         self.center = center
         self.behavior = behavior
