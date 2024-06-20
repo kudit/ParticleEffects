@@ -6,7 +6,7 @@ import UIKit
 import AppKit
 #endif
 
-public enum Coloring: Hashable, CaseIterable {
+public enum Coloring: Hashable, CaseIterable, Sendable {
     case none, rainbow, fire
     public var description: String {
         switch self {

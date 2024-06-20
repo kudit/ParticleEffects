@@ -7,7 +7,7 @@
 import Foundation
 
 /// The Lifetime is controlling the longevity of elements on the screen. That means if the lifetime is shorter, the elements will disappear earlier, while for longer lifetimes they will stay on the screen for longer time.
-public enum Lifetime: Hashable, CaseIterable {
+public enum Lifetime: Hashable, CaseIterable, Sendable {
     /// the shortest lifetime (very brief)
     case brief
     /// Elements only stay for the screen for a short amount of time

@@ -9,6 +9,7 @@ NOTE: Version needs to be updated in the following places:
 
 TODO: change Swift tools version and add in checks for Previews.
 
+v1.0.9 6/19/2024 Fixed data race errors when using strict concurrency checking.
 
 v1.0.8 6/3/2024 Improved documentation for case parameters.  Added simplified example code for animated particle along a line.  Restored Swift version to 5.7 using checks for #Preview and @Published values.
 

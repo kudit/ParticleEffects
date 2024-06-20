@@ -29,7 +29,7 @@ public extension Degrees {
     }
 }
 
-public enum InitialVelocity: Hashable, CaseIterable {
+public enum InitialVelocity: Hashable, CaseIterable, Sendable {
     case none, slow, medium, fast
     
     public var multiplier: Double {
@@ -47,7 +47,7 @@ public enum InitialVelocity: Hashable, CaseIterable {
 }
 
 // frames per second is typically 60 or 120
-public enum BirthRate: Hashable, CaseIterable {
+public enum BirthRate: Hashable, CaseIterable, Sendable {
     case periodic, slow, medium, frequent
     
     public var value: Int {
@@ -64,12 +64,12 @@ public enum BirthRate: Hashable, CaseIterable {
     }
 }
 
-public enum SpreadArc: Degrees, Hashable, CaseIterable {
+public enum SpreadArc: Degrees, Hashable, CaseIterable, Sendable {
     case none = 0, tight = 15, medium = 45, wide = 90, flat = 180, full = 270, complete = 360
 }
 
 /// various modes (none, gravity, anti-gravity (for floating/smoke/fire/bubbles), sun (towards center - opposite vector?)
-public enum Acceleration: Hashable, CaseIterable {
+public enum Acceleration: Hashable, CaseIterable, Sendable {
     case none, gravity, antiGravity, moonGravity, antiMoonGravity, sun
     public func vector(for initialVelocity: Vector) -> Vector {
         switch self {
@@ -93,7 +93,7 @@ public enum Acceleration: Hashable, CaseIterable {
     }
 }
 
-public enum Blur: Hashable, CaseIterable {
+public enum Blur: Hashable, CaseIterable, Sendable {
     case none, light, heavy // blur in, blur out, blur inout - TODO: Have curve function?
     public var value: Double {
         switch self {
@@ -107,7 +107,7 @@ public enum Blur: Hashable, CaseIterable {
     }
 }
 
-public struct ParticleBehavior: Hashable {
+public struct ParticleBehavior: Hashable, Sendable {
     public static let rain = ParticleBehavior(
         label: "Rain",
         birthRate: .frequent,
@@ -188,25 +188,25 @@ public struct ParticleBehavior: Hashable {
     public private(set) var label: String 
     
     ///.    - `birthRate`: Defines how frequently new particles are spawned.
-    public var birthRate: BirthRate = .medium
+    public var birthRate: BirthRate
     
     ///     - `lifetime`: Defines how long the single elements of the effect will stay alive. The type is ``Lifetime`` (click to see more details) and it has the values `.short`, `.medium` and `.long`. Default is `.medium`.
-    public var lifetime: Lifetime = .medium
+    public var lifetime: Lifetime
     
     ///     - `fadeOut`: Specifies how fast elements of the effect will fade out (meaning: become transparent). Difference to `lifetime` is that there elements will be removed instantly whereas here there is a fading effect that is more subtle over time. The type is ``FadeOut`` (click to see more details) with the values `.none`, `.quick`, `.moderate`, `.lengthy`. Default is `.moderate`.
-    public var fadeOut: FadeOut = .moderate
+    public var fadeOut: FadeOut
     
     // Where the center of the emission should start.  0 represents right, 90 represents down.
-    public var emissionAngle: Degrees = 0
+    public var emissionAngle: Degrees
 
-    ///     - `spread`: Defines the angle in which the single elements of the effect are emitted. The type ``SpreadArc`` (click to see more details) defines 4 values: `.none`, `.low`, `.medium`, and `.high`. The default is `.high` (leading to a complete circle of particles emitted from the source).
-    public var spread: SpreadArc = .none // emmit in a line vs 360 is emmit in a circle.  TODO: Pull from effects and adapt
+    ///     - `spread`: Defines the angle in which the single elements of the effect are emitted. The type ``SpreadArc`` (click to see more details) defines 7 values: `.none`, `.tight`, `.medium`, `.wide`, `.flat`, `.full`, and `.complete`.
+    public var spread: SpreadArc
 
     ///     - `initialVelocity`: Specifies the initial speed with which confetti particles will be emitted from the source. The higher the value the larger the radius of the effects as elements will spread in a larger radius around the source. The type is ``InitialVelocity`` and possible values are `.slow`, `.medium`, and `.fast`. Default value is `.medium`.
-    public var initialVelocity: InitialVelocity = .none
+    public var initialVelocity: InitialVelocity
     
     /// various modes (none, gravity, anti-gravity (for floating/smoke/fire/bubbles), sun (towards center - opposite vector?)
-    public var acceleration: Acceleration = .none
+    public var acceleration: Acceleration
 
     public var blur: Blur = .none
     

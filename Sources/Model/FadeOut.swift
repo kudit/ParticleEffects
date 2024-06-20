@@ -15,7 +15,7 @@ import Foundation
 /// - `.quick`: The particles will fade out and disappear quickly.
 /// - `.moderate`: The particles will face out over a medium time period.
 /// - `.lengthy`: The particles will only slowly fade out.
-public enum FadeOut: Hashable, CaseIterable {
+public enum FadeOut: Hashable, CaseIterable, Sendable {
     case none, quick, moderate, lengthy
     var multiplier: TimeInterval {
         switch self {
