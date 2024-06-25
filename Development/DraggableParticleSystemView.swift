@@ -3,10 +3,8 @@ import SwiftUI
 import ParticleEffects
 
 struct DraggableParticleSystemView: View {
-    public var particleSystem: ParticleSystem<StringConfiguration>
+    @ObservedObject public var particleSystem: ParticleSystem
     public var background: Color // necessary for drag view to be draggable and not just shapes
-    public var string = "circle"
-    public var coloring: Coloring
     
     var body: some View {
         GeometryReader { proxy in
@@ -20,9 +18,7 @@ struct DraggableParticleSystemView: View {
                         }
                 )
 #endif
-            ParticleSystemView(particleSystem: particleSystem) {
-                StringConfiguration(string: string, coloring: coloring)
-            }
+            ParticleSystemView(particleSystem: particleSystem)
             .allowsHitTesting(false)
         }
     }

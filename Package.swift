@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.0.9"
+let version = "1.1.0"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -23,6 +23,11 @@ var products = [
 var targets = [
 	Target.target(
 		name: packageLibraryName,
+		dependencies: [
+            .product(name: "Collections", package: "swift-collections"),
+            .product(name: "OrderedCollections", package: "swift-collections"),
+//			.product(name: "CustomType", package: "customtype"), // apparently needs to be lowercase.  Also note this is "Device Library" not "Device"
+		],
 		path: "Sources"
 	),
 ]
@@ -36,7 +41,7 @@ var platforms: [SupportedPlatform] = [ // minimums for Date.now
 
 #if os(visionOS)
 platforms += [
-    .visionOS("1.0"),
+    .visionOS("1.0"), // unavailable in Swift Playgrounds
 ]
 #endif
 
@@ -85,5 +90,10 @@ let package = Package(
     name: packageLibraryName,
     platforms: platforms,
     products: products,
+    dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        .package(url: "https://github.com/apple/swift-collections", "1.1.1"..<"2.0.0")
+//        .package(url: "https://github.com/kudit/CustomType", "1.0.0"..<"2.0.0"),
+    ],
     targets: targets
 )

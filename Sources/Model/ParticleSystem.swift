@@ -7,27 +7,40 @@ public extension UnitPoint {
     }
 }
 
-/// For Type Erasure
-public class ParticleSystem<Configuration: ParticleConfiguration> {    
-    public typealias TypedParticle = Particle<Configuration>
-    public var particles = [TypedParticle]()
+/// For Type Erasure and observation
+@MainActor
+public class ParticleSystem: ObservableObject {
+    @Published public var particles = [Particle]()
     /// Where emissions happen from
-    public var center = UnitPoint.center
-    public var behavior: ParticleBehavior
-    
+    @Published public var center = UnitPoint.center
+    @Published public var behavior: ParticleBehavior
+    @Published public var lastParticleCreation: TimeInterval = .zero
+    @Published public var particleCounter = 0
+
     public init(center: UnitPoint = .center, behavior: ParticleBehavior = .default) {
         self.center = center
         self.behavior = behavior
     }
+        
+    public func particles(for currentTime: TimeInterval) -> [Particle] {
+        #warning("This causes runtime warning.  Find way of updating outside of this.  Does a timer actually work?  Do we need to publish updates?  Use Keyframe animations?  Or change to draw with canvas with Timeline View?  Perhaps add each particle and then animate along keypath or final position using withAnimation { } ??  Does that work outside of SwiftUI?   Can I animate using physics?  There has to be physics bodies with animation/SwiftUI.  Watch talks?  Use Canvas.  context.draw(image, at: Point)  Canvas has size so we don't need a geometry reader.  Canvas will prevent drawing outside though??  https://developer.apple.com/wwdc21/10021?time=868 Use context.resolve() to resolve similar images for a string?  Create all the possible images to resolve from behavior and have them in an array for use by the context.  Create inner context for each particle to control color and opacity.")
+        update(at: currentTime) // TODO: Figure out where better to put this.
+        return particles
+    }
     
-    /// Generate new particle and update existing particles based on behavior. `configuration` will be the closure executed when creating new particles to get the next configuration.
-    public func update(at currentTime: TimeInterval, configuration: () -> Configuration) {
+    // TODO: Move additionalConfiguration to an optional additional function on the particle system.
+    /// Generate new particle and update existing particles based on behavior. `additionalConfiguration` will be the closure executed when creating new particles and updating particles in case we need to customize any particle state.  The callback first indicates whether this is a new particle or existing, and passes an inout particle that can be modified, and then it returns whether the particle should be deleted.
+    public func update(at currentTime: TimeInterval, additionalConfiguration: (Bool, inout Particle) -> Bool = { _,_ in true }) {
         particles.filtered { particle in
-            behavior.update(particle: &particle, at: currentTime)
+            behavior.update(particle: &particle, currentTime: currentTime) && additionalConfiguration(false, &particle)
         }
         
-        if let newParticle = behavior.generationTick(origin: center.vector, configuration: configuration) {
+        // pass in the time so we know how frequent to generate...store last time so that this isn't framerate dependent
+        if var newParticle = behavior.newParticle(initialPosition: center.vector, timeSinceLastGeneration: currentTime - lastParticleCreation, particleCount: particleCounter), additionalConfiguration(true, &newParticle) {
             particles.append(newParticle)
+            // update last update and count
+            lastParticleCreation = currentTime
+            particleCounter += 1
         }
     }
 }
@@ -61,8 +74,7 @@ extension Array {
         var writeIndex = self.startIndex
         for readIndex in self.indices {
             var element = self[readIndex]
-            let include = isIncluded(&element)
-            if include {
+            if isIncluded(&element) {
                 // copy over using existing array to prevent having to copy entire array (basically doing the same but this also allows for mutating functions.
                 self[writeIndex] = element
                 writeIndex = self.index(after: writeIndex)

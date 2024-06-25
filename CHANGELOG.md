@@ -6,8 +6,12 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+// have particle acceleration use current position and some value of delta in time since last so that particles can change behavior and visibility without changing position.
+TODO: Try using canvas but extend to 4000x4000 so that will not be clipped and can go outside the normal view bounds.
 
-TODO: change Swift tools version and add in checks for Previews.
+v1.1.1 TODO Canvas version to prevent runtime errors and allow blend mode and optimized rendering code.
+
+v1.1.0 6/25/2024 Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).
 
 v1.0.9 6/19/2024 Fixed data race errors when using strict concurrency checking.
 

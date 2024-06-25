@@ -2,14 +2,9 @@
 import SwiftUI
 import ParticleEffects
 
-
-
 struct ContentView: View {
-    @State public var string = "star.fill"
-    
-    @State var behavior: ParticleBehavior = .fountain
+    @StateObject var system = ParticleSystem(behavior: .fountain)
     @State var showConfiguration = false
-    @State var coloring: Coloring = .rainbow
             
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
@@ -18,14 +13,14 @@ struct ContentView: View {
         VStack {
             if horizontalSizeClass != .compact || verticalSizeClass == .compact {
                 HStack {
-                    ConfigurationView(behavior: $behavior, string: $string, coloring: $coloring, showConfiguration: $showConfiguration)
-                    DraggableParticleSystemView(particleSystem: ParticleSystem(behavior: behavior), background: .black, string: string, coloring: coloring).tag(string)
+                    ConfigurationView(behavior: $system.behavior, showConfiguration: $showConfiguration)
+                    DraggableParticleSystemView(particleSystem: system, background: .black)
                         .font(.largeTitle)
                         .ignoresSafeArea()
                 }
             } else {
-                ConfigurationView(behavior: $behavior, string: $string, coloring: $coloring, showConfiguration: $showConfiguration)
-                DraggableParticleSystemView(particleSystem: ParticleSystem(behavior: behavior), background: .black, string: string, coloring: coloring).tag(string)
+                ConfigurationView(behavior: $system.behavior, showConfiguration: $showConfiguration)
+                DraggableParticleSystemView(particleSystem: system, background: .black)
                     .font(.largeTitle)
                     .ignoresSafeArea()
             }
@@ -36,7 +31,7 @@ struct ContentView: View {
                 showConfiguration = false
             }.buttonStyle(.bordered)
             TextEditor(text: Binding(get: {
-                behavior.code
+                system.behavior.code
             }, set: { _,_ in 
                 // do nothing
             }))

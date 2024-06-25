@@ -11,27 +11,25 @@ import ParticleEffects
 
 struct ConfigurationView: View {
     @Binding var behavior: ParticleBehavior
-    @Binding var string: String
-    @Binding var coloring: Coloring
     @Binding var showConfiguration: Bool
 
     var body: some View {
         VStack {
             HStack {
-                Picker("Coloring", selection: $coloring ) {
+                Picker("Coloring", selection: $behavior.coloring ) {
                     ForEach(Coloring.allCases, id: \.self) { item in
                         Text(item.description).tag(item)
                     }
                 }.pickerStyle(.segmentedBackport)
-                TextField("Particle", text: $string)
+                TextField("Particle", text: $behavior.string)
 #if !os(macOS)
                     .textInputAutocapitalization(.never)
 #endif
                 Button("😊") {
-                    string = "😊,👍,☺️,👏,🙌"
+                    behavior.string = "😊,👍,☺️,👏,🙌"
                 }
                 Button("", systemImage: "flask.fill") {
-                    string = "flask.fill"
+                    behavior.string = "flask.fill"
                 }
 #if !os(watchOS) && !os(tvOS)
                 Button("Configuration") {
@@ -65,13 +63,13 @@ struct ConfigurationView: View {
             }.pickerStyle(.segmentedBackport)
             #if !os(tvOS)
             Slider(value: Binding(get: {
-                var normalized = behavior.emissionAngle / 360
+                var normalized = behavior.emissionAngle.rawValue / 360
                 if normalized < 0 {
                     normalized += 1
                 }
                 return normalized
             }, set: {
-                behavior.emissionAngle = $0 * 360
+                behavior.emissionAngle = Degrees(floatLiteral: $0 * 360)
             }))
             #endif
             Picker("Spread", selection: $behavior.spread) {
@@ -100,7 +98,12 @@ struct ConfigurationView: View {
 
 #if swift(>=5.9)
 #Preview {
-    ConfigurationView(behavior: .constant(.bubbles), string: .constant("F,U,N"), coloring: .constant(.rainbow), showConfiguration: .constant(false))
+    List {
+        ConfigurationView(behavior: .constant(.bubbles), showConfiguration: .constant(false))
+        ConfigurationView(behavior: .constant(.rain), showConfiguration: .constant(false))
+        ConfigurationView(behavior: .constant(.sparkle), showConfiguration: .constant(false))
+        ConfigurationView(behavior: .constant(.init(string: "F,U,N", coloring: .rainbow)), showConfiguration: .constant(false))
+    }
 }
 #endif
 #endif

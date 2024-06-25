@@ -1,8 +1,8 @@
-public struct Vector: Hashable {
+public struct Vector: Hashable, Sendable {
     public var x: Double
     public var y: Double
     
-    public static var zero = Self(x: 0, y: 0)    
+    public static let zero = Self(x: 0, y: 0)
     
     // this will be essentially a unit point so just use that.  Replace with a unit point.  Future might change to 3dVector...
     

@@ -15,7 +15,7 @@ struct SimpleDemoView: View {
             .imageScale(.large)
             .foregroundColor(.accentColor)
             .overlay {
-                ParticleSystemView(behavior: .bubbles, string: "globe", coloring: .rainbow)
+                ParticleSystemView(particleSystem: .init(behavior: .bubbles.modified(string: "globe", blur: Blur.none, coloring: .rainbow)))
                     .imageScale(.large)
                     .frame(width: 200, height: 200)
             }
