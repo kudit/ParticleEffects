@@ -121,13 +121,13 @@ public struct Lifetime: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, 
 public struct FadeOut: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, CaseIterable, Sendable, CustomStringConvertible {
     public var rawValue: TimeInterval
 
-    /// The particles will never fade out. Default
+    /// The particles will not fade out. Default
     public static let none: Self = 0
     /// The particles will fade out and disappear quickly.
     public static let quick: Self = 0.1
     /// The particles will face out over a medium time period.
     public static let moderate: Self = 0.5
-    /// The particles will only slowly fade out.
+    /// The particles will only slowly fade out as soon as it's born.
     public static let lengthy: Self = 1
 
     public static let named: OrderedDictionary<Self, String> = [

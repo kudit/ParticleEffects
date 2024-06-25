@@ -10,7 +10,7 @@ public extension Vector {
 @MainActor
 public struct ParticleSystemView<SomeParticleView: View>: View {
     public var particleSystem: ParticleSystem
-    public typealias ParticleViewGenerator = (Particle, ParticleSystem) -> SomeParticleView
+    public typealias ParticleViewGenerator = (ParticleState, ParticleSystem) -> SomeParticleView
     public var particleView: ParticleViewGenerator
 
     public init(particleSystem: ParticleSystem, particleView: @escaping ParticleViewGenerator) {
@@ -18,22 +18,51 @@ public struct ParticleSystemView<SomeParticleView: View>: View {
         self.particleView = particleView
     }
     
-    #warning("Figure out why we can't just use a timer and have the timeline view just read the particles (or not even be used?)")
     public var body: some View {
         TimelineView(.animation) { timeline in
             GeometryReader { proxy in
-                ForEach(particleSystem.particles(for: timeline.date.timeIntervalSinceReferenceDate), id: \.self) { particle in
-                    particleView(particle, particleSystem)
-                        .position(particle.position.cgPoint(proxy.size))
+                ForEach(particleSystem.particles(for: timeline.date.timeIntervalSinceReferenceDate), id: \.self) { particleState in
+                    particleView(particleState, particleSystem)
+                        .position(particleState.position.cgPoint(proxy.size))
                 }
             }
+            /*
+             Canvas { context, size in
+                 for particle in particleSystem.particles(for: timeline.date.timeIntervalSinceReferenceDate) { particle in
+                     particleView(particle, particleSystem)
+                         .position(particle.position.cgPoint(proxy.size))
+                 }
+             } symbols: {
+                 for string in particleSystem.behavior.strings {
+                     
+                 }
+             }
+             Canvas(
+                 opaque: false,
+                 colorMode: .linear,
+                 rendersAsynchronously: false
+             ) { context, size in
+                 context.opacity = 0.3
+                 
+                 let rect = CGRect(origin: .zero, size: size)
+                 
+                 if let symbol = context.resolveSymbol(id: 1) {
+                     context.draw(symbol, in: rect)
+                 }
+             } symbols: {
+                 Text(verbatim: "Hello")
+                     .foregroundColor(.red)
+                     .tag(1)
+             }
+
+             */
         }
     }
 }
 extension ParticleSystemView where SomeParticleView == ParticleView {
     public init(particleSystem: ParticleSystem) {
-        self.init(particleSystem: particleSystem) { particle, particleSystem in
-            ParticleView(particle: particle, coloring: particleSystem.behavior.coloring)
+        self.init(particleSystem: particleSystem) { particleState, particleSystem in
+            ParticleView(particleState: particleState, coloring: particleSystem.behavior.coloring)
         }
     }
 }

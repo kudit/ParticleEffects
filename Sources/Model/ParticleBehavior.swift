@@ -203,15 +203,18 @@ public struct ParticleBehavior: Hashable, Sendable {
         }
         return modified
     }
+    
+    var strings: [String] {
+        return string.components(separatedBy: ",")
+    }
 
     func string(for particleCount: Int) -> String {
         // go ahead and try to split since code will work even if comma not present
-        
-        let parts = string.components(separatedBy: ",")
+        let parts = strings
         let index = particleCount % parts.count // make sure we have a valid index
         return parts[index]
     }
-    
+        
     /// Determine whether to create a new particle and if so, return a new particle with an initial position and configuration.
     func newParticle(initialPosition: Vector, timeSinceLastGeneration: TimeInterval, particleCount: Int) -> Particle? {
         guard timeSinceLastGeneration > birthRate.rawValue else {
@@ -228,7 +231,7 @@ public struct ParticleBehavior: Hashable, Sendable {
         let lower = emissionAngle.rawValue - halfSpread
         let upper = emissionAngle.rawValue + halfSpread
         let angle = Degrees(floatLiteral: Double.random(in: lower...upper))
-        let vector = angle.vector * initialVelocity.rawValue
+        let initialVelocityVector = angle.vector * initialVelocity.rawValue
         
         // determine hue (if rainbow coloring set - other colorings will use age in renderer and we don't need to calculate here since not using hue value)
         let hue = coloring != .rainbow ? nil : {
@@ -238,31 +241,33 @@ public struct ParticleBehavior: Hashable, Sendable {
         }()
         
         // particles should start opaque
-        return Particle(initialPosition: initialPosition, initialVelocity: vector, opacity: 1, blur: blur, string: particleString, hue: hue)
+        return Particle(index: particleCount, initialPosition: initialPosition, initialVelocity: initialVelocityVector, hue: hue, string: particleString)
     }
 
     /// Update the particle position and configuration.  Return `false` if the particle should be removed and no longer updated.
-    // TODO: Instead, should we take in the original particle and return a modified one or nil?
-    func update(particle: inout Particle, currentTime: TimeInterval) -> Bool {
-        // update age
-        particle.age = (currentTime - particle.creationDate) / lifetime.rawValue
-        
+    func currentState(for particle: Particle, at currentTime: TimeInterval) -> ParticleState {
+        // update age (for use in fire coloring equations)
+        let lifetimeAge = particle.age(at: currentTime) / lifetime.rawValue
+
         // update the velocity due to acceleration
-        particle.updatePosition(at: currentTime, with: acceleration)
+        let position = particle.position(at: currentTime, with: acceleration)
                 
         // update fade and opacity
         let fadeOutDuration = lifetime.rawValue * fadeOut.rawValue
         let fadeStartTime = particle.creationDate + lifetime.rawValue - fadeOutDuration
+        let opacity: Double
         if currentTime < fadeStartTime {
-            // don't touch opacity and don't remove from view 
+            // don't touch opacity and don't remove from view
+            opacity = 1
         } else {
-            particle.opacity = 1 - ((currentTime - fadeStartTime) / fadeOutDuration)
-            if particle.opacity < 0 {
-                // we should be dead.  Remove from view
-                return false
-            }
+            opacity = 1 - ((currentTime - fadeStartTime) / fadeOutDuration)
         }
-        return true
+        
+        return ParticleState(particle: particle, lifetimeAge: lifetimeAge, position: position, opacity: opacity, blur: blur)
+    }
+        
+    func shouldRemove(particle: Particle, at currentTime: TimeInterval) -> Bool {
+        particle.age(at: currentTime) > lifetime.rawValue
     }
     
     public var code: String {

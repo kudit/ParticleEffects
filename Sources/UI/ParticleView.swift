@@ -10,8 +10,11 @@ import SwiftUI
 
 /// Create a String representation which will first try to find an image resource with the name, next it will try to create a symbol from the string, next it will check to see if it's an emoji or a character or it will just render the text as an image.
 public struct ParticleView: View {
-    public var particle: Particle
+    public var particleState: ParticleState
     public var coloring: Coloring = .none
+    var particle: Particle {
+        particleState.particle
+    }
     public var body: some View {
         Group {
             if let image = Image(string: particle.string) {
@@ -20,19 +23,19 @@ public struct ParticleView: View {
                 Text(particle.string).font(.title)
             }
         }
-        .apply(coloring: coloring, for: particle)
-        .opacity(particle.opacity)
-        .blur(radius: particle.blur.rawValue)
+        .apply(coloring: coloring, for: particleState)
+        .opacity(particleState.opacity)
+        .blur(radius: particleState.blur.rawValue)
     }
 }
 
 public extension View {
-    func apply(coloring: Coloring, for particle: Particle) -> some View {
+    func apply(coloring: Coloring, for particleState: ParticleState) -> some View {
         Group {
-            if let hue = particle.hue {
+            if let hue = particleState.particle.hue {
                 self.foregroundStyle(Color(hue: hue, saturation: 1, brightness: 1))
             } else if coloring == .fire {
-                self.foregroundStyle(Color(hue: particle.fireHue, saturation: particle.fireSaturation, brightness: 1))
+                self.foregroundStyle(Color(hue: particleState.fireHue, saturation: particleState.fireSaturation, brightness: 1))
             } else {
                 self
             }
@@ -83,16 +86,16 @@ public extension Image {
 #Preview {
     VStack {
         Divider()
-        ParticleView(particle: .init(initialPosition: .zero, initialVelocity: .zero, opacity: 1, blur: .none, string: "Hi", hue: nil), coloring: .none)
+        ParticleView(particleState: .init(particle: .init(index: 0, initialPosition: .zero, initialVelocity: .zero, hue: nil, string: "Hi"), position: .zero, opacity: 1, blur: .none), coloring: .none)
         Divider()
-        ParticleView(particle: .init(initialPosition: .zero, initialVelocity: .zero, opacity: 1, blur: .light, string: "star.fill", hue: nil), coloring: .none)
+        ParticleView(particleState: .init(particle: .init(index: 1, initialPosition: .zero, initialVelocity: .zero, hue: nil, string: "star.fill"), position: .zero, opacity: 1, blur: .light), coloring: .none)
             .foregroundStyle(.yellow)
         Divider()
-        ParticleView(particle: .init(initialPosition: .zero, initialVelocity: .zero, opacity: 1, blur: .heavy, string: "triangle.fill", hue: nil), coloring: .rainbow)
+        ParticleView(particleState: .init(particle: .init(index: 2, initialPosition: .zero, initialVelocity: .zero, hue: nil, string: "triangle.fill"), position: .zero, opacity: 1, blur: .heavy), coloring: .rainbow)
         Divider()
-        ParticleView(particle: .init(initialPosition: .zero, initialVelocity: .zero, opacity: 1, blur: .light, string: "circle.fill", hue: nil), coloring: .fire)
+        ParticleView(particleState: .init(particle: .init(index: 3, initialPosition: .zero, initialVelocity: .zero, hue: nil, string: "circle.fill"), position: .zero, opacity: 1, blur: .light), coloring: .fire)
         Divider()
-        ParticleView(particle: .init(initialPosition: .zero, initialVelocity: .zero, opacity: 1, blur: .none, string: "😆", hue: nil), coloring: .none)
+        ParticleView(particleState: .init(particle: .init(index: 4, initialPosition: .zero, initialVelocity: .zero, hue: nil, string: "😆"), position: .zero, opacity: 1, blur: .none), coloring: .none)
         Divider()
     }
 }

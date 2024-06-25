@@ -6,12 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
-// have particle acceleration use current position and some value of delta in time since last so that particles can change behavior and visibility without changing position.
-TODO: Try using canvas but extend to 4000x4000 so that will not be clipped and can go outside the normal view bounds.
+v1.1.1 6/25/2024 Don't want to use Canvas because 1) can't draw outside canvas (which is what we need) and 2) more difficult to draw any SwiftUI view and make those views interactable if necessary.  So instead have calculate position so we don't actually update the particle itself, we just re-calculate the values (which may be more expensive but then we're only calculating when we render rather than more frequently).  But still need to calculate and add particles to the system periodically... do that with a timer but render particles without updating model.  Should also be used for birthing and removing particles.
 
-v1.1.1 TODO Canvas version to prevent runtime errors and allow blend mode and optimized rendering code.
-
-v1.1.0 6/25/2024 Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).
+v1.1.0 6/25/2024 Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).  https://developer.apple.com/wwdc21/10021?time=868
 
 v1.0.9 6/19/2024 Fixed data race errors when using strict concurrency checking.
 
@@ -43,10 +40,10 @@ Known issues that need to be addressed.
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
 
 - [ ] Add actual gravity option to link to device gravity for fun.
+// have particle acceleration use current position and some value of delta in time since last so that particles can change behavior and visibility without changing position.
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.
 
 - [ ] Create additional emitters like fire and smoke using blurred SF symbols so we don't need resources?
-- [ ] Optimize so that entire view isn't included with particles and just values to keep things light.
 - [ ] Add paged tabbed view for configuration and various demos like SimpleDemoView and include a demo for moving particles along a Shape path.

@@ -17,26 +17,35 @@ public class ParticleSystem: ObservableObject {
     @Published public var lastParticleCreation: TimeInterval = .zero
     @Published public var particleCounter = 0
 
+    private var timer: Timer? = nil
     public init(center: UnitPoint = .center, behavior: ParticleBehavior = .default) {
         self.center = center
         self.behavior = behavior
+        timer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+            // check for new births
+            // remove dead particles
+            Task { @MainActor in // TODO: Make mini KuditFramework with things like debug and threading and various string functions for inclusion here.
+                self.update(at: Date.timeIntervalSinceReferenceDate)
+            }
+        }
     }
-        
-    public func particles(for currentTime: TimeInterval) -> [Particle] {
-        #warning("This causes runtime warning.  Find way of updating outside of this.  Does a timer actually work?  Do we need to publish updates?  Use Keyframe animations?  Or change to draw with canvas with Timeline View?  Perhaps add each particle and then animate along keypath or final position using withAnimation { } ??  Does that work outside of SwiftUI?   Can I animate using physics?  There has to be physics bodies with animation/SwiftUI.  Watch talks?  Use Canvas.  context.draw(image, at: Point)  Canvas has size so we don't need a geometry reader.  Canvas will prevent drawing outside though??  https://developer.apple.com/wwdc21/10021?time=868 Use context.resolve() to resolve similar images for a string?  Create all the possible images to resolve from behavior and have them in an array for use by the context.  Create inner context for each particle to control color and opacity.")
-        update(at: currentTime) // TODO: Figure out where better to put this.
-        return particles
+    deinit {
+        timer?.invalidate()
+    }
+    
+    public func particles(for currentTime: TimeInterval) -> [ParticleState] {
+        return particles.map { behavior.currentState(for: $0, at: currentTime) }
     }
     
     // TODO: Move additionalConfiguration to an optional additional function on the particle system.
-    /// Generate new particle and update existing particles based on behavior. `additionalConfiguration` will be the closure executed when creating new particles and updating particles in case we need to customize any particle state.  The callback first indicates whether this is a new particle or existing, and passes an inout particle that can be modified, and then it returns whether the particle should be deleted.
-    public func update(at currentTime: TimeInterval, additionalConfiguration: (Bool, inout Particle) -> Bool = { _,_ in true }) {
+    /// Generate new particle and update existing particles based on behavior.
+    public func update(at currentTime: TimeInterval) {
         particles.filtered { particle in
-            behavior.update(particle: &particle, currentTime: currentTime) && additionalConfiguration(false, &particle)
+            !behavior.shouldRemove(particle: particle, at: currentTime)
         }
         
         // pass in the time so we know how frequent to generate...store last time so that this isn't framerate dependent
-        if var newParticle = behavior.newParticle(initialPosition: center.vector, timeSinceLastGeneration: currentTime - lastParticleCreation, particleCount: particleCounter), additionalConfiguration(true, &newParticle) {
+        if let newParticle = behavior.newParticle(initialPosition: center.vector, timeSinceLastGeneration: currentTime - lastParticleCreation, particleCount: particleCounter) {
             particles.append(newParticle)
             // update last update and count
             lastParticleCreation = currentTime
