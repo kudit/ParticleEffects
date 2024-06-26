@@ -55,7 +55,21 @@ Here are some usage examples.
 
 ### Create a simple fire emitter.
 ```swift
-ParticleSystemView(behavior: .fire, string: "drop.fill", coloring: .fire)
+ParticleSystemView(behavior: .fire)
+    .font(.largeTitle)
+    .aspectRatio(contentMode: .fit)
+```
+
+### Create a rainbow sunburst emitter.  Note the ability to take a base behavior and modify specific values.
+```swift
+ParticleSystemView(behavior:
+    .sun.modified(
+        string: "star.fill",
+        birthRate: .frequent,
+        blur: Blur.none,
+        coloring: .rainbow
+    )
+).aspectRatio(contentMode: .fit)
 ```
 
 ### Create an emoji confetti emitter.

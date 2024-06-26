@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B568DF192C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
+		B568DF1A2C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
 		B56E28622BD7575F0041A567 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56E28582BD7575F0041A567 /* Assets.xcassets */; };
 		B56E28632BD7575F0041A567 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56E28582BD7575F0041A567 /* Assets.xcassets */; };
 		B56E28662BD7575F0041A567 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E285C2BD7575F0041A567 /* ContentView.swift */; };
@@ -19,8 +21,6 @@
 		B5EC71842BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */; };
 		B5EC71872BE2C85600D380BA /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71862BE2C85600D380BA /* Compatibility.swift */; };
 		B5EC71882BE2C85600D380BA /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71862BE2C85600D380BA /* Compatibility.swift */; };
-		B5ED38152BEC39D900642C40 /* SimpleDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */; };
-		B5ED38162BEC39D900642C40 /* SimpleDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */; };
 		B5F71F4B2BE9F40600BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4A2BE9F40600BA22FA /* ParticleEffects Library */; };
 		B5F71F4D2BE9F40C00BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4C2BE9F40C00BA22FA /* ParticleEffects Library */; };
 /* End PBXBuildFile section */
@@ -66,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B568DF182C2C7A4D00042487 /* DemoViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViews.swift; sourceTree = "<group>"; };
 		B56E28582BD7575F0041A567 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B56E285C2BD7575F0041A567 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B56E285E2BD7575F0041A567 /* MyApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
@@ -77,7 +78,6 @@
 		B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableParticleSystemView.swift; sourceTree = "<group>"; };
 		B5EC71852BE2BD7400D380BA /* ParticleEffectsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParticleEffectsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EC71862BE2C85600D380BA /* Compatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
-		B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDemoView.swift; sourceTree = "<group>"; };
 		B5F4F0532BD6E328009486AC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B5F71F492BE9F38700BA22FA /* ParticleEffects.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ParticleEffects.swiftpm; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,10 +115,10 @@
 			children = (
 				B56E285B2BD7575F0041A567 /* Resources */,
 				B56E285C2BD7575F0041A567 /* ContentView.swift */,
-				B5ED38142BEC39D900642C40 /* SimpleDemoView.swift */,
 				B5C8AA232BE5F27900D4B436 /* ConfigurationView.swift */,
 				B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */,
 				B5EC71862BE2C85600D380BA /* Compatibility.swift */,
+				B568DF182C2C7A4D00042487 /* DemoViews.swift */,
 				B56E285E2BD7575F0041A567 /* MyApp.swift */,
 			);
 			name = Development;
@@ -257,7 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56E28662BD7575F0041A567 /* ContentView.swift in Sources */,
-				B5ED38152BEC39D900642C40 /* SimpleDemoView.swift in Sources */,
+				B568DF192C2C7A4D00042487 /* DemoViews.swift in Sources */,
 				B5C8AA242BE5F27900D4B436 /* ConfigurationView.swift in Sources */,
 				B56E28682BD7575F0041A567 /* MyApp.swift in Sources */,
 				B5EC71832BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */,
@@ -270,7 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56E28672BD7575F0041A567 /* ContentView.swift in Sources */,
-				B5ED38162BEC39D900642C40 /* SimpleDemoView.swift in Sources */,
+				B568DF1A2C2C7A4D00042487 /* DemoViews.swift in Sources */,
 				B5C8AA252BE5F27900D4B436 /* ConfigurationView.swift in Sources */,
 				B56E28692BD7575F0041A567 /* MyApp.swift in Sources */,
 				B5EC71842BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */,
@@ -350,7 +350,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -413,7 +413,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

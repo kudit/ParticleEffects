@@ -271,6 +271,11 @@ public struct ParticleBehavior: Hashable, Sendable {
     }
     
     public var code: String {
+        for preset in Self.presets {
+            if self == preset {
+                return ".\(preset.label.lowercased())"
+            }
+        }
         return """
 ParticleBehavior(
     birthRate: \(birthRate),

@@ -65,6 +65,10 @@ extension ParticleSystemView where SomeParticleView == ParticleView {
             ParticleView(particleState: particleState, coloring: particleSystem.behavior.coloring)
         }
     }
+    // convenience for creating a single-use system.
+    public init(behavior: ParticleBehavior = .fountain, string: String? = nil, coloring: Coloring? = nil) {
+        self.init(particleSystem: ParticleSystem(behavior: behavior.modified(string: string, coloring: coloring)))
+    }
 }
 
 #if swift(>=5.9)

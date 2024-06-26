@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.1.2 6/26/2024 Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.
+
 v1.1.1 6/25/2024 Don't want to use Canvas because 1) can't draw outside canvas (which is what we need) and 2) more difficult to draw any SwiftUI view and make those views interactable if necessary.  So instead have calculate position so we don't actually update the particle itself, we just re-calculate the values (which may be more expensive but then we're only calculating when we render rather than more frequently).  But still need to calculate and add particles to the system periodically... do that with a timer but render particles without updating model.  Should also be used for birthing and removing particles.
 
 v1.1.0 6/25/2024 Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).  https://developer.apple.com/wwdc21/10021?time=868
