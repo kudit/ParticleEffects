@@ -6,5 +6,5 @@
 //
 
 public struct ParticleEffects {
-    public static let version = "1.1.1"
+    public static let version = "1.1.3"
 }

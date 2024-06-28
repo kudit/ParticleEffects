@@ -59,11 +59,11 @@ public extension Image {
 #endif
     }
     
-    static var `default` = Image(systemName: "star")
+    static let `default` = Image(systemName: "star")
 #if canImport(UIKit)
-    static var defaultColor = UIColor.white
+    static let defaultColor = UIColor.white
 #else //if canImport(AppKit)
-    static var defaultColor = NSColor.white
+    static let defaultColor = NSColor.white
 #endif
 
     init?(string: String) {

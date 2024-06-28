@@ -20,6 +20,7 @@ struct DraggableParticleSystemView: View {
 #endif
             ParticleSystemView(particleSystem: particleSystem)
             .allowsHitTesting(false)
+            .foregroundStyle(.white) // make sure light mode doesn't make invisible.
         }
     }
 }

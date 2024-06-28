@@ -77,6 +77,8 @@ ParticleSystemView(behavior:
 ParticleSystemView(behavior: .fountain, string: "😊,👍,☺️,👏,🙌")
 ```
 
+All these tests can be demonstrated using the previews in the file DemoViews.swift which can be viewed in Xcode Previews or in Swift Playgrounds!
+
 ## Thanks
 Inspired by [Effects Library by GetStream](https://github.com/GetStream/effects-library)
 

@@ -6,7 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
-v1.1.2 6/26/2024 Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.
+v1.1.3 6/29/2024 Added note about location of example code.  Fixed a couple additional places where we had static vars instead of lets.  Fixed wrong version in ParticleEffects.swift.  Fixed on iPhone in light mode.
+
+v1.1.2 6/26/2024 Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.  Switched Analyze to use Release target which found an issue for watchOS testing which was fixed by adding LSApplicationCategory.
 
 v1.1.1 6/25/2024 Don't want to use Canvas because 1) can't draw outside canvas (which is what we need) and 2) more difficult to draw any SwiftUI view and make those views interactable if necessary.  So instead have calculate position so we don't actually update the particle itself, we just re-calculate the values (which may be more expensive but then we're only calculating when we render rather than more frequently).  But still need to calculate and add particles to the system periodically... do that with a timer but render particles without updating model.  Should also be used for birthing and removing particles.
 
