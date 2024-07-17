@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.1.3"
+let version = "1.1.4"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -24,8 +24,9 @@ var targets = [
 	Target.target(
 		name: packageLibraryName,
 		dependencies: [
-            .product(name: "Collections", package: "swift-collections"),
-            .product(name: "OrderedCollections", package: "swift-collections"),
+            .product(name: "Compatibility Library", package: "compatibility"), // apparently needs to be lowercase.  Also note this is "Device Library" not "Device"
+//            .product(name: "Collections", package: "swift-collections"),
+//            .product(name: "OrderedCollections", package: "swift-collections"),
 //			.product(name: "CustomType", package: "customtype"), // apparently needs to be lowercase.  Also note this is "Device Library" not "Device"
 		],
 		path: "Sources"
@@ -33,11 +34,20 @@ var targets = [
 ]
 
 var platforms: [SupportedPlatform] = [ // minimums for Date.now
-	.iOS("15.2"),
-	.macOS("12.0"),
-	.tvOS("15.0"),
-	.watchOS("8.0"),
+    .macOS("12"),
+    .tvOS("15"),
+    .watchOS("8"),
 ]
+
+#if canImport(PlaygroundSupport)
+platforms += [
+    .iOS("15.2"), // minimum for Swift Playgrounds support
+]
+#else
+platforms += [
+    .iOS("15"),
+]
+#endif
 
 #if os(visionOS)
 platforms += [
@@ -75,7 +85,7 @@ targets += [
 	.executableTarget(
 		name: "\(packageLibraryName)TestAppModule",
 		dependencies: [
-			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal
+			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
 		],
 		path: "Development",
 		resources: [
@@ -90,9 +100,11 @@ let package = Package(
     name: packageLibraryName,
     platforms: platforms,
     products: products,
+    // include dependencies
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/apple/swift-collections", "1.1.1"..<"2.0.0")
+        .package(url: "https://github.com/kudit/Compatibility", "1.0.18"..<"2.0.0")
+//        .package(url: "https://github.com/apple/swift-collections", "1.1.1"..<"2.0.0")
 //        .package(url: "https://github.com/kudit/CustomType", "1.0.0"..<"2.0.0"),
     ],
     targets: targets

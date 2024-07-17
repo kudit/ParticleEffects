@@ -19,16 +19,18 @@ This is actively maintained so if there is a feature request or change, we will 
 - [x] Emmitter customizations
 
 ## Requirements
+Most of these minimums are dictated by our usage of Date.now which is needed.
 
-- iOS 15.2+ (minimum required for Swift Playgrounds support)
+- iOS 15+ (15.2+ minimum required for Swift Playgrounds support)
+- macOS 12+
+- macCatalyst 13.0+ (first version available)
 - tvOS 15.0+
 - watchOS 8.0+
-- macOS 12.0+
-- macCatalyst 14.0+
 - visionOS 1.0+
+- Theoretically should work with Linux, Windows, and Vapor, but haven't tested.  If you would like to help, please let us know.
 
 ## Known Issues
-Built for macOS "Designed for iPad" does not return expected device results.
+None currently.
 
 ## Installation
 Install by adding this as a package dependency to your code.  This can be done in Xcode or Swift Playgrounds!
@@ -87,6 +89,12 @@ If you have the need for a specific feature that you want implemented or if you 
 
 ## Donations
 This was a lot of work.  If you find this useful particularly if you use this in a commercial product, please consider making a donation to http://paypal.me/kudit
+
+## License
+Feel free to use this in projects, however, please include a link back to this project and credit somewhere in the app.  Example Markdown and string interpolation for the version:
+```swift
+Text("Open Source projects used include [ParticleEffects](https://github.com/kudit/ParticleEffects) v\(ParticleEffects.version)
+```
 
 ## Contributors
 The complete list of people who contributed to this project is available [here](https://github.com/kudit/ParticleEffects/graphs/contributors).

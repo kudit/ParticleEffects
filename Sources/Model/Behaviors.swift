@@ -5,8 +5,7 @@
 //  Created by Ben Ku on 6/21/24.
 //
 
-import Foundation
-import Collections
+import Compatibility
 //import CustomType
 
 /// The rate at which new particles are generated (may be slower than specified if the frame rate/animation loop is slow)

@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.1.4 7/17/2024 Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility.
+
 v1.1.3 6/29/2024 Added note about location of example code.  Fixed a couple additional places where we had static vars instead of lets.  Fixed wrong version in ParticleEffects.swift.  Fixed on iPhone in light mode.
 
 v1.1.2 6/26/2024 Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.  Switched Analyze to use Release target which found an issue for watchOS testing which was fixed by adding LSApplicationCategory.
@@ -38,7 +40,9 @@ v1.0.0 5/3/2024 Initial code and features.
 ## Bugs to fix:
 Known issues that need to be addressed.
 
+- [ ] Investigate and fix when pressing a button or holding down the mouse button on the (x) button or scrolling, it stops the animation... Is it because the animation and particle system are MainActor isolated?  Should we create an actor for the particle system that can continue to run independent of the MainActor so UI updates are only done then?
 - [ ] None known! 😊 
+
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
