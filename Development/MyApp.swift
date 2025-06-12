@@ -1,7 +1,10 @@
 #if canImport(SwiftUI)
 import SwiftUI
+#if canImport(ParticleEffects) // since this is needed in XCode but is unavailable in Playgrounds.
 import ParticleEffects
+#endif
 
+@available(iOS 15.0, macOS 12, tvOS 17, watchOS 8, *)
 @main
 struct MyApp: App {
     var body: some Scene {

@@ -4,9 +4,15 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Xcode project version (in build settings - normal and watch targets should inherit)
 - [ ] Package.swift iOSApplication product displayVersion.
 - [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
-- [ ] Tag with matching version in GitHub.
+- [ ] Update changelog and tag with matching version in GitHub.
 
-v1.1.4 7/17/2024 Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility.
+TODO: Add a way to have custom views as the particle (for tokens or other things - try with a ZStack with a rounded rectangle and text as an example)
+Update a particle effects to work with playground in simpler and try something where I can find a path to have the sparkle
+Try to run swift build from command line to see if we can figure out why particle effects package will run
+
+v1.1.5 6/11/2025 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Added PlaygroundAssets for silencing asset warnings in Swift Playgrounds.  Updated Compatibility for support for WASM and Android.  Works in Swift Playgrounds 4.6.
+
+v1.1.4 7/17/2024 Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility. *PASSES SWIFTPACKAGEINDEX TESTS*
 
 v1.1.3 6/29/2024 Added note about location of example code.  Fixed a couple additional places where we had static vars instead of lets.  Fixed wrong version in ParticleEffects.swift.  Fixed on iPhone in light mode.
 
@@ -39,19 +45,14 @@ v1.0.0 5/3/2024 Initial code and features.
 
 ## Bugs to fix:
 Known issues that need to be addressed.
-
 - [ ] Investigate and fix when pressing a button or holding down the mouse button on the (x) button or scrolling, it stops the animation... Is it because the animation and particle system are MainActor isolated?  Should we create an actor for the particle system that can continue to run independent of the MainActor so UI updates are only done then?
-- [ ] None known! 😊 
-
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
-
 - [ ] Add actual gravity option to link to device gravity for fun.
 // have particle acceleration use current position and some value of delta in time since last so that particles can change behavior and visibility without changing position.
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.
-
 - [ ] Create additional emitters like fire and smoke using blurred SF symbols so we don't need resources?
 - [ ] Add paged tabbed view for configuration and various demos like SimpleDemoView and include a demo for moving particles along a Shape path.

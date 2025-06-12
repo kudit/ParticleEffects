@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 // WARNING:
@@ -7,15 +7,15 @@
 
 import PackageDescription
 
-let version = "1.1.4"
+let version = "1.1.5"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
 var products = [
 	Product.library(
-        name: "\(packageLibraryName) Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
-        targets: [packageLibraryName]
-    ),
+		name: "\(packageLibraryName) Library", // has to be named different from the iOSApplication or Swift Playgrounds won't open correctly
+		targets: [packageLibraryName]
+	),
 ]
 
 // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,44 +24,51 @@ var targets = [
 	Target.target(
 		name: packageLibraryName,
 		dependencies: [
-            .product(name: "Compatibility Library", package: "compatibility"), // apparently needs to be lowercase.  Also note this is "Device Library" not "Device"
-//            .product(name: "Collections", package: "swift-collections"),
-//            .product(name: "OrderedCollections", package: "swift-collections"),
-//			.product(name: "CustomType", package: "customtype"), // apparently needs to be lowercase.  Also note this is "Device Library" not "Device"
+			.product(name: "Compatibility Library", package: "compatibility"), // apparently needs to be lowercase.  Also note this is "Compatibility Library" not "Compatibility"
 		],
 		path: "Sources"
+		// If resources need to be included in the module, include here
+//		,resources: [ // unfortuantely cannot be conditionally compiled based on Swift version since the tool seems to be run on latest version.
+//			Resource.process("Resources"),
+//		]
+//		,swiftSettings: [
+//			.enableUpcomingFeature("BareSlashRegexLiterals")
+//		]
 	),
 ]
 
 var platforms: [SupportedPlatform] = [ // minimums for Date.now
-    .macOS("12"),
-    .tvOS("15"),
-    .watchOS("8"),
+	.macOS("12"), // minimum for sleep, SwiftUI, ObservableObject, & @Published, 12 minimum for Date.now
+	.tvOS("15"), // 13 minimum for SwiftUI, 15 minimum for Date.now, 17 minimum for Menu
+	.watchOS("8"), // 6 minimum for SwiftUI, watchOS 7 typically needed for most UI, 8 for Date.now, however (for #buildAvailability) so really should be watchOS 9+.
 ]
 
 #if canImport(PlaygroundSupport)
 platforms += [
-    .iOS("15.2"), // minimum for Swift Playgrounds support
+	.iOS("15.2"), // minimum for Swift Playgrounds support (maximum version for test iPhone 7)
 ]
 #else
 platforms += [
-    .iOS("15"),
+	.iOS("15"), // 13 minimum for Combine/SwiftUI, 15 minimum for Date.now, (maximum version for test iPhone 7)
 ]
 #endif
 
-#if os(visionOS)
+#if compiler(>=5.9) && os(visionOS)
 platforms += [
-    .visionOS("1.0"), // unavailable in Swift Playgrounds
+	.visionOS("1.0"), // unavailable in Swift Playgrounds so has to be separate
 ]
 #endif
 
 #if canImport(AppleProductTypes) // swift package dump-package fails because of this
 import AppleProductTypes
 
+let executableTargetName = "\(packageLibraryName)TestAppModule"
+
 products += [
 	.iOSApplication(
-		name: packageLibraryName, // needs to match package name to open properly in Swift Playgrounds
-		targets: ["\(packageLibraryName)TestAppModule"],
+		name: "\(packageLibraryName) App", // needs to match package name to open properly in Swift Playgrounds <v4.5, but must be different to run in v4.6 and greater.
+		targets: [executableTargetName],
+//		bundleIdentifier: "com.kudit.compatibility", // ignored in playgrounds
 		teamIdentifier: "3QPV894C33",
 		displayVersion: version,
 		bundleVersion: "1",
@@ -77,35 +84,48 @@ products += [
 			.landscapeLeft,
 			.portraitUpsideDown(.when(deviceFamilies: [.pad]))
 		],
+//		capabilities: [
+//			.outgoingNetworkConnections() // for networking tests
+//		],
 		appCategory: .developerTools
 	),
 ]
 
 targets += [
 	.executableTarget(
-		name: "\(packageLibraryName)TestAppModule",
+		name: executableTargetName,
 		dependencies: [
 			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
 		],
-		path: "Development",
-		resources: [
-			.process("Resources")
+		path: "Development"
+		,exclude: ["Resources"]
+		// Include test app resources.
+		,resources: [
+//            .process("PlaygroundsAssets.xcassets")
 		]
+//		,swiftSettings: [
+//			.enableUpcomingFeature("BareSlashRegexLiterals")
+//		]
 	),
+//	.testTarget(
+//		name: "\(packageLibraryName)Tests",
+//		dependencies: [
+//			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
+//		],
+//		path: "Tests"
+//	),
 ]
 
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
 
 let package = Package(
-    name: packageLibraryName,
-    platforms: platforms,
-    products: products,
-    // include dependencies
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility", "1.0.18"..<"2.0.0")
-//        .package(url: "https://github.com/apple/swift-collections", "1.1.1"..<"2.0.0")
-//        .package(url: "https://github.com/kudit/CustomType", "1.0.0"..<"2.0.0"),
-    ],
-    targets: targets
+	name: packageLibraryName,
+	platforms: platforms,
+	products: products,
+	// include dependencies
+	dependencies: [
+		// Dependencies declare other packages that this package depends on.
+		.package(url: "https://github.com/kudit/Compatibility", "1.9.0"..<"2.0.0"),
+	],
+	targets: targets
 )
