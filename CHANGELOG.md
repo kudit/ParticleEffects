@@ -10,6 +10,8 @@ TODO: Add a way to have custom views as the particle (for tokens or other things
 Update a particle effects to work with playground in simpler and try something where I can find a path to have the sparkle
 Try to run swift build from command line to see if we can figure out why particle effects package will run
 
+v1.1.6 4/14/2026 Updated Compatibility to address issues with WASM (not that this really matters since this is primarily a UI package but maybe this will be used to do particle systems in ASCII?)
+
 v1.1.5 6/11/2025 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Added PlaygroundAssets for silencing asset warnings in Swift Playgrounds.  Updated Compatibility for support for WASM and Android.  Works in Swift Playgrounds 4.6.
 
 v1.1.4 7/17/2024 Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility. *PASSES SWIFTPACKAGEINDEX TESTS*
