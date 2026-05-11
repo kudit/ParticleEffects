@@ -17,7 +17,7 @@ struct MyApp: App {
 #else
                 ContentView()
 #endif
-                Text("ParticleEffects v\(ParticleEffects.version) © 2024 Kudit LLC").font(.caption).padding().foregroundStyle(.white)
+                Text("ParticleEffects v\(ParticleEffects.version) © \(Date.now.year.string) Kudit LLC").font(.caption).padding().foregroundStyle(.white)
             }
         }
     }
