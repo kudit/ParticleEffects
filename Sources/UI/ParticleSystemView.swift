@@ -11,70 +11,129 @@ public extension Vector {
 public struct ParticleSystemView<SomeParticleView: View>: View {
     public var particleSystem: ParticleSystem
     public typealias ParticleViewGenerator = (ParticleState, ParticleSystem) -> SomeParticleView
-    public var particleView: ParticleViewGenerator
+    public typealias ParticleContextViewGenerator = (ParticleRenderingContext) -> SomeParticleView
+    public var particleView: ParticleContextViewGenerator
 
-    public init(particleSystem: ParticleSystem, particleView: @escaping ParticleViewGenerator) {
+    /// Creates a particle system view with a renderer that receives the full render context.
+    ///
+    /// This is the most flexible closure-based initializer because the renderer receives particle state,
+    /// system configuration, geometry, and timeline time in one value.
+    public init(particleSystem: ParticleSystem, particleView: @escaping ParticleContextViewGenerator) {
         self.particleSystem = particleSystem
         self.particleView = particleView
+    }
+    
+    /// Creates a particle system view with the original state-and-system closure shape.
+    ///
+    /// Existing code can continue to use this initializer.  Internally it is bridged into the newer render
+    /// context so the old API and the renderer API share the same backend path.
+    public init(particleSystem: ParticleSystem, particleView: @escaping ParticleViewGenerator) {
+        self.particleSystem = particleSystem
+        self.particleView = { context in
+            particleView(context.particleState, context.particleSystem)
+        }
+    }
+    
+    /// Creates a particle system view from a reusable renderer value.
+    ///
+    /// Named renderers are the recommended path for reusable custom particles because they can document their
+    /// own configuration while still using the generic render context.
+    public init<Renderer: ParticleRenderer>(
+        particleSystem: ParticleSystem,
+        renderer: Renderer
+    ) where SomeParticleView == Renderer.ParticleBody {
+        self.init(particleSystem: particleSystem) { context in
+            renderer.particleView(for: context)
+        }
     }
     
     public var body: some View {
         TimelineView(.animation) { timeline in
             GeometryReader { proxy in
-                ForEach(particleSystem.particles(for: timeline.date.timeIntervalSinceReferenceDate), id: \.self) { particleState in
-                    particleView(particleState, particleSystem)
+                let currentTime = timeline.date.timeIntervalSinceReferenceDate
+                ForEach(particleSystem.particles(for: currentTime), id: \.particle) { particleState in
+                    // The renderer owns particle content while this view owns layout.  Keeping positioning
+                    // here means image, text, shape, and fully custom SwiftUI renderers all share the same
+                    // physics output from the behavior system.
+                    particleView(ParticleRenderingContext(
+                        particleState: particleState,
+                        particleSystem: particleSystem,
+                        geometry: proxy,
+                        currentTime: currentTime
+                    ))
                         .position(particleState.position.cgPoint(proxy.size))
                 }
             }
-            /*
-             Canvas { context, size in
-                 for particle in particleSystem.particles(for: timeline.date.timeIntervalSinceReferenceDate) { particle in
-                     particleView(particle, particleSystem)
-                         .position(particle.position.cgPoint(proxy.size))
-                 }
-             } symbols: {
-                 for string in particleSystem.behavior.strings {
-                     
-                 }
-             }
-             Canvas(
-                 opaque: false,
-                 colorMode: .linear,
-                 rendersAsynchronously: false
-             ) { context, size in
-                 context.opacity = 0.3
-                 
-                 let rect = CGRect(origin: .zero, size: size)
-                 
-                 if let symbol = context.resolveSymbol(id: 1) {
-                     context.draw(symbol, in: rect)
-                 }
-             } symbols: {
-                 Text(verbatim: "Hello")
-                     .foregroundColor(.red)
-                     .tag(1)
-             }
-
-             */
         }
     }
 }
 extension ParticleSystemView where SomeParticleView == ParticleView {
     public init(particleSystem: ParticleSystem) {
-        self.init(particleSystem: particleSystem) { particleState, particleSystem in
-            ParticleView(particleState: particleState, coloring: particleSystem.behavior.coloring)
-        }
+        self.init(particleSystem: particleSystem, renderer: AutomaticParticleRenderer())
     }
     // convenience for creating a single-use system.
-    public init(behavior: ParticleBehavior = .fountain, string: String? = nil, coloring: Coloring? = nil) {
-        self.init(particleSystem: ParticleSystem(behavior: behavior.modified(string: string, coloring: coloring)))
+    public init(behavior: ParticleBehavior = .fountain) {
+        self.init(particleSystem: ParticleSystem(behavior: behavior))
+    }
+    
+    /// Deprecated 1.x convenience initializer.
+    ///
+    /// This keeps older `ParticleSystemView(behavior:string:coloring:)` call sites compiling while making the
+    /// migration clear: content now belongs in the renderer instead of the behavior or system initializer.
+    @available(*, deprecated, renamed: "init(behavior:renderer:)", message: "Move `string:` into the renderer, for example `ParticleSystemView(behavior: behavior, renderer: .automatic(\"star.fill\", coloring: .rainbow))`.")
+    public init(
+        behavior: ParticleBehavior = .fountain,
+        string: String,
+        coloring: Coloring? = nil
+    ) {
+        self.init(
+            behavior: behavior,
+            renderer: AutomaticParticleRenderer(
+                ParticleContent(string),
+                coloring: coloring ?? .none
+            )
+        )
+    }
+}
+
+public extension ParticleSystemView {
+    /// Creates a single-use particle system view using a reusable renderer value.
+    ///
+    /// This mirrors the existing convenience initializer and makes the simple API a shorthand over the more
+    /// powerful renderer backend.
+    init<Renderer: ParticleRenderer>(
+        behavior: ParticleBehavior = .fountain,
+        renderer: Renderer
+    ) where SomeParticleView == Renderer.ParticleBody {
+        self.init(
+            particleSystem: ParticleSystem(behavior: behavior),
+            renderer: renderer
+        )
+    }
+    
+    /// Deprecated 1.x renderer initializer.
+    ///
+    /// The legacy form supplied display content through `string:` and a renderer like `.emoji()`.  The v2 API
+    /// stores content in the renderer itself, but this shim copies the legacy string into built-in renderers so
+    /// existing source keeps working while Xcode can guide the caller toward the new call shape.
+    @available(*, deprecated, renamed: "init(behavior:renderer:)", message: "Move `string:` into the renderer, for example `ParticleSystemView(behavior: behavior, renderer: .emoji(\"😊,👍\"))`.")
+    init<Renderer: ParticleContentRenderer>(
+        behavior: ParticleBehavior = .fountain,
+        string: String,
+        coloring: Coloring? = nil,
+        renderer: Renderer
+    ) where SomeParticleView == Renderer.ParticleBody {
+        let migratedRenderer = renderer.replacingContent(
+            ParticleContent(string),
+            coloring: coloring
+        )
+        self.init(behavior: behavior, renderer: migratedRenderer)
     }
 }
 
 #if swift(>=5.9)
 #Preview("Confetti Demo") {
     let behavior = ParticleBehavior(
-        string: "😊,👍,☺️,👏,🙌",
         birthRate: .frequent,
         lifetime: .long,
         fadeOut: .none,
@@ -85,18 +144,35 @@ extension ParticleSystemView where SomeParticleView == ParticleView {
         blur: .none
     )
     return VStack {
-        ParticleSystemView(particleSystem: .init(behavior: behavior))
+        ParticleSystemView(particleSystem: .init(behavior: behavior), renderer: .emoji("😊,👍,☺️,👏,🙌"))
         Color.clear
     }
 }
 
 #Preview("Fire Example") {
-    ParticleSystemView(particleSystem: .init(behavior: .fire.modified(string: "drop.fill")))
+    ParticleSystemView(particleSystem: .init(behavior: .fire), renderer: .symbol("drop.fill", coloring: .fire))
+}
+
+#Preview("Emoji Renderer Example") {
+    ParticleSystemView(behavior: .fountain, renderer: .emoji("😊,👍,☺️"))
+}
+
+#Preview("Custom Renderer Example") {
+    ParticleSystemView(
+        behavior: .sparkle.modified(spin: .medium),
+        renderer: CustomParticleRenderer { context in
+            Text(["K", "U", "D", "I", "T"][context.particle.index % 5])
+                .font(.caption.bold())
+                .padding(6)
+                .background(RoundedRectangle(cornerRadius: 6).fill(Color.white.opacity(0.2)))
+                .particleAppearance(for: context.state, coloring: .rainbow)
+                .border(.green, width: 5)
+        }
+    )
 }
 
 struct TestAnimatedParticleView: View {
     @StateObject var particleSystem = ParticleSystem(center: .leading, behavior: .init(
-        string: "star.fill",
         birthRate: .frequent,
         lifetime: .brief,
         fadeOut: .lengthy,
@@ -121,10 +197,10 @@ struct TestAnimatedParticleView: View {
     ZStack {
         Color.gray
         TestAnimatedParticleView(particleSystem: .init(
-            behavior: .sun.modified(string: "square.fill")
+            behavior: .sun
         ))
         TestAnimatedParticleView(particleSystem: .init(
-            behavior: .fountain.modified(string: "drop.fill")))
+            behavior: .fountain))
             .frame(width: 100, height: 200)
             .border(.green, width: 5)
             .background(.black)

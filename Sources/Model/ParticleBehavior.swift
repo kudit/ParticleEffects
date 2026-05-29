@@ -4,7 +4,6 @@ import Foundation
 public struct ParticleBehavior: Hashable, Sendable {
     public static let rain = ParticleBehavior(
         label: "Rain",
-        string: "drop.fill",
         birthRate: .frequent,
         lifetime: .medium,
         fadeOut: .none,
@@ -16,7 +15,6 @@ public struct ParticleBehavior: Hashable, Sendable {
     )
     public static let fountain = ParticleBehavior(
         label: "Fountain",
-        string: "😊,👍,☺️,👏,🙌",
         birthRate: .frequent,
         lifetime: .long,
         fadeOut: .quick,
@@ -39,7 +37,6 @@ public struct ParticleBehavior: Hashable, Sendable {
     )
     public static let bubbles = ParticleBehavior(
         label: "Bubbles",
-        string: "circle",
         birthRate: .slow,
         lifetime: .medium,
         fadeOut: .none,
@@ -47,8 +44,7 @@ public struct ParticleBehavior: Hashable, Sendable {
         spread: .wide,
         initialVelocity: .slow,
         acceleration: .none,
-        blur: .none,
-        coloring: .rainbow
+        blur: .none
     )
     public static let fire = ParticleBehavior(
         label: "Fire",
@@ -59,12 +55,10 @@ public struct ParticleBehavior: Hashable, Sendable {
         spread: .medium,
         initialVelocity: .slow,
         acceleration: .antiGravity,
-        blur: .heavy,
-        coloring: .fire
+        blur: .heavy
     )
     public static let sparkle = ParticleBehavior(
         label: "Sparkle",
-        string: "star",
         birthRate: .frequent,
         lifetime: .brief,
         fadeOut: .none,
@@ -72,12 +66,10 @@ public struct ParticleBehavior: Hashable, Sendable {
         spread: .full,
         initialVelocity: .fast,
         acceleration: .none,
-        blur: .none,
-        coloring: .rainbow
+        blur: .none
     )
     public static let sun = ParticleBehavior(
         label: "Sun",
-        string: "star.fill",
         birthRate: .frequent,
         lifetime: .medium,
         fadeOut: .moderate,
@@ -85,16 +77,12 @@ public struct ParticleBehavior: Hashable, Sendable {
         spread: .complete,
         initialVelocity: .slow,
         acceleration: .sun,
-        blur: .light,
-        coloring: .fire
+        blur: .light
     )
     
     public static let presets = [Self.rain, .fountain, .bubbles, .smoke, .fire, .sparkle, .sun]
     
     public let label: String
-    
-    /// Defines what should be rendered.  Can be a comma-sparated list to assign each element to a different particle in order of creation.
-    public var string: String
     
     ///.    - `birthRate`: Defines how frequently new particles are spawned.
     public var birthRate: BirthRate
@@ -120,15 +108,17 @@ public struct ParticleBehavior: Hashable, Sendable {
     public var blur: Blur = .none
     
     public var scale: Double = 1 // scale behavior of the particle.  Up and down, down and up, down, up.  Will go from 0 to 1 for up, 2 to 1 for down, change to min/max?  Have a timing curve?
-    ///     - `accelleration`: Defines the accelleration parameter for the particle physics.  For earth gravity, use 9.8 in the y direction.  TODO: allow setting a value at an angle (store as angle and magnitude and expose x and y that are calculated?  Or since we're using x and y more, have init that takes an angle and magnitude and calculates once and sets the x and y values√)
     
-    public var coloring: Coloring = .none
+    /// The rate at which particles rotate while they are alive.
+    ///
+    /// Rotation is calculated into ``ParticleState/rotation`` so built-in and custom SwiftUI renderers can apply
+    /// a consistent orientation without each renderer needing to know about creation dates or lifetime math.
+    public var spin: Spin = .none
     
     public static let `default` = ParticleBehavior()
     
     public init(
         label: String = "Custom",
-        string: String = "circle.fill",
         birthRate: BirthRate = .medium,
         lifetime: Lifetime = .medium,
         fadeOut: FadeOut = .moderate,
@@ -137,11 +127,10 @@ public struct ParticleBehavior: Hashable, Sendable {
         initialVelocity: InitialVelocity = .medium,
         acceleration: Acceleration = .gravity,
         blur: Blur = .heavy,
-        coloring: Coloring = .none,
-        scale: Double = 1)
+        scale: Double = 1,
+        spin: Spin = .none)
     {
         self.label = label
-        self.string = string
         self.birthRate = birthRate
         self.lifetime = lifetime
         self.fadeOut = fadeOut
@@ -150,12 +139,11 @@ public struct ParticleBehavior: Hashable, Sendable {
         self.initialVelocity = initialVelocity
         self.acceleration = acceleration
         self.blur = blur
-        self.coloring = coloring
         self.scale = scale
+        self.spin = spin
     }
 
     public func modified(
-        string: String? = nil,
         birthRate: BirthRate? = nil,
         lifetime: Lifetime? = nil,
         fadeOut: FadeOut? = nil,
@@ -164,13 +152,10 @@ public struct ParticleBehavior: Hashable, Sendable {
         initialVelocity: InitialVelocity? = nil,
         acceleration: Acceleration? = nil,
         blur: Blur? = nil,
-        coloring: Coloring? = nil,
-        scale: Double? = nil) -> Self
+        scale: Double? = nil,
+        spin: Spin? = nil) -> Self
     {
         var modified = self
-        if let string {
-            modified.string = string
-        }
         if let birthRate {
             modified.birthRate = birthRate
         }
@@ -195,24 +180,13 @@ public struct ParticleBehavior: Hashable, Sendable {
         if let blur {
             modified.blur = blur
         }
-        if let coloring {
-            modified.coloring = coloring
-        }
         if let scale {
             modified.scale = scale
         }
+        if let spin {
+            modified.spin = spin
+        }
         return modified
-    }
-    
-    var strings: [String] {
-        return string.components(separatedBy: ",")
-    }
-
-    func string(for particleCount: Int) -> String {
-        // go ahead and try to split since code will work even if comma not present
-        let parts = strings
-        let index = particleCount % parts.count // make sure we have a valid index
-        return parts[index]
     }
         
     /// Determine whether to create a new particle and if so, return a new particle with an initial position and configuration.
@@ -221,27 +195,17 @@ public struct ParticleBehavior: Hashable, Sendable {
             // too quick since last generation.  No need to generate
             return nil
         }
-        // get the string for this actual particle
-        let particleString = string(for: particleCount)
         
-        // initialize with behavior from the ranges set up
-
-        // determine initial direction within spread range
+        // Determine the initial direction within the spread range.  Rendering details are intentionally not
+        // calculated here because v2 renderers own the particle content and color model.
         let halfSpread = spread.rawValue / 2.0
         let lower = emissionAngle.rawValue - halfSpread
         let upper = emissionAngle.rawValue + halfSpread
         let angle = Degrees(floatLiteral: Double.random(in: lower...upper))
         let initialVelocityVector = angle.vector * initialVelocity.rawValue
         
-        // determine hue (if rainbow coloring set - other colorings will use age in renderer and we don't need to calculate here since not using hue value)
-        let hue = coloring != .rainbow ? nil : {
-            // one hundred hue options
-            let index = particleCount % 100
-            return Double(index) / 100
-        }()
-        
         // particles should start opaque
-        return Particle(index: particleCount, initialPosition: initialPosition, initialVelocity: initialVelocityVector, hue: hue, string: particleString)
+        return Particle(index: particleCount, initialPosition: initialPosition, initialVelocity: initialVelocityVector)
     }
 
     /// Update the particle position and configuration.  Return `false` if the particle should be removed and no longer updated.
@@ -263,7 +227,17 @@ public struct ParticleBehavior: Hashable, Sendable {
             opacity = 1 - ((currentTime - fadeStartTime) / fadeOutDuration)
         }
         
-        return ParticleState(particle: particle, lifetimeAge: lifetimeAge, position: position, opacity: opacity, blur: blur)
+        // Calculate rotation once per state so all renderers agree on how the particle should spin.
+        let rotation = Degrees(floatLiteral: spin.rawValue * particle.age(at: currentTime))
+        
+        return ParticleState(
+            particle: particle,
+            lifetimeAge: lifetimeAge,
+            position: position,
+            opacity: opacity,
+            blur: blur,
+            rotation: rotation
+        )
     }
         
     func shouldRemove(particle: Particle, at currentTime: TimeInterval) -> Bool {
@@ -286,8 +260,8 @@ ParticleBehavior(
     initialVelocity: \(initialVelocity),
     acceleration: \(acceleration),
     blur: \(blur),
-    coloring: \(coloring),
-    scale: \(scale)
+    scale: \(scale),
+    spin: \(spin)
 )
 """
     } 

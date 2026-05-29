@@ -1,4 +1,5 @@
 #if canImport(SwiftUI)
+import Compatibility
 import SwiftUI
 
 public extension UnitPoint {
@@ -17,24 +18,41 @@ public class ParticleSystem: ObservableObject {
     @Published public var lastParticleCreation: TimeInterval = .zero
     @Published public var particleCounter = 0
 
+    /// Drives model-side particle birth and storage cleanup between SwiftUI render frames.
+    ///
+    /// The rendered particle positions are calculated from absolute time, but the backing storage still needs
+    /// a heartbeat so new particles can be born and old particles can be physically removed from the array.
+    /// The timer is installed in common run-loop modes below so mouse/touch tracking does not pause that
+    /// heartbeat while the user is dragging or holding a control.
     private var timer: Timer? = nil
     public init(center: UnitPoint = .center, behavior: ParticleBehavior = .default) {
         self.center = center
         self.behavior = behavior
-        timer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-            // check for new births
-            // remove dead particles
-            Task { @MainActor in // TODO: Make mini KuditFramework with things like debug and threading and various string functions for inclusion here.
-                self.update(at: Date.timeIntervalSinceReferenceDate)
+        let updateTimer = Timer(timeInterval: 0.01, repeats: true) { [weak self] _ in
+            // Check for new births and remove dead particles on the main actor because the particle array is
+            // published UI state.  The timer itself is retained by the run loop, so capture self weakly to keep
+            // a view-owned ParticleSystem from being kept alive after the view disappears.
+            Task { @MainActor [weak self] in
+                self?.update(at: Date.timeIntervalSinceReferenceDate)
             }
         }
+        // A scheduledTimer is registered in the default run-loop mode only.  Adding the timer to common modes
+        // keeps updates flowing during drag/hold interaction tracking, which prevents stale particles from
+        // lingering until the user releases the pointer or finger.
+        RunLoop.main.add(updateTimer, forMode: .common)
+        timer = updateTimer
     }
     deinit {
         timer?.invalidate()
     }
     
     public func particles(for currentTime: TimeInterval) -> [ParticleState] {
-        return particles.map { behavior.currentState(for: $0, at: currentTime) }
+        // Render-time filtering is a defensive second gate for expired particles.  If the model cleanup timer
+        // is delayed for any reason, SwiftUI should still not draw particles whose lifetime has already ended.
+        let activeParticles = particles.filter { particle in
+            !behavior.shouldRemove(particle: particle, at: currentTime)
+        }
+        return activeParticles.map { behavior.currentState(for: $0, at: currentTime) }
     }
     
     // TODO: Move additionalConfiguration to an optional additional function on the particle system.

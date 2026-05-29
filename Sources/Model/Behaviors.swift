@@ -175,6 +175,11 @@ public struct FadeOut: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, H
 public struct Degrees: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, CaseIterable, Sendable, CustomStringConvertible {
     public var rawValue: Double
     
+    /// A neutral zero-degree value used for view rotation.
+    ///
+    /// This duplicates ``right`` intentionally: `right` describes an emission direction, while `zero` reads more
+    /// naturally when a renderer is applying a particle's current rotation.
+    public static let zero: Self = 0.0
     public static let top: Self = 270.0
     public static let right: Self = 0.0
     public static let bottom: Self = 90.0
@@ -345,6 +350,53 @@ public struct Blur: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hash
     public static var allCases: [Self] {
         return Array(named.keys)
     }
+    public var description: String {
+        if let name = Self.named[self] {
+            return ".\(name)"
+        }
+        return String(describing: rawValue)
+    }
+}
+
+/// The rate at which a particle rotates as it ages, expressed in degrees per second.
+///
+/// Spin is kept separate from ``Degrees`` because it represents a velocity rather than a current angle.  The
+/// behavior converts this value into ``ParticleState/rotation`` each frame so renderers can simply apply the
+/// state value without recalculating elapsed lifetime.
+public struct Spin: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral, Hashable, CaseIterable, Sendable, CustomStringConvertible {
+    public var rawValue: Double
+    
+    /// The particle keeps its original orientation.
+    public static let none: Self = 0
+    
+    /// A gentle rotation suitable for subtle sparkles or drifting tokens.
+    public static let slow: Self = 45
+    
+    /// A visible rotation that still avoids feeling frantic for most symbol-sized particles.
+    public static let medium: Self = 90
+    
+    /// A fast rotation for burst-style effects.
+    public static let fast: Self = 180
+    
+    public static let named: OrderedDictionary<Self, String> = [
+        .none: "none",
+        .slow: "slow",
+        .medium: "medium",
+        .fast: "fast",
+    ]
+    
+    public init(integerLiteral value: Int64) {
+        self.rawValue = Double(value)
+    }
+    
+    public init(floatLiteral value: Double) {
+        self.rawValue = value
+    }
+    
+    public static var allCases: [Self] {
+        return Array(named.keys)
+    }
+    
     public var description: String {
         if let name = Self.named[self] {
             return ".\(name)"
