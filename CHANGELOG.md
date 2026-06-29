@@ -1,54 +1,66 @@
-# ChangeLog
+# Changelog
 
-NOTE: Version needs to be updated in the following places:
-- [ ] Xcode project version (in build settings - normal and watch targets should inherit)
-- [ ] Package.swift iOSApplication product displayVersion.
-- [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
-- [ ] Update changelog and tag with matching version in GitHub.
+## v2.0.1 2026-06-29
+Updated Compatibility.
+Updated change log format.
 
-Update a particle effects to work with playground in simpler and try something where I can find a path to have the sparkle
-Try to run swift build from command line to see if we can figure out why particle effects package will run
-
-v2.0.0 5/29/2026 Breaking renderer refactor: moved particle display content and coloring out of `ParticleBehavior` and into reusable renderers so any SwiftUI view can be emitted from the same behavior system.  Added renderer-owned `ParticleContent`, generic `ParticleRenderer` support, `CustomParticleRenderer`, built-in automatic/text/emoji/symbol/image renderers, injectable coloring styles, rotation/spin state, and named state values for future custom scalar data.  Updated the development app with grouped content/coloring/behavior configuration, Compatibility `Placard` shape particles, shared-state Toggle particles, and a triangle path emitter demo.  Fixed the macOS App Icon asset catalog by providing all required macOS icon slots.  Fixed drag/hold animation stalls by filtering expired particles during render and keeping the particle update timer active in common run-loop modes.  Refined the demo controls so emitter control mode, full content presets, renderer options, solid color picking, and behavior tuning are separate sections.  Added deprecated 1.x convenience initializers and renderer shims so legacy `string:` call sites keep compiling while warning callers to move content into the renderer.  PROMPT: I would like API stability for anything that already implements the current API, however, I'd like to refactor the backend to be more generic and allow rendering the particle SwiftUI view based on the state data should someone want to use custom views using SwiftUI rather than iamges or symbols or emoji or text.  I would like the default/existing API calls to effectively run through the generic renderer on the backend which also would provide example code for anyone wishing to create a custom renderer.  Please fully document and comment changes and make sure the Readme is updated with examples.  The custom particle views could recieve a reference to the system, state, and geometry context if it's not too much overhead that would slow things down.  If it would, limit to the information that's already being provided only.  I'm fine with default simple renderers for .emoji(), .text(), and .symbol() (especially if that already exists as the API - I don't want to break compatibility but I forget if that's how it's done), but there should also be an ability to pass in a custom renderer to generate any SwiftUI view.  Since position, opacity, and blur are already included in the ParticleState struct, would it make sense to include a rotation variable there?  I noticed that fireSaturation and fireHue are hard-coded there.  Would there be a simple way to store additional (maybe named) values in a dictionary as part of the State struct so that things like fireSaturation and fireHue can be stored? Or would it be better to include custom values like that in an extension that could be better encapsulated so that things like rainbow and fire are not hard coded but additional modular code that can be injected and used?  I think the simple API should basically be a convenience for a more powerful builder API that can take custom renderers and behavior systems and coloring systems.  Does Apple have some sort of framework for doing this already that would make this whole package irrelevant?  Or is this a good package that can be used to bootstrap and create animations and effects easily?  PROMPT: Please fix this bug: Fix ParticleEffects first: render-filter expired particles in particles(for:), and move the particle update timer to common run-loop modes or drive updates from the render timeline. This is the most targeted fix for the drag/hold behavior.  PROMPT: Please change the current working version from v1.1.8 to v2.0.0 since I'm okay with the API changing now.  Fix the App Icon for macOS.  Include a button after """ Button("", systemImage: "flask.fill") { behavior.string = "flask.fill" } """ that sets the particle view to a shape (use the Placard from Compatibility) and one that uses a SwiftUI Toggle as the particle view that can be interacted with since it's just an example of passing in any SwiftUI view (clicking one toggle should change the toggle state for all toggle particles in this example).  The ConfigurationView should be grouped into a section for the content (renderer), the coloring, and then the behavior.  I think the behavior needs to be separated from the renderer (the particles themselves don't need to know how to render but the renderer can take the particle age/data to create the view that becomes the particle).  Please include in the readme migration instructions for modifying API calls from the old version to the new version where the system should take a renderer (which may include a coloring model for text/shapes/symbols (emoji renderer would not need a coloring model)), and a behavior configuration.  For example, this example: ParticleSystemView(behavior: .fountain, string: "😊,👍,☺️", renderer: .emoji()) Should instead be: ParticleSystemView(behavior: .fountain, renderer: .emoji("😊,👍,☺️")) Does that make sense or does the original API make more sense? Please also include a demo option where the particle follows the outline of a shape path (like a triangle) rather than dragging to move the center of the emitter.  PROMPT: I don't mind the dotted triangle when following the path. But the path vs dragging behavior should be in a "Control" section at the top (segmented toggle between "follow shape" and "drag").  The "Configuration" button can also go in the control section at the top and it should be "View Configuration" and should include the command including the renderer.  The Content section should start with presets (Rain, Fountain, etc) since those should set the behavior configurations as well as the content/rendering configurations.  I noticed that the smoke configuration doesn't set the coloring to white as it used to. Below the presets, it should have a segmented control for auto,text (selecting should set the string to "Hello World"),symbol (should set the text to "flask.fill"),shape (which should give circle, square, triangle, placard segmented control options instead of the text field and should select placard when selected), and toggle (the toggle should start on).  The first three options should display a text field below, and the last option should hide the text field/segemented control since there is no configuration options there.  Coloring control is good, but when selecting the first segment, there should be a color picker presented for selecting a different color which should be used as the tint color for the toggle if toggle is selected, should be used as the fill color for the shape if a shape is selected, and foreground color for text or symbols.  Also, are you able to add convenience initializers to support the legacy syntax so that still works but includes a deprecation warning to allow easy fixit migration to the new API syntax?  If so, then the Migrating from 1.x to 2.0 section can be removed.
-
+## v2.0.0 2026-05-29
+Breaking renderer refactor: moved particle display content and coloring out of `ParticleBehavior` and into reusable renderers so any SwiftUI view can be emitted from the same behavior system.  Added renderer-owned `ParticleContent`, generic `ParticleRenderer` support, `CustomParticleRenderer`, built-in automatic/text/emoji/symbol/image renderers, injectable coloring styles, rotation/spin state, and named state values for future custom scalar data.  Updated the development app with grouped content/coloring/behavior configuration, Compatibility `Placard` shape particles, shared-state Toggle particles, and a triangle path emitter demo.  Fixed the macOS App Icon asset catalog by providing all required macOS icon slots.  Fixed drag/hold animation stalls by filtering expired particles during render and keeping the particle update timer active in common run-loop modes.  Refined the demo controls so emitter control mode, full content presets, renderer options, solid color picking, and behavior tuning are separate sections.  Added deprecated 1.x convenience initializers and renderer shims so legacy `string:` call sites keep compiling while warning callers to move content into the renderer.
 Fixed the triangle path demo guide so the dotted outline is drawn from the same normalized route followed by the emitter, and updated the configuration preview so automatic emoji content omits coloring parameters.
-PROMPT: When the emitter is following the path shape, it doesn't seem to match exactly with the shape drawn.  It seems to have some buffers which is actually good, so please fix the drawn shape to match the actual path the emitter follows.  When .fountain is selected, the View Configuration button shows: ParticleSystemView( behavior: .fountain, renderer: .automatic("😊,👍,☺️,👏,🙌", coloringStyle: ParticleColoringStyle { _ in /* selected ColorPicker color */ }) ) Emoji ignore coloring so the coloringStyle parameter should be absent entirely.
 
-v1.1.7 5/11/2026 Fixed some Xcode warnings using Codex.  Package and ParticleEffects versions were not updated in 1.1.6.  Updated year to not be hard-coded.
+## v1.1.7 2026-05-11
+Fixed some Xcode warnings using Codex.  Package and ParticleEffects versions were not updated in 1.1.6.  Updated year to not be hard-coded.
 
-v1.1.6 4/14/2026 Updated Compatibility to address issues with WASM (not that this really matters since this is primarily a UI package but maybe this will be used to do particle systems in ASCII?)
+## v1.1.6 2026-04-14
+Updated Compatibility to address issues with WASM (not that this really matters since this is primarily a UI package but maybe this will be used to do particle systems in ASCII?)
 
-v1.1.5 6/11/2025 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Added PlaygroundAssets for silencing asset warnings in Swift Playgrounds.  Updated Compatibility for support for WASM and Android.  Works in Swift Playgrounds 4.6.
+## v1.1.5 2025-06-11
+Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Added PlaygroundAssets for silencing asset warnings in Swift Playgrounds.  Updated Compatibility for support for WASM and Android.  Works in Swift Playgrounds 4.6.
 
-v1.1.4 7/17/2024 Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility. *PASSES SWIFTPACKAGEINDEX TESTS*
+## v1.1.4 2024-07-17
+Restructured Xcode project for consistency and clarity.  Changed dependency from swift-collections to Compatibility to remove redundant code.  Updated icon to reflect new themeing.  Reduced minimum iOS version (slighlty).  Perhaps in the future we can create a backport Date.now for older OS versions if necessary.  Updated License guidance to match Compatibility. *PASSES SWIFTPACKAGEINDEX TESTS*
 
-v1.1.3 6/29/2024 Added note about location of example code.  Fixed a couple additional places where we had static vars instead of lets.  Fixed wrong version in ParticleEffects.swift.  Fixed on iPhone in light mode.
+## v1.1.3 2024-06-29
+Added note about location of example code.  Fixed a couple additional places where we had static vars instead of lets.  Fixed wrong version in ParticleEffects.swift.  Fixed on iPhone in light mode.
 
-v1.1.2 6/26/2024 Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.  Switched Analyze to use Release target which found an issue for watchOS testing which was fixed by adding LSApplicationCategory.
+## v1.1.2 2024-06-26
+Fixed README.md examples to use new syntax.  Added compatibility init in case someone uses old syntax.  Switched Analyze to use Release target which found an issue for watchOS testing which was fixed by adding LSApplicationCategory.
 
-v1.1.1 6/25/2024 Don't want to use Canvas because 1) can't draw outside canvas (which is what we need) and 2) more difficult to draw any SwiftUI view and make those views interactable if necessary.  So instead have calculate position so we don't actually update the particle itself, we just re-calculate the values (which may be more expensive but then we're only calculating when we render rather than more frequently).  But still need to calculate and add particles to the system periodically... do that with a timer but render particles without updating model.  Should also be used for birthing and removing particles.
+## v1.1.1 2024-06-25
+Don't want to use Canvas because 1) can't draw outside canvas (which is what we need) and 2) more difficult to draw any SwiftUI view and make those views interactable if necessary.  So instead have calculate position so we don't actually update the particle itself, we just re-calculate the values (which may be more expensive but then we're only calculating when we render rather than more frequently).  But still need to calculate and add particles to the system periodically... do that with a timer but render particles without updating model.  Should also be used for birthing and removing particles.
 
-v1.1.0 6/25/2024 Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).  https://developer.apple.com/wwdc21/10021?time=868
+## v1.1.0 2024-06-25
+Converted several static variables from `var` to `let` for clarity and concurrency safety.  Removed several unnecessary generic abstractions and custom conifgurations since really this isn't needed yet and it added unnecessary complication.  Reworked Behaviors into double representable values so end users can fully customize by providing a value rather than locked to enum values, however, maintains cases that can be iterated over for compatibility and simplicity.  Will be re-working into canvas but this is working and available for reference (but not free from warnings).  https://developer.apple.com/wwdc21/10021?time=868
 
-v1.0.9 6/19/2024 Fixed data race errors when using strict concurrency checking.
+## v1.0.9 2024-06-19
+Fixed data race errors when using strict concurrency checking.
 
-v1.0.8 6/3/2024 Improved documentation for case parameters.  Added simplified example code for animated particle along a line.  Restored Swift version to 5.7 using checks for #Preview and @Published values.
+## v1.0.8 2024-06-03
+Improved documentation for case parameters.  Added simplified example code for animated particle along a line.  Restored Swift version to 5.7 using checks for #Preview and @Published values.
 
-v1.0.7 5/29/2024 Fixed project so only one version check is needed not per target.  Set Swift version minimum to 5.9 since that's needed for #Preview {} functionality.
+## v1.0.7 2024-05-29
+Fixed project so only one version check is needed not per target.  Set Swift version minimum to 5.9 since that's needed for #Preview {} functionality.
 
-v1.0.6 5/25/2024 Added checks for SwiftUI to add support for Linux.
+## v1.0.6 2024-05-25
+Added checks for SwiftUI to add support for Linux.
 
-v1.0.5 5/25/2024 Fixed so that SwiftPackageIndex.com tests work on all platforms (thank you @finestructure!).
+## v1.0.5 2024-05-25
+Fixed so that SwiftPackageIndex.com tests work on all platforms (thank you @finestructure!).
 
-v1.0.4 5/15/2024 Attempted to re-work Package.swift for more platform compatibility with swiftpackageindex.com.
+## v1.0.4 2024-05-15
+Attempted to re-work Package.swift for more platform compatibility with swiftpackageindex.com.
 
-v1.0.3 5/13/2024 Added SimpleDemoView.  Reanmed Scheme in Xcode project.  Extracted ParticleEffects.swift to make it easier to find for version updates.  Re-worked Package.swift to be cleaner and support `swift package dump-package` for swiftpackageindex.com and enhanced for code re-use.
+## v1.0.3 2024-05-13
+Added SimpleDemoView.  Reanmed Scheme in Xcode project.  Extracted ParticleEffects.swift to make it easier to find for version updates.  Re-worked Package.swift to be cleaner and support `swift package dump-package` for swiftpackageindex.com and enhanced for code re-use.
 
-v1.0.2 5/7/2024  Fixed spacing in ChangeLog.  Updated icon to prevent confusion with KuditFrameworks.  Renamed from MotionEffects to ParticleEffects.
+## v1.0.2 2024-05-07
+ Fixed spacing in ChangeLog.  Updated icon to prevent confusion with KuditFrameworks.  Renamed from MotionEffects to ParticleEffects.
 
-v1.0.1 5/4/2024 Changed version to MotionEffects.version for clarity/simplicity.  Added convenience initializer for ParticleSystemView.
+## v1.0.1 2024-05-04
+Changed version to MotionEffects.version for clarity/simplicity.  Added convenience initializer for ParticleSystemView.
 
-v1.0.0 5/3/2024 Initial code and features.
+## v1.0.0 2024-05-03
+Initial code and features.
 
 
 ## Bugs to fix:
@@ -64,3 +76,10 @@ Planned features and anticipated API changes.  If you want to contribute, this i
 This is where proposals can be discussed for potential movement to the roadmap.
 - [ ] Create additional emitters like fire and smoke using blurred SF symbols so we don't need resources?
 - [ ] Add paged tabbed view for configuration and various demos like SimpleDemoView and include a demo for moving particles along a Shape path.
+
+## Legacy Reference
+NOTE: Version needs to be updated in the following places:
+- [ ] Xcode project version (in build settings - normal and watch targets should inherit)
+- [ ] Package.swift iOSApplication product displayVersion.
+- [ ] ParticleEffects.version constant (must be hard coded since inaccessible in code)
+- [ ] Update changelog and tag with matching version in GitHub.
