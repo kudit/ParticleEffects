@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.0.1"
+let version = "2.0.2"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -98,7 +98,9 @@ targets += [
 			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
 		],
 		path: "Development"
-		,exclude: ["Resources"]
+		// The macOS-only SwiftPM tests live below Development for consistency with Compatibility, but they must
+		// not also compile as application sources when Xcode evaluates this app target.
+		,exclude: ["Resources", "ParticleEffectsTests"]
 		// Include test app resources.
 		,resources: [
 //            .process("PlaygroundsAssets.xcassets")
@@ -117,6 +119,21 @@ targets += [
 ]
 
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
+
+// MARK: - Package tests
+// Keep the test target out of Swift Playgrounds because its app-package manifest only supports the existing
+// iOS application target. Standard SwiftPM and Xcode package loading on macOS still discover and run it.
+#if !SwiftPlaygrounds && !canImport(PlaygroundSupport)
+targets += [
+	.testTarget(
+		name: "\(packageLibraryName)Tests",
+		dependencies: [
+			.init(stringLiteral: packageLibraryName), // Preserve the computed target name used throughout this manifest.
+		],
+		path: "Development/ParticleEffectsTests"
+	),
+]
+#endif
 
 let package = Package(
 	name: packageLibraryName,

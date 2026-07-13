@@ -50,7 +50,7 @@ If the repository is private, use the following link to import: `https://<your-P
 Or you can manually enter the following in the Package.swift file:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.0.1"),
+    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.0.2"),
 ]
 ```
 
@@ -169,6 +169,16 @@ let customGlow = context.state.value(named: "glow")
 let fireHue = context.state.fireHue
 let rotation = context.state.rotation
 ```
+
+### SwiftPM tests
+The `ParticleEffectsTests` target lives under `Development` so the package's existing Swift Playgrounds app layout remains unchanged. The manifest conditionally omits the target when Swift Playgrounds loads the package, while SwiftPM and Xcode on macOS discover it normally.
+
+From the package directory, run:
+```sh
+swift test
+```
+
+In Xcode, open the package, choose **My Mac** as the destination, and run the package scheme's Test action. The tests cover deterministic model and renderer-support behavior without depending on animation timing or a running SwiftUI view hierarchy.
 
 ## Apple Framework Alternatives
 Apple provides lower-level particle and animation tools such as SpriteKit emitters, Core Animation emitter layers, SwiftUI `Canvas`, and timeline-driven SwiftUI drawing.  ParticleEffects is intended for the case where you want a small SwiftUI-first package that can render normal SwiftUI views as particles while preserving simple cross-platform convenience APIs.

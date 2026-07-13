@@ -10,5 +10,5 @@ import Compatibility
 
 public struct ParticleEffects {
     /// The version of the ParticleEffects Library since cannot get directly from Package.swift.
-    public static let version: Version = "2.0.1"
+    public static let version: Version = "2.0.2"
 }

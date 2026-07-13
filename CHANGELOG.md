@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.2 2026-07-13
+Added a SwiftPM test target using Compatibility's conditional manifest pattern so Swift Playgrounds continues loading only the existing app and library targets.
+Added model and renderer-support regression tests plus README documentation for running them through SwiftPM and Xcode on macOS.
+Added documentation for Swift Package Index score.
+Updated Compatibility.
+
 ## v2.0.1 2026-06-29
 Updated Compatibility.
 Updated change log format.
