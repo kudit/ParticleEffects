@@ -29,9 +29,8 @@ public class ParticleSystem: ObservableObject {
         self.center = center
         self.behavior = behavior
         let updateTimer = Timer(timeInterval: 0.01, repeats: true) { [weak self] _ in
-            // Check for new births and remove dead particles on the main actor because the particle array is
-            // published UI state.  The timer itself is retained by the run loop, so capture self weakly to keep
-            // a view-owned ParticleSystem from being kept alive after the view disappears.
+            // Hop explicitly to the model's actor because Timer's callback is not actor-isolated. The weak
+            // capture keeps the timer from retaining a view-owned particle system after the view disappears.
             Task { @MainActor [weak self] in
                 self?.update(at: Date.timeIntervalSinceReferenceDate)
             }

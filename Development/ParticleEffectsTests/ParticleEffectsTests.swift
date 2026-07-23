@@ -8,55 +8,33 @@
 // Swift Testing requires Swift 5.9 or newer. These guards also keep alternate toolchains from trying to
 // compile an unavailable test framework or module while the manifest's separate guard protects Playgrounds.
 #if compiler(>=5.9) && canImport(ParticleEffects) && canImport(Testing)
+import Compatibility
 import ParticleEffects
 import Testing
 
-/// Regression coverage for deterministic model and renderer-support behavior.
+/// Bridges ParticleEffects' ordered reusable tests into Swift Testing.
 ///
-/// Animation timing and SwiftUI layout are deliberately excluded because wall-clock and view-hosting tests
-/// would be fragile across the many Apple platforms supported by ParticleEffects.
-@Suite("ParticleEffects model behavior")
+/// Animation timing and SwiftUI layout remain excluded because wall-clock and view-hosting checks would be
+/// fragile across the package's supported platforms. The deterministic checks live on ``ParticleEffects/tests``.
+@Suite("ParticleEffects Tests")
 struct ParticleEffectsTests {
-    /// Verifies the public version stays aligned with the package and changelog release surfaces.
-    @Test("Published version")
-    func publishedVersion() {
-        #expect(ParticleEffects.version.description == "2.0.2")
-    }
-
-    /// Confirms comma-separated renderer content cycles predictably using a particle's stable creation index.
-    @Test("Particle content cycles by stable index")
-    func particleContentCyclesByStableIndex() {
-        let content: ParticleContent = "spark,star,flare"
-        let particle = Particle(index: 4, initialPosition: .zero, initialVelocity: .zero)
-        let state = ParticleState(particle: particle, position: .zero, opacity: 1, blur: .none)
-
-        // Index four wraps to the second item, proving renderers can choose content without storing UI data
-        // in the particle model itself.
-        #expect(content.value(for: state) == "star")
-    }
-
-    /// Protects the documented fire-coloring curve at its start, midpoint boundary, and completed lifetime.
-    @Test("Fire coloring helpers remain bounded")
-    func fireColoringHelpersRemainBounded() {
-        #expect(ParticleState.fireSaturation(for: 0) == 0.1)
-        #expect(ParticleState.fireHue(for: 0.5) == 0.16)
-        #expect(ParticleState.fireHue(for: 1) == 0)
-    }
-
-    /// Ensures named behavior values remain available to custom renderers without expanding core state.
-    @Test("Named state values are retrievable")
-    func namedStateValuesAreRetrievable() {
-        let particle = Particle(index: 0, initialPosition: .zero, initialVelocity: .zero)
-        let state = ParticleState(
-            particle: particle,
-            position: .zero,
-            opacity: 1,
-            blur: .none,
-            values: ["glow": 0.75]
-        )
-
-        #expect(state.value(named: "glow") == 0.75)
-        #expect(state.value(named: "missing") == nil)
+    /// Runs one shared test while retaining its section name in Swift Testing's argument report.
+    @Test(
+        "Reusable ParticleEffects test",
+        .serialized,
+        arguments: await MainActor.run {
+            ParticleEffects.tests.flatMap { section, tests in
+                tests.map { (section: section, test: $0) }
+            }
+        }
+    )
+    @MainActor
+    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+    func reusableParticleEffectsTest(section: String, test: TestCase) async throws {
+        // The section is intentionally retained as an argument so failures are grouped in deterministic context.
+        _ = section
+        // Execute the shared closure directly so thrown failures remain native Swift Testing failures.
+        try await test.execute()
     }
 }
 #endif

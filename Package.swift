@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.0.2"
+let version = "2.0.3"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -142,7 +142,7 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.13.0"),
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.18.2"),
 	],
 	targets: targets
 )

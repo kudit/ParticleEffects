@@ -1,4 +1,5 @@
 #if canImport(SwiftUI)
+import Compatibility
 import SwiftUI
 #if canImport(ParticleEffects) // since this is needed in XCode but is unavailable in Playgrounds.
 import ParticleEffects
@@ -7,6 +8,12 @@ import ParticleEffects
 @available(iOS 15.0, macOS 12, tvOS 17, watchOS 8, *)
 @main
 struct MyApp: App {
+    /// Registers the app's highest-level package module before support reporting begins.
+    init() {
+        // ParticleEffects declares Compatibility as a dependency, so recursive registration includes both modules.
+        Application.track(including: [ParticleEffects.self])
+    }
+
     var body: some Scene {
         WindowGroup {
             ZStack(alignment: .bottomTrailing) {

@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.3 2026-07-23
+Kept the live particle display visible on compact layouts by reserving at least one third of the available height for it and moving configuration controls into an independent scroll view.
+Used a bounded side-by-side configuration panel when the available width is sufficient.
+Updated Compatibility to 1.18.2 and synchronized the package release surfaces.
+Added a local Compatibility-style `scrollIndicators` backport candidate so the development app remains compatible with iOS 15 and can later move into Compatibility's shared backport collection.
+Adjusted side-by-side configuration sizing so segmented controls remain readable, optimized emoji-only automatic rendering through the dedicated emoji renderer, and preserved the existing actor-safe timer bridge while investigating emission cadence.
+
 ## v2.0.2 2026-07-13
 Added a SwiftPM test target using Compatibility's conditional manifest pattern so Swift Playgrounds continues loading only the existing app and library targets.
 Added model and renderer-support regression tests plus README documentation for running them through SwiftPM and Xcode on macOS.

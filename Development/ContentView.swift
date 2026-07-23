@@ -85,15 +85,23 @@ struct ContentView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
     var body: some View {
-        VStack {
-            if horizontalSizeClass != .compact || verticalSizeClass == .compact {
-                HStack {
-                    configuration
+        GeometryReader { geometry in
+            if usesSideBySideLayout(for: geometry.size) {
+                HStack(spacing: 0) {
+                    configurationScrollView
+                        .frame(width: configurationWidth(for: geometry.size))
                     demoSurface
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             } else {
-                configuration
-                demoSurface
+                VStack(spacing: 0) {
+                    // Keep the particle surface visible first on compact screens; the remaining controls scroll
+                    // independently so a long configuration cannot push the live effect off-screen.
+                    demoSurface
+                        .frame(maxWidth: .infinity, minHeight: max(geometry.size.height * 0.33, 220))
+                    configurationScrollView
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
         }
         #if !os(watchOS) && !os(tvOS)
@@ -123,6 +131,30 @@ struct ContentView: View {
             toggleParticleValue: $toggleParticleValue,
             showConfiguration: $showConfiguration
         )
+    }
+
+    /// Determines whether the available width is sufficient for a useful side-by-side editor and preview.
+    private func usesSideBySideLayout(for size: CGSize) -> Bool {
+        // A width threshold avoids placing narrow phone and watch layouts beside a cramped configuration.
+        // Segmented controls need roughly 420 points before they remain readable; reserve side-by-side mode
+        // for windows that can provide that width while still leaving a useful particle preview beside it.
+        return size.width >= 900 || (verticalSizeClass == .compact && size.width >= 700)
+    }
+
+    /// Gives the configuration a bounded share of wide layouts while leaving most space for the particle preview.
+    private func configurationWidth(for size: CGSize) -> CGFloat {
+        // One third is the default requested balance; the bounds keep controls usable on both iPad and Mac.
+        return min(max(size.width * 0.40, 420), 520)
+    }
+
+    /// Scrolls only the controls so the live particle surface remains independently visible.
+    private var configurationScrollView: some View {
+        ScrollView(.vertical) {
+            configuration
+                .padding()
+        }
+        // Use the local Compatibility-style wrapper until this backport is moved into Compatibility itself.
+        .backport.scrollIndicators(.visible)
     }
     
     /// Chooses between a draggable emitter and the triangle-path emitter demo.
@@ -165,7 +197,9 @@ struct ContentView: View {
                 // Emoji glyphs carry their own color, so the demo leaves the automatic renderer uncolored
                 // when every automatic content value is emoji-like.  This keeps the live demo aligned with the
                 // generated configuration command shown in the sheet.
-                ParticleSystemView(particleSystem: system, renderer: .automatic(ParticleContent(particleContent)))
+                // Use the dedicated emoji renderer for this known case so every frame avoids Automatic's image
+                // and SF Symbol probing, keeping emission cadence stable when many particles are visible.
+                ParticleSystemView(particleSystem: system, renderer: .emoji(ParticleContent(particleContent)))
             } else {
                 ParticleSystemView(particleSystem: system, renderer: .automatic(ParticleContent(particleContent), coloringStyle: demoColoringStyle))
             }
@@ -452,4 +486,45 @@ private struct TriangleParticleShape: Shape {
         return path
     }
 }
+
+// Temporary local Compatibility-style backport candidate. Move this implementation into Compatibility's
+// Backport.swift once the shared API is ready for package-wide adoption.
+#if compiler(>=5.9)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
+public extension Backport where Content: View {
+    /// Visibility options for the scroll indicators displayed by a scrollable view.
+    enum ScrollIndicatorVisibility: Hashable, Sendable {
+        /// Let the operating system choose whether indicators are shown.
+        case automatic
+        /// Show indicators while the scrollable view is being used.
+        case visible
+        /// Hide the scroll indicators.
+        case hidden
+
+        /// Converts the backport value to SwiftUI's native value when the API is available.
+        @available(iOS 16, macOS 13, tvOS 16, watchOS 9, *)
+        var swiftUIValue: SwiftUI.ScrollIndicatorVisibility {
+            switch self {
+            case .automatic: return .automatic
+            case .visible: return .visible
+            case .hidden: return .hidden
+            }
+        }
+    }
+
+    /// Configures scroll-indicator visibility while remaining callable on pre-iOS 16 systems.
+    ///
+    /// Older SwiftUI has no equivalent modifier, so the content is returned unchanged there. Newer systems
+    /// receive the native setting. This local implementation is intentionally shaped for later relocation
+    /// into Compatibility's shared backport collection.
+    @ViewBuilder
+    func scrollIndicators(_ visibility: ScrollIndicatorVisibility, axes: Axis.Set = .vertical) -> some View {
+        if #available(iOS 16, macOS 13, tvOS 16, watchOS 9, *) {
+            content.scrollIndicators(visibility.swiftUIValue, axes: axes)
+        } else {
+            content
+        }
+    }
+}
+#endif
 #endif

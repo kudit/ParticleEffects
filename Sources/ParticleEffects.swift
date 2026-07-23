@@ -8,7 +8,99 @@
 
 import Compatibility
 
-public struct ParticleEffects {
-    /// The version of the ParticleEffects Library since cannot get directly from Package.swift.
-    public static let version: Version = "2.0.2"
+/// ParticleEffects package metadata and reusable tests.
+///
+/// `ParticleEffects` conforms to Compatibility's ``Module`` protocol so applications can include the
+/// package in version, dependency, support, and test reports. Register this highest-level module once during
+/// application startup with `Application.track(including: [ParticleEffects.self])`; Compatibility is then
+/// discovered automatically through ``dependencies``.
+public struct ParticleEffects: Module {
+    /// The version of the ParticleEffects Library.
+    ///
+    /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
+    /// `Package.swift`, the changelog, the development project, tests, and README release examples.
+    public static let version: Version = "2.0.3"
+
+    /// Modules used directly by ParticleEffects.
+    ///
+    /// Compatibility provides the shared module metadata, diagnostics, and testing APIs used by this package.
+    public static let dependencies: [Module.Type] = [Compatibility.self]
+
+    /// Immediately available ParticleEffects module information.
+    ///
+    /// ParticleEffects currently has no package-specific diagnostic fields beyond the version appended by
+    /// Compatibility, so this collection is intentionally empty and remains portable across supported targets.
+    public static let moduleInfo: [Field] = []
+
+    /// Public source repository used for source discovery and opt-in license reporting.
+    public static let openSourceRepository: String? = "https://github.com/kudit/ParticleEffects"
+
+#if compiler(>=5.9)
+    /// Reusable ParticleEffects tests grouped in deterministic display and execution order.
+    ///
+    /// Compatibility's in-app module test UI and the Swift Testing bridge both execute these same
+    /// ``TestCase`` instances so assertions remain authored in one place.
+    @MainActor
+    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+    public static var tests: OrderedDictionary<String, [TestCase]> {
+        // Keep metadata checks first because they quickly identify an incorrectly integrated package release.
+        var sections: OrderedDictionary<String, [TestCase]> = [
+            "Module Metadata": [
+                TestCase("Module metadata describes ParticleEffects") {
+                    try expectEqual(ParticleEffects.version, "2.0.3", "Expected runtime and manifest versions to match")
+                    try expect(
+                        ParticleEffects.dependencies.contains {
+                            $0.moduleIdentifier == Compatibility.moduleIdentifier
+                        },
+                        "Expected Compatibility to be a direct module dependency"
+                    )
+                    try expectEqual(
+                        ParticleEffects.openSourceRepository,
+                        "https://github.com/kudit/ParticleEffects",
+                        "Expected the public repository metadata"
+                    )
+                    try expect(
+                        ParticleEffects.moduleInfo.isEmpty,
+                        "ParticleEffects does not provide package-specific immediate module information"
+                    )
+                },
+            ],
+            "Particle Model": [
+                TestCase("Fire coloring helpers remain bounded") {
+                    try expectEqual(ParticleState.fireSaturation(for: 0), 0.1)
+                    try expectEqual(ParticleState.fireHue(for: 0.5), 0.16)
+                    try expectEqual(ParticleState.fireHue(for: 1), 0)
+                },
+                TestCase("Named state values are retrievable") {
+                    let particle = Particle(index: 0, initialPosition: .zero, initialVelocity: .zero)
+                    let state = ParticleState(
+                        particle: particle,
+                        position: .zero,
+                        opacity: 1,
+                        blur: .none,
+                        values: ["glow": 0.75]
+                    )
+
+                    try expectEqual(state.value(named: "glow"), 0.75)
+                    try expect(state.value(named: "missing") == nil, "Expected an unknown named value to be absent")
+                },
+            ],
+        ]
+
+#if canImport(SwiftUI)
+        // Renderer content exists only on SwiftUI targets, while the model sections remain portable elsewhere.
+        sections["Renderer Content"] = [
+            TestCase("Particle content cycles by stable index") {
+                let content: ParticleContent = "spark,star,flare"
+                let particle = Particle(index: 4, initialPosition: .zero, initialVelocity: .zero)
+                let state = ParticleState(particle: particle, position: .zero, opacity: 1, blur: .none)
+
+                try expectEqual(content.value(for: state), "star")
+            },
+        ]
+#endif
+
+        return sections
+    }
+#endif
 }
