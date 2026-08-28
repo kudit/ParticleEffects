@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "9C7BA7E2-0E80-4A8B-9C34-7C8F4F9F7E4A",
+      "name" : "Test Scheme Action",
+      "options" : { }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : true,
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ParticleEffects.xcodeproj",
+      "identifier" : "B5DD79B22BC94C8800457681",
+      "name" : "ParticleEffectsTest"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "ParticleEffectsTests",
+        "name" : "ParticleEffectsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

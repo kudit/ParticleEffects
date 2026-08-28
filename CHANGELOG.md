@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.4 2026-08-27
+Set up SwiftPM testing with a Compatibility-style reusable test adapter and per-entry Swift Testing bridge.
+Updated Compatibility.
+
 ## v2.0.3 2026-07-23
 Kept the live particle display visible on compact layouts by reserving at least one third of the available height for it and moving configuration controls into an independent scroll view.
 Used a bounded side-by-side configuration panel when the available width is sufficient.

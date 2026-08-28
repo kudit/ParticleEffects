@@ -19,7 +19,7 @@ public struct ParticleEffects: Module {
     ///
     /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
     /// `Package.swift`, the changelog, the development project, tests, and README release examples.
-    public static let version: Version = "2.0.3"
+    public static let version: Version = "2.0.4"
 
     /// Modules used directly by ParticleEffects.
     ///
@@ -47,7 +47,7 @@ public struct ParticleEffects: Module {
         var sections: OrderedDictionary<String, [TestCase]> = [
             "Module Metadata": [
                 TestCase("Module metadata describes ParticleEffects") {
-                    try expectEqual(ParticleEffects.version, "2.0.3", "Expected runtime and manifest versions to match")
+                    try expectEqual(ParticleEffects.version, "2.0.4", "Expected runtime and manifest versions to match")
                     try expect(
                         ParticleEffects.dependencies.contains {
                             $0.moduleIdentifier == Compatibility.moduleIdentifier

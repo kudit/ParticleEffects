@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.0.3"
+let version = "2.0.4"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -129,6 +129,7 @@ targets += [
 		name: "\(packageLibraryName)Tests",
 		dependencies: [
 			.init(stringLiteral: packageLibraryName), // Preserve the computed target name used throughout this manifest.
+			.product(name: "Compatibility Testing Library", package: "compatibility"),
 		],
 		path: "Development/ParticleEffectsTests"
 	),

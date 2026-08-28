@@ -8,6 +8,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 import ParticleEffects
+import Compatibility
 
 struct ConfigurationView: View {
     @Binding var behavior: ParticleBehavior
@@ -37,7 +38,7 @@ struct ConfigurationView: View {
                     }
                 }.pickerStyle(.segmentedBackport)
                 if coloring == .none {
-#if os(watchOS)
+#if os(watchOS) || os(tvOS)
                     Text("Solid Color")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -70,7 +71,7 @@ struct ConfigurationView: View {
             content()
         }
 #else
-        GroupBox(title) {
+        Backport.GroupBox(title) {
             content()
         }
 #endif
