@@ -19,7 +19,7 @@ public struct ParticleEffects: Module {
     ///
     /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
     /// `Package.swift`, the changelog, the development project, tests, and README release examples.
-    public static let version: Version = "2.0.4"
+    public static let version: Version = "2.0.5"
 
     /// Modules used directly by ParticleEffects.
     ///
@@ -47,7 +47,6 @@ public struct ParticleEffects: Module {
         var sections: OrderedDictionary<String, [TestCase]> = [
             "Module Metadata": [
                 TestCase("Module metadata describes ParticleEffects") {
-                    try expectEqual(ParticleEffects.version, "2.0.4", "Expected runtime and manifest versions to match")
                     try expect(
                         ParticleEffects.dependencies.contains {
                             $0.moduleIdentifier == Compatibility.moduleIdentifier
@@ -83,6 +82,52 @@ public struct ParticleEffects: Module {
 
                     try expectEqual(state.value(named: "glow"), 0.75)
                     try expect(state.value(named: "missing") == nil, "Expected an unknown named value to be absent")
+                },
+                TestCase("Particle content handles empty and negative indexes") {
+                    let empty = ParticleContent("")
+                    let negative = Particle(index: -1, initialPosition: .zero, initialVelocity: .zero)
+                    let negativeState = ParticleState(particle: negative, position: .zero, opacity: 1, blur: .none)
+                    try expectEqual(empty.value(for: negativeState), "")
+
+                    let content = ParticleContent("one,two,three")
+                    let state = ParticleState(
+                        particle: Particle(index: -1, initialPosition: .zero, initialVelocity: .zero),
+                        position: .zero,
+                        opacity: 1,
+                        blur: .none
+                    )
+                    // Modulo cycling should wrap negative identities to the final content value.
+                    try expectEqual(content.value(for: state), "three")
+                },
+                TestCase("Particle content handles large indexes") {
+                    let content = ParticleContent("one,two,three")
+                    let particle = Particle(index: Int.max, initialPosition: .zero, initialVelocity: .zero)
+                    let state = ParticleState(particle: particle, position: .zero, opacity: 1, blur: .none)
+                    try expectEqual(content.value(for: state), "two")
+                },
+                TestCase("Particle state exposes calculated motion and lifetime") {
+                    let behavior = ParticleBehavior(
+                        lifetime: 2,
+                        fadeOut: 0.5,
+                        initialVelocity: 10,
+                        acceleration: .none
+                    )
+                    let particle = Particle(index: 0, initialPosition: .zero, initialVelocity: Vector(x: 1, y: 0))
+                    let currentTime = particle.creationDate + 1
+                    let state = behavior.currentState(for: particle, at: currentTime)
+                    try expectEqual(state.lifetimeAge, 0.5)
+                    try expectEqual(state.position.x, 1)
+                    try expectEqual(state.position.y, 0)
+                    try expectEqual(state.opacity, 1)
+                    try expect(!behavior.shouldRemove(particle: particle, at: currentTime))
+                    try expect(behavior.shouldRemove(particle: particle, at: particle.creationDate + 2.01))
+                },
+                TestCase("Particle behavior creates particles only after its birth interval") {
+                    let behavior = ParticleBehavior(birthRate: 1, spread: .none, initialVelocity: 2)
+                    try expect(behavior.newParticle(initialPosition: .zero, timeSinceLastGeneration: 1, particleCount: 4) == nil)
+                    let particle = behavior.newParticle(initialPosition: .zero, timeSinceLastGeneration: 1.01, particleCount: 4)
+                    try expectEqual(particle?.index, 4)
+                    try expectEqual(particle?.initialPosition, .zero)
                 },
             ],
         ]

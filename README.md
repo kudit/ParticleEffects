@@ -50,7 +50,7 @@ If the repository is private, use the following link to import: `https://<your-P
 Or you can manually enter the following in the Package.swift file:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.0.4"),
+    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.0.5"),
 ]
 ```
 

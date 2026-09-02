@@ -18,6 +18,13 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:ParticleEffects.xcodeproj",
+        "identifier" : "C50707012C60A00100000001",
+        "name" : "ParticleEffectsUITests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:..",
         "identifier" : "ParticleEffectsTests",
         "name" : "ParticleEffectsTests"

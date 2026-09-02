@@ -21,6 +21,20 @@
                ReferencedContainer = "container:ParticleEffects.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C50707012C60A00100000001"
+               BuildableName = "ParticleEffectsUITests.xctest"
+               BlueprintName = "ParticleEffectsUITests"
+               ReferencedContainer = "container:ParticleEffects.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

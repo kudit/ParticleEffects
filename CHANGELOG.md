@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.5 2026-09-01
+Updated the reusable Swift Testing bridge to use Compatibility's asynchronous recursive `Module.testEntries()` API and simplified application module tracking.
+Added UI Tests and additional tests.
+
 ## v2.0.4 2026-08-27
 Set up SwiftPM testing with a Compatibility-style reusable test adapter and per-entry Swift Testing bridge.
 Updated Compatibility.

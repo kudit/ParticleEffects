@@ -11,7 +11,7 @@ struct MyApp: App {
     /// Registers the app's highest-level package module before support reporting begins.
     init() {
         // ParticleEffects declares Compatibility as a dependency, so recursive registration includes both modules.
-        Application.track(including: [ParticleEffects.self])
+        Application.track(ParticleEffects.self)
     }
 
     var body: some Scene {

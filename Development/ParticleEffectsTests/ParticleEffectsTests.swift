@@ -23,11 +23,7 @@ struct ParticleEffectsTests {
     @Test(
         "Reusable ParticleEffects test",
         .serialized,
-        arguments: await MainActor.run {
-            // Register the package root so Compatibility recursively discovers every dependency module.
-            ParticleEffects.include()
-            return ModuleTestEntry.entries()
-        }
+        arguments: await ParticleEffects.testEntries()
     )
     @MainActor
     @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)

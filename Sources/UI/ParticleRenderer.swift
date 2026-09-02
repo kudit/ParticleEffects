@@ -84,7 +84,9 @@ public struct ParticleContent: ExpressibleByStringLiteral, Hashable, Sendable {
     /// storing render-specific payload on the particle itself.
     public func value(for particleState: ParticleState) -> String {
         let safeValues = values.isEmpty ? [""] : values
-        let index = particleState.particle.index % safeValues.count
+        // Normalize negative indexes as well as large indexes so malformed or externally supplied identities
+        // cannot produce a negative array subscript while renderer cycling remains deterministic.
+        let index = ((particleState.particle.index % safeValues.count) + safeValues.count) % safeValues.count
         return safeValues[index]
     }
 }

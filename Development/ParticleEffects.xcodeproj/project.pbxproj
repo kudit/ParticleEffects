@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50707082C60A00100000001 /* ParticleEffectsUITests.swift */; };
 		B568DF192C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
 		B568DF1A2C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
 		B56E28622BD7575F0041A567 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56E28582BD7575F0041A567 /* Assets.xcassets */; };
@@ -24,6 +25,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C5070701C60A00100000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5C1B6152BAB7997001D5CFA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5DD79B22BC94C8800457681;
+			remoteInfo = ParticleEffectsTest;
+		};
 		B5D6A4BD2BD7579A00AC0C60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B5C1B6152BAB7997001D5CFA /* Project object */;
@@ -64,6 +72,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParticleEffectsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C50707082C60A00100000001 /* ParticleEffectsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectsUITests.swift; sourceTree = "<group>"; };
 		B524AFA12DFA839400FF6AF7 /* ParticleEffectsTest-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ParticleEffectsTest-Watch-App-Info.plist"; sourceTree = "<group>"; };
 		B568DF182C2C7A4D00042487 /* DemoViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViews.swift; sourceTree = "<group>"; };
 		B56E28582BD7575F0041A567 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,6 +110,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C50707062C60A00100000001 /* ParticleEffectsUITests */ = {
+			isa = PBXGroup;
+			children = ( C50707082C60A00100000001 /* ParticleEffectsUITests.swift */, );
+			path = ParticleEffectsUITests;
+			sourceTree = "<group>";
+		};
 		B56E285B2BD7575F0041A567 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +140,8 @@
 		B5C1B6142BAB7997001D5CFA = {
 			isa = PBXGroup;
 			children = (
+				C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */,
+				C50707062C60A00100000001 /* ParticleEffectsUITests */,
 				B524AFA12DFA839400FF6AF7 /* ParticleEffectsTest-Watch-App-Info.plist */,
 				B5EC717C2BE2A69100D380BA /* CHANGELOG.md */,
 				B5EC717E2BE2A69100D380BA /* README.md */,
@@ -139,6 +157,17 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C50707012C60A00100000001 /* ParticleEffectsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */;
+			buildPhases = ( C50707022C60A00100000001 /* Sources */, C50707032C60A00100000001 /* Frameworks */, C50707042C60A00100000001 /* Resources */ );
+			buildRules = ( );
+			dependencies = ( C5070700C60A00100000001 /* PBXTargetDependency */ );
+			name = ParticleEffectsUITests;
+			productName = ParticleEffectsUITests;
+			productReference = C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		B5DD79B22BC94C8800457681 /* ParticleEffectsTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5DD79D52BC94C8A00457681 /* Build configuration list for PBXNativeTarget "ParticleEffectsTest" */;
@@ -218,11 +247,13 @@
 			targets = (
 				B5DD79B22BC94C8800457681 /* ParticleEffectsTest */,
 				B5F033FE2BABA93500CA6396 /* ParticleEffectsTest Watch App */,
+				C50707012C60A00100000001 /* ParticleEffectsUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C50707042C60A00100000001 /* Resources */ = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
 		B5DD79B12BC94C8800457681 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -242,6 +273,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C50707022C60A00100000001 /* Sources */ = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
 		B5DD79AF2BC94C8800457681 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +301,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C5070700C60A00100000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5DD79B22BC94C8800457681 /* ParticleEffectsTest */;
+			targetProxy = C5070701C60A00100000001 /* PBXContainerItemProxy */;
+		};
 		B5D6A4BE2BD7579A00AC0C60 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B5F033FE2BABA93500CA6396 /* ParticleEffectsTest Watch App */;
@@ -283,6 +320,8 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		C507070CC60A00100000001 /* Debug */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ParticleEffectsTest; }; name = Debug; };
+		C507070DC60A00100000001 /* Release */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ParticleEffectsTest; }; name = Release; };
 		B5C1B6292BAB7999001D5CFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -341,7 +380,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.0.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -408,7 +447,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.0.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -555,6 +594,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */ = { isa = XCConfigurationList; buildConfigurations = ( C507070CC60A00100000001 /* Debug */, C507070DC60A00100000001 /* Release */ ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		B5C1B6182BAB7997001D5CFA /* Build configuration list for PBXProject "ParticleEffects" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
