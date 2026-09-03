@@ -2,6 +2,7 @@
 import ParticleEffects
 import SwiftUI
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 struct DraggableParticleSystemView<ParticleLayer: View>: View {
     @ObservedObject public var particleSystem: ParticleSystem
     public var background: Color // necessary for drag view to be draggable and not just shapes
@@ -48,6 +49,7 @@ struct DraggableParticleSystemView<ParticleLayer: View>: View {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 extension DraggableParticleSystemView where ParticleLayer == ParticleSystemView<ParticleView> {
     /// Preserves the simple development-app call site for the default automatic renderer.
     init(particleSystem: ParticleSystem, background: Color, allowsParticleInteraction: Bool = false) {

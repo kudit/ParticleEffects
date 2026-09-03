@@ -7,6 +7,7 @@ public extension Vector {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 @MainActor
 public struct ParticleSystemView<SomeParticleView: View>: View {
     public var particleSystem: ParticleSystem
@@ -67,6 +68,7 @@ public struct ParticleSystemView<SomeParticleView: View>: View {
         }
     }
 }
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 extension ParticleSystemView where SomeParticleView == ParticleView {
     public init(particleSystem: ParticleSystem) {
         self.init(particleSystem: particleSystem, renderer: AutomaticParticleRenderer())
@@ -96,6 +98,7 @@ extension ParticleSystemView where SomeParticleView == ParticleView {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension ParticleSystemView {
     /// Creates a single-use particle system view using a reusable renderer value.
     ///
@@ -132,6 +135,7 @@ public extension ParticleSystemView {
 }
 
 #if swift(>=5.9)
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Confetti Demo") {
     let behavior = ParticleBehavior(
         birthRate: .frequent,
@@ -149,14 +153,17 @@ public extension ParticleSystemView {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Fire Example") {
     ParticleSystemView(particleSystem: .init(behavior: .fire), renderer: .symbol("drop.fill", coloring: .fire))
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Emoji Renderer Example") {
     ParticleSystemView(behavior: .fountain, renderer: .emoji("😊,👍,☺️"))
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Custom Renderer Example") {
     ParticleSystemView(
         behavior: .sparkle.modified(spin: .medium),
@@ -171,6 +178,7 @@ public extension ParticleSystemView {
     )
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 struct TestAnimatedParticleView: View {
     @StateObject var particleSystem = ParticleSystem(center: .leading, behavior: .init(
         birthRate: .frequent,
@@ -192,6 +200,7 @@ struct TestAnimatedParticleView: View {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Red") {
     // TODO: do test where it traces a path like a triangle?
     ZStack {
@@ -203,8 +212,8 @@ struct TestAnimatedParticleView: View {
             behavior: .fountain))
             .frame(width: 100, height: 200)
             .border(.green, width: 5)
-            .background(.black)
-            .foregroundStyle(.blue)
+            .backport.background(.black)
+            .backport.foregroundStyle(.blue)
         TestAnimatedParticleView()
             .aspectRatio(contentMode: .fit)
 //            .border(.red, width: 5)

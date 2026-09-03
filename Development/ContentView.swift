@@ -70,6 +70,7 @@ enum DemoShapeMode: String, CaseIterable, Identifiable {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 struct ContentView: View {
     @StateObject var system = ParticleSystem(behavior: .fountain)
     @State var controlMode: DemoEmitterControlMode = .drag
@@ -350,6 +351,7 @@ ParticleSystemView(
 ///
 /// This shows that particle emission can be driven by a path instead of drag input while leaving the renderer
 /// choice unchanged.
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 private struct TrianglePathParticleSystemView<ParticleLayer: View>: View {
     @ObservedObject var particleSystem: ParticleSystem
     var background: Color

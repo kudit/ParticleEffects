@@ -10,6 +10,7 @@ import SwiftUI
 import ParticleEffects
 import Compatibility
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 struct ConfigurationView: View {
     @Binding var behavior: ParticleBehavior
     @Binding var controlMode: DemoEmitterControlMode
@@ -259,6 +260,7 @@ struct ConfigurationView: View {
 }
 
 #if swift(>=5.9)
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview {
     List {
         ConfigurationView(behavior: .constant(.bubbles), controlMode: .constant(.drag), rendererMode: .constant(.symbol), shapeMode: .constant(.circle), particleContent: .constant("circle"), solidColor: .constant(.cyan), coloring: .constant(.rainbow), toggleParticleValue: .constant(true), showConfiguration: .constant(false))

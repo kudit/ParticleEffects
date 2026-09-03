@@ -32,7 +32,9 @@ public class ParticleSystem: ObservableObject {
             // Hop explicitly to the model's actor because Timer's callback is not actor-isolated. The weak
             // capture keeps the timer from retaining a view-owned particle system after the view disappears.
             Task { @MainActor [weak self] in
-                self?.update(at: Date.timeIntervalSinceReferenceDate)
+                // Use Foundation's deployment-neutral clock spelling so the SwiftUI-backed system remains
+                // buildable on macOS 10.15 and the corresponding first SwiftUI releases on other platforms.
+                self?.update(at: Date.nowBackport.timeIntervalSinceReferenceDate)
             }
         }
         // A scheduledTimer is registered in the default run-loop mode only.  Adding the timer to common modes

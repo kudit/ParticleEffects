@@ -9,6 +9,7 @@
 import SwiftUI
 import ParticleEffects
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 struct SimpleDemoView: View {
     var body: some View {
         Image(systemName: "globe")
@@ -27,6 +28,7 @@ struct SimpleDemoView: View {
 ///
 /// The renderer reads from the generic render context and then opts into the standard particle appearance
 /// modifier so opacity, blur, rotation, and coloring stay consistent with the built-in renderers.
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 private struct TokenParticleRenderer: ParticleRenderer {
     /// Renderer-owned content used to label token particles without storing that label in the particle model.
     private let content: ParticleContent = "K,U,D,I,T"
@@ -50,16 +52,19 @@ private struct TokenParticleRenderer: ParticleRenderer {
 
 #if swift(>=5.9)
 // README examples
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Demo") {
     SimpleDemoView()
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Fire") {
     ParticleSystemView(behavior: .fire, renderer: .symbol("drop.fill", coloring: .fire))
         .font(.largeTitle)
         .aspectRatio(contentMode: .fit)
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Sun") {
     ParticleSystemView(
         behavior: .sun.modified(
@@ -71,11 +76,13 @@ private struct TokenParticleRenderer: ParticleRenderer {
     .aspectRatio(contentMode: .fit)
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Emoji") {
     ParticleSystemView(behavior: .fountain, renderer: .emoji("😊,👍,☺️,👏,🙌"))
     .aspectRatio(contentMode: .fit)
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview("Custom Renderer") {
     ParticleSystemView(
         behavior: .sparkle.modified(spin: .medium),

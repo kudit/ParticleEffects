@@ -1,7 +1,8 @@
 import Foundation
 
 public struct Particle: Hashable, Sendable {
-    public let creationDate = Date.now.timeIntervalSinceReferenceDate
+    // Use the long-standing Foundation spelling so the portable particle model does not require macOS 12/iOS 15.
+    public let creationDate = Date.nowBackport.timeIntervalSinceReferenceDate
     /// Stable creation index used by renderers to choose deterministic content or styling.
     ///
     /// The particle model intentionally does not store text, symbols, emoji, images, or colors.  Those are

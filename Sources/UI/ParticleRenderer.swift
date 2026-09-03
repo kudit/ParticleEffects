@@ -54,43 +54,6 @@ public struct ParticleRenderingContext {
     }
 }
 
-/// A renderer-owned list of strings used to choose what each particle displays.
-///
-/// Renderers own content in the v2 API because text, emoji, SF Symbols, image names, and custom labels are all
-/// rendering concerns.  The particle model only supplies a stable index, and this helper uses that index to
-/// cycle through comma-separated content in a deterministic way.
-public struct ParticleContent: ExpressibleByStringLiteral, Hashable, Sendable {
-    /// Ordered values supplied by the renderer.
-    public var values: [String]
-    
-    /// Creates content from a comma-separated string.
-    ///
-    /// Empty lists fall back to a single empty string so modulo selection is always safe for renderers.
-    public init(_ string: String) {
-        let parts = string
-            .components(separatedBy: ",")
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        self.values = parts.isEmpty ? [""] : parts
-    }
-    
-    /// Creates content from a string literal.
-    public init(stringLiteral value: String) {
-        self.init(value)
-    }
-    
-    /// Returns the value to use for the supplied particle state.
-    ///
-    /// The particle index is stable for the life of the particle, so this lets renderers choose content without
-    /// storing render-specific payload on the particle itself.
-    public func value(for particleState: ParticleState) -> String {
-        let safeValues = values.isEmpty ? [""] : values
-        // Normalize negative indexes as well as large indexes so malformed or externally supplied identities
-        // cannot produce a negative array subscript while renderer cycling remains deterministic.
-        let index = ((particleState.particle.index % safeValues.count) + safeValues.count) % safeValues.count
-        return safeValues[index]
-    }
-}
-
 /// Builds a SwiftUI view for a particle state.
 ///
 /// Renderers are deliberately value types in the built-in implementations because the particle system already
@@ -192,6 +155,7 @@ public extension ParticleColoringStyle {
 ///
 /// This renderer follows the same order as ``ParticleView``: asset image first, SF Symbol second, and text or
 /// emoji as the fallback.  It exists so simple call sites and the new renderer API share one backend path.
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 @MainActor
 public struct AutomaticParticleRenderer: ParticleRenderer {
     public var content: ParticleContent
@@ -219,6 +183,7 @@ public struct AutomaticParticleRenderer: ParticleRenderer {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 extension AutomaticParticleRenderer: ParticleContentRenderer {
     /// Rebuilds the automatic renderer with legacy content and optional legacy coloring.
     public func replacingContent(_ content: ParticleContent, coloring: Coloring?) -> Self {
@@ -304,6 +269,7 @@ extension EmojiParticleRenderer: ParticleContentRenderer {
 }
 
 /// Renderer that always treats renderer-owned content as an SF Symbol name.
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 @MainActor
 public struct SymbolParticleRenderer: ParticleRenderer {
     public var content: ParticleContent
@@ -328,6 +294,7 @@ public struct SymbolParticleRenderer: ParticleRenderer {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 extension SymbolParticleRenderer: ParticleContentRenderer {
     /// Rebuilds the symbol renderer with legacy content and optional legacy coloring.
     public func replacingContent(_ content: ParticleContent, coloring: Coloring?) -> Self {
@@ -373,6 +340,7 @@ extension ImageParticleRenderer: ParticleContentRenderer {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension ParticleRenderer where Self == AutomaticParticleRenderer {
     /// Preserves the legacy image/SF Symbol/text fallback renderer.
     static func automatic(_ content: ParticleContent = "circle.fill", coloring: Coloring = .none) -> Self {
@@ -416,6 +384,7 @@ public extension ParticleRenderer where Self == EmojiParticleRenderer {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension ParticleRenderer where Self == SymbolParticleRenderer {
     /// Creates a renderer that always displays renderer-owned content as an SF Symbol.
     static func symbol(_ content: ParticleContent, coloring: Coloring = .none) -> Self {

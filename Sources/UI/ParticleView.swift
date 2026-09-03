@@ -9,6 +9,7 @@
 import SwiftUI
 
 /// Create a String representation which will first try to find an image resource with the name, next it will try to create a symbol from the string, next it will check to see if it's an emoji or a character or it will just render the text as an image.
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public struct ParticleView: View {
     public var content: String
     public var particleState: ParticleState
@@ -79,7 +80,7 @@ public extension View {
     func apply(coloringStyle: ParticleColoringStyle, for particleState: ParticleState) -> some View {
         Group {
             if let color = coloringStyle.color(for: particleState) {
-                self.foregroundStyle(color)
+                self.backport.foregroundStyle(color)
             } else {
                 self
             }
@@ -87,6 +88,7 @@ public extension View {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension Image {
     static func fileExists(name: String) -> Bool {
 #if canImport(UIKit)
@@ -127,13 +129,14 @@ public extension Image {
     }
 }
 
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview {
     VStack {
         Divider()
         ParticleView(content: "Hi", particleState: .init(particle: .init(index: 0, initialPosition: .zero, initialVelocity: .zero), position: .zero, opacity: 1, blur: .none), coloring: .none)
         Divider()
         ParticleView(content: "star.fill", particleState: .init(particle: .init(index: 1, initialPosition: .zero, initialVelocity: .zero), position: .zero, opacity: 1, blur: .light), coloring: .none)
-            .foregroundStyle(.yellow)
+            .backport.foregroundStyle(.yellow)
         Divider()
         ParticleView(content: "triangle.fill", particleState: .init(particle: .init(index: 2, initialPosition: .zero, initialVelocity: .zero), position: .zero, opacity: 1, blur: .light), coloring: .rainbow)
         Divider()

@@ -4,8 +4,9 @@ import XCTest
 /// module test screen are covered in addition to the package-level Swift Testing catalog.
 final class ParticleEffectsUITests: XCTestCase {
     /// Launches with clean state and verifies the primary configuration controls are present and usable.
+    /// Opens the configuration action where supported and verifies that the app responds to a control tap.
     @MainActor
-    func testLaunchAndConfigurationControls() throws {
+    func testConfigurationAction() throws {
         let app = XCUIApplication()
         app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]
         app.launchEnvironment["TESTING"] = "1"
@@ -15,15 +16,6 @@ final class ParticleEffectsUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Coloring"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["Behavior"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["Control"].exists || app.staticTexts["Control"].exists)
-    }
-
-    /// Opens the configuration action where supported and verifies that the app responds to a control tap.
-    @MainActor
-    func testConfigurationAction() throws {
-        let app = XCUIApplication()
-        app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]
-        app.launchEnvironment["TESTING"] = "1"
-        app.launch()
 
         let configuration = app.buttons["View Configuration"]
         if configuration.waitForExistence(timeout: 5) {

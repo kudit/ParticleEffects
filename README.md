@@ -23,12 +23,12 @@ This is actively maintained so if there is a feature request or change, we will 
 
 
 ## Requirements
-Most of these minimums are dictated by our usage of Date.now which is needed.
-- iOS 15+ (15.2+ minimum required for Swift Playgrounds support)
-- macOS 12+
+The particle model is Foundation-only; the SwiftUI renderer follows SwiftUI's initial platform releases.
+- iOS 13+
+- macOS 10.15+
 - macCatalyst 13.0+ (first version available)
-- tvOS 15.0+
-- watchOS 8.0+
+- tvOS 13.0+
+- watchOS 6.0+
 - visionOS 1.0+
 - Theoretically should work with Linux, Windows, and Vapor, but haven't tested.  If you would like to help, please let us know.
 

@@ -37,10 +37,10 @@ var targets = [
 	),
 ]
 
-var platforms: [SupportedPlatform] = [ // minimums for Date.now
-	.macOS("12"), // minimum for sleep, SwiftUI, ObservableObject, & @Published, 12 minimum for Date.now
-	.tvOS("15"), // 13 minimum for SwiftUI, 15 minimum for Date.now, 17 minimum for Menu
-	.watchOS("8"), // 6 minimum for SwiftUI, watchOS 7 typically needed for most UI, 8 for Date.now, however (for #buildAvailability) so really should be watchOS 9+.
+var platforms: [SupportedPlatform] = [ // SwiftUI's initial platform releases; the model itself is more portable.
+	.macOS("10.15"),
+	.tvOS("13"),
+	.watchOS("6"),
 ]
 
 #if canImport(PlaygroundSupport)
@@ -49,7 +49,7 @@ platforms += [
 ]
 #else
 platforms += [
-	.iOS("15"), // 13 minimum for Combine/SwiftUI, 15 minimum for Date.now, (maximum version for test iPhone 7)
+	.iOS("13"), // minimum release for Combine and SwiftUI
 ]
 #endif
 

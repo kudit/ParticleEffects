@@ -1,5 +1,11 @@
 # Changelog
 
+## TODO: Terminal renderer and CLI example
+Implement a platform-neutral particle renderer that maps ``ParticleState`` values to an ANSI terminal frame using ASCII, Unicode, or emoji glyphs. Add a command-line demonstration with an alternate-screen, full-terminal text UI, nonblocking controls, terminal-size adaptation, and deterministic renderer tests. Keep the terminal UI as a small retained-mode composition layer rather than attempting to duplicate SwiftUI's view/layout system.
+
+## v2.0.6 2026-09-03
+Backported code to decrease the minimum versions required.  UI still requires minimum iOS 15.
+
 ## v2.0.5 2026-09-01
 Updated the reusable Swift Testing bridge to use Compatibility's asynchronous recursive `Module.testEntries()` API and simplified application module tracking.
 Added UI Tests and additional tests.
