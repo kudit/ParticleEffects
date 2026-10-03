@@ -143,7 +143,7 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.19.9"),
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.20.0"),
 	],
 	targets: targets
 )
