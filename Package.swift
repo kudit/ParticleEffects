@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.0.5"
+let version = "2.1.0"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -17,6 +17,10 @@ var products = [
 		targets: [packageLibraryName]
 	),
 ]
+
+#if !canImport(AppleProductTypes)
+products.append(.executable(name: "ParticleEffectsTerminalDemo", targets: ["ParticleEffectsTerminalDemo"]))
+#endif
 
 // Targets are the basic building blocks of a package, defining a module or a test suite.
 // Targets can depend on other targets in this package and products from dependencies.
@@ -119,6 +123,14 @@ targets += [
 ]
 
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
+
+#if !canImport(AppleProductTypes)
+targets.append(.executableTarget(
+	name: "ParticleEffectsTerminalDemo",
+	dependencies: [.init(stringLiteral: packageLibraryName)],
+	path: "TerminalDemo"
+))
+#endif
 
 // MARK: - Package tests
 // Keep the test target out of Swift Playgrounds because its app-package manifest only supports the existing

@@ -1,3 +1,4 @@
+#if canImport(XCTest)
 import XCTest
 
 /// Exercises the sample application at the user-interface boundary so launch, controls, and the registered
@@ -28,3 +29,4 @@ final class ParticleEffectsUITests: XCTestCase {
         }
     }
 }
+#endif

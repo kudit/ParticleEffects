@@ -189,8 +189,11 @@ public struct ParticleBehavior: Hashable, Sendable {
         return modified
     }
         
-    /// Determine whether to create a new particle and if so, return a new particle with an initial position and configuration.
-    func newParticle(initialPosition: Vector, timeSinceLastGeneration: TimeInterval, particleCount: Int) -> Particle? {
+    /// Determines whether the birth interval has elapsed and creates the next particle when it has.
+    ///
+    /// This is public so non-SwiftUI renderers can use the same preset timing, spread, and initial-velocity
+    /// calculations as ``ParticleSystem`` instead of reproducing the behavior formulas.
+    public func newParticle(initialPosition: Vector, timeSinceLastGeneration: TimeInterval, particleCount: Int) -> Particle? {
         guard timeSinceLastGeneration > birthRate.rawValue else {
             // too quick since last generation.  No need to generate
             return nil
@@ -208,8 +211,11 @@ public struct ParticleBehavior: Hashable, Sendable {
         return Particle(index: particleCount, initialPosition: initialPosition, initialVelocity: initialVelocityVector)
     }
 
-    /// Update the particle position and configuration.  Return `false` if the particle should be removed and no longer updated.
-    func currentState(for particle: Particle, at currentTime: TimeInterval) -> ParticleState {
+    /// Calculates the current position, opacity, lifetime age, and rotation for one particle.
+    ///
+    /// This is public so platform-neutral renderers can consume exactly the same per-particle state as the
+    /// SwiftUI renderer at a supplied reference-time timestamp.
+    public func currentState(for particle: Particle, at currentTime: TimeInterval) -> ParticleState {
         // update age (for use in fire coloring equations)
         let lifetimeAge = particle.age(at: currentTime) / lifetime.rawValue
 
@@ -240,7 +246,8 @@ public struct ParticleBehavior: Hashable, Sendable {
         )
     }
         
-    func shouldRemove(particle: Particle, at currentTime: TimeInterval) -> Bool {
+    /// Returns whether the particle has passed this behavior's lifetime and should be removed.
+    public func shouldRemove(particle: Particle, at currentTime: TimeInterval) -> Bool {
         particle.age(at: currentTime) > lifetime.rawValue
     }
     

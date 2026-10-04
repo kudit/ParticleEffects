@@ -19,7 +19,7 @@ public struct ParticleEffects: Module {
     ///
     /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
     /// `Package.swift`, the changelog, the development project, tests, and README release examples.
-    public static let version: Version = "2.0.5"
+    public static let version: Version = "2.1.0"
 
     /// Modules used directly by ParticleEffects.
     ///
@@ -130,6 +130,36 @@ public struct ParticleEffects: Module {
                     try expectEqual(particle?.initialPosition, .zero)
                 },
             ],
+			"Terminal Renderer": [
+				TestCase("Terminal renderer maps normalized states to deterministic rows") {
+					let first = ParticleState(particle: Particle(index: 0, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0, y: 0), opacity: 1, blur: .none)
+					let second = ParticleState(particle: Particle(index: 1, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 1, y: 1), opacity: 0.2, blur: .none)
+					let renderer = TerminalParticleRenderer(glyphs: .ascii, background: ".")
+					try expectEqual(renderer.rows(for: [first, second], columns: 3, lines: 2), ["*..", "..+"])
+					try expectEqual(renderer.frame(for: [first], columns: 3, lines: 2), "\u{001B}[H*  \n   ")
+					let fullCanvas = renderer.rows(for: [], columns: 50, lines: 20)
+					try expectEqual(fullCanvas.count, 20)
+					try expect(fullCanvas.allSatisfy { $0.count == 50 }, "Expected every terminal cell to be part of the rendered canvas")
+				},
+				TestCase("Terminal renderer clips invalid positions and cycles emoji deterministically") {
+					let outside = ParticleState(particle: Particle(index: 3, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: .infinity, y: 0.5), opacity: 1, blur: .none)
+					let emoji = ParticleState(particle: Particle(index: -1, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0.5, y: 0.5), opacity: 1, blur: .none)
+					let renderer = TerminalParticleRenderer(glyphs: .emoji(["A", "B", "C"]), background: "-")
+					try expectEqual(renderer.rows(for: [outside, emoji], columns: 3, lines: 3), ["---", "-C-", "---"])
+					try expectEqual(renderer.rows(for: [emoji], columns: 0, lines: 3), [])
+				},
+				TestCase("Terminal coloring emits foreground-only ANSI codes and resets styles") {
+					let state = ParticleState(particle: Particle(index: 0, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0.5, y: 0.5), opacity: 1, blur: .none)
+					let renderer = TerminalParticleRenderer(glyphs: .ascii)
+					let coloredRows = renderer.rows(for: [state], columns: 1, lines: 1, coloring: .rainbow)
+					try expectEqual(coloredRows, ["\u{001B}[0m\u{001B}[31m*\u{001B}[0m\u{001B}[0m"])
+					try expect(!coloredRows[0].contains("48;"), "Expected foreground-only ANSI color, never background color")
+					let next = ParticleState(particle: Particle(index: 1, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0.5, y: 0.5), opacity: 1, blur: .none)
+					try expectEqual(renderer.rows(for: [next], columns: 1, lines: 1, coloring: .rainbow), ["\u{001B}[0m\u{001B}[33m*\u{001B}[0m\u{001B}[0m"])
+					let flame = ParticleState(particle: state.particle, lifetimeAge: 1, position: state.position, opacity: 1, blur: .none)
+					try expectEqual(renderer.rows(for: [flame], columns: 1, lines: 1, coloring: .fire), ["\u{001B}[0m\u{001B}[31m*\u{001B}[0m\u{001B}[0m"])
+				},
+			],
         ]
 
 #if canImport(SwiftUI)

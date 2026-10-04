@@ -20,6 +20,7 @@ This is actively maintained so if there is a feature request or change, we will 
 - Text particles
 - Easily specify multiple symbols/images/emoji/text to use by comma-separating a string.
 - Emmitter customizations
+- Platform-neutral ANSI terminal particle rendering
 
 
 ## Requirements
@@ -50,9 +51,27 @@ If the repository is private, use the following link to import: `https://<your-P
 Or you can manually enter the following in the Package.swift file:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.0.5"),
+    .package(url: "https://github.com/kudit/ParticleEffects.git", from: "2.1.0"),
 ]
 ```
+
+### Run the terminal demonstration
+
+On macOS or Linux, run `swift run ParticleEffectsTerminalDemo` from the package directory. It runs in the
+current terminal, leaving the top row empty and using the bottom reverse-video strip for the active preset,
+settings, emitter position, and shortcuts. The menu aligns each command with its current value and wraps to
+extra rows only when needed. The renderer maps each normalized axis independently to the available terminal
+columns and rows, equivalent to scaling a 50×20 logical cell world to the current window size.
+Press **q** or **Ctrl-C** to quit.
+
+Terminal controls: **p** cycles presets; **t** edits particle text, symbol names, or comma-separated content;
+**c** cycles coloring; **b/l** cycle birth rate and lifetime; **a/s/i/g** cycle angle, spread, velocity,
+and acceleration; arrow keys always move the emitter one cell at a time, and **r** resets it to center. The
+terminal palette uses standard ANSI foreground colors: rainbow walks a fixed 12-color palette and fire maps
+the existing fire hue progression to red, bright red, yellow, and bright yellow.
+Preset SF Symbols map to text glyphs such as `drop.fill` → ⧫ and
+`star.fill` → ★. On iOS 17, macOS 14, tvOS 17, and visionOS 1 or newer, the SwiftUI demo accepts the same
+letter controls when its keyboard surface is focused; arrow keys move the emitter and **r** resets it to center.
 
 
 ## Usage

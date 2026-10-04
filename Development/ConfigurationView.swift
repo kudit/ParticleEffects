@@ -21,6 +21,9 @@ struct ConfigurationView: View {
     @Binding var coloring: Coloring
     @Binding var toggleParticleValue: Bool
     @Binding var showConfiguration: Bool
+    @Binding var requestContentFocus: Bool
+    @Binding var contentFieldIsFocused: Bool
+    @FocusState private var particleContentFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -51,7 +54,19 @@ struct ConfigurationView: View {
             configurationSection("Behavior") {
                 behaviorControls
             }
+			Text("Keyboard: p presets · t type · c color · b birth · l life · f fade · a angle · s spread · i speed · g acceleration · arrows move · r center")
+				.font(.caption)
+				.foregroundColor(.secondary)
         }
+		.onChange(of: requestContentFocus) { requested in
+			if requested {
+				particleContentFocused = true
+				requestContentFocus = false
+			}
+		}
+		.onChange(of: particleContentFocused) { isFocused in
+			contentFieldIsFocused = isFocused
+		}
     }
     
     /// Presents a titled configuration area using the best container available on the current platform.
@@ -129,6 +144,7 @@ struct ConfigurationView: View {
                 }.pickerStyle(.segmentedBackport)
             } else if rendererMode != .toggle {
                 TextField("Particle", text: $particleContent)
+					.focused($particleContentFocused)
 #if !os(macOS)
                     .textInputAutocapitalization(.never)
 #endif
@@ -263,9 +279,9 @@ struct ConfigurationView: View {
 @available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 #Preview {
     List {
-        ConfigurationView(behavior: .constant(.bubbles), controlMode: .constant(.drag), rendererMode: .constant(.symbol), shapeMode: .constant(.circle), particleContent: .constant("circle"), solidColor: .constant(.cyan), coloring: .constant(.rainbow), toggleParticleValue: .constant(true), showConfiguration: .constant(false))
-        ConfigurationView(behavior: .constant(.rain), controlMode: .constant(.followShape), rendererMode: .constant(.symbol), shapeMode: .constant(.triangle), particleContent: .constant("drop.fill"), solidColor: .constant(.blue), coloring: .constant(.none), toggleParticleValue: .constant(true), showConfiguration: .constant(false))
-        ConfigurationView(behavior: .constant(.sparkle), controlMode: .constant(.drag), rendererMode: .constant(.text), shapeMode: .constant(.placard), particleContent: .constant("F,U,N"), solidColor: .constant(.white), coloring: .constant(.rainbow), toggleParticleValue: .constant(true), showConfiguration: .constant(false))
+        ConfigurationView(behavior: .constant(.bubbles), controlMode: .constant(.drag), rendererMode: .constant(.symbol), shapeMode: .constant(.circle), particleContent: .constant("circle"), solidColor: .constant(.cyan), coloring: .constant(.rainbow), toggleParticleValue: .constant(true), showConfiguration: .constant(false), requestContentFocus: .constant(false), contentFieldIsFocused: .constant(false))
+        ConfigurationView(behavior: .constant(.rain), controlMode: .constant(.followShape), rendererMode: .constant(.symbol), shapeMode: .constant(.triangle), particleContent: .constant("drop.fill"), solidColor: .constant(.blue), coloring: .constant(.none), toggleParticleValue: .constant(true), showConfiguration: .constant(false), requestContentFocus: .constant(false), contentFieldIsFocused: .constant(false))
+        ConfigurationView(behavior: .constant(.sparkle), controlMode: .constant(.drag), rendererMode: .constant(.text), shapeMode: .constant(.placard), particleContent: .constant("F,U,N"), solidColor: .constant(.white), coloring: .constant(.rainbow), toggleParticleValue: .constant(true), showConfiguration: .constant(false), requestContentFocus: .constant(false), contentFieldIsFocused: .constant(false))
     }
 }
 #endif

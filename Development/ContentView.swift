@@ -81,11 +81,28 @@ struct ContentView: View {
     @State var coloring = Coloring.none
     @State var toggleParticleValue = true
     @State var showConfiguration = false
+    @State var requestContentFocus = false
+    @State var contentFieldIsFocused = false
             
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
+    @ViewBuilder
     var body: some View {
+#if os(watchOS)
+        demoLayout
+#else
+        if #available(iOS 17, macOS 14, tvOS 17, visionOS 1, *) {
+            KeyboardEnabledDemoContent(onKeyPress: handleKeyboardPress) {
+                demoLayout
+            }
+        } else {
+            demoLayout
+        }
+#endif
+    }
+
+    private var demoLayout: some View {
         GeometryReader { geometry in
             if usesSideBySideLayout(for: geometry.size) {
                 HStack(spacing: 0) {
@@ -130,8 +147,95 @@ struct ContentView: View {
             solidColor: $solidColor,
             coloring: $coloring,
             toggleParticleValue: $toggleParticleValue,
-            showConfiguration: $showConfiguration
+            showConfiguration: $showConfiguration,
+            requestContentFocus: $requestContentFocus,
+            contentFieldIsFocused: $contentFieldIsFocused
         )
+    }
+
+    /// Applies the terminal demo's letter controls to the SwiftUI demo when a hardware keyboard is available.
+#if !os(watchOS)
+    @available(iOS 17, macOS 14, tvOS 17, visionOS 1, *)
+    private func handleKeyboardPress(_ press: KeyPress) -> KeyPress.Result {
+        guard !contentFieldIsFocused else { return .ignored }
+        switch press.key {
+        case .upArrow, .downArrow, .leftArrow, .rightArrow:
+            let step = 0.02
+            var x = Double(system.center.x)
+            var y = Double(system.center.y)
+            switch press.key {
+            case .upArrow: y -= step
+            case .downArrow: y += step
+            case .leftArrow: x -= step
+            case .rightArrow: x += step
+            default: break
+            }
+            system.center = UnitPoint(x: min(1, max(0, x)), y: min(1, max(0, y)))
+            return .handled
+        default:
+            break
+        }
+        guard let key = press.characters.lowercased().first else { return .ignored }
+        switch key {
+        case "p":
+            let presets = ParticleBehavior.presets
+            // Behavior controls can be changed independently, so full-value equality stops matching the
+            // source preset. Keep preset cycling anchored to its stable label as those values are edited.
+            let index = presets.firstIndex(where: { $0.label == system.behavior.label }) ?? -1
+            applyPreset(presets[(index + 1) % presets.count])
+        case "t":
+            rendererMode = .text
+            if particleContent.isEmpty { particleContent = "Hello World" }
+            requestContentFocus = true
+        case "r":
+            system.center = .center
+        case "c": coloring = nextOption(coloring, in: Coloring.allCases)
+        case "b": system.behavior.birthRate = nextOption(system.behavior.birthRate, in: BirthRate.allCases)
+        case "l": system.behavior.lifetime = nextOption(system.behavior.lifetime, in: Lifetime.allCases)
+        case "f": system.behavior.fadeOut = nextOption(system.behavior.fadeOut, in: FadeOut.allCases)
+        case "a": cycleEmissionAngle()
+        case "s": system.behavior.spread = nextOption(system.behavior.spread, in: SpreadArc.allCases)
+        case "i": system.behavior.initialVelocity = nextOption(system.behavior.initialVelocity, in: InitialVelocity.allCases)
+        case "g": system.behavior.acceleration = nextOption(system.behavior.acceleration, in: Array(Acceleration.allCases))
+        default: return .ignored
+        }
+        return .handled
+    }
+#endif
+
+    /// Applies the same behavior and renderer defaults used by the visible preset picker.
+    private func applyPreset(_ preset: ParticleBehavior) {
+        system.behavior = preset
+        switch preset.label {
+        case ParticleBehavior.rain.label:
+            rendererMode = .symbol; particleContent = "drop.fill"; coloring = .none; solidColor = .blue
+        case ParticleBehavior.fountain.label:
+            rendererMode = .automatic; particleContent = "😊,👍,☺️,👏,🙌"; coloring = .none; solidColor = .white
+        case ParticleBehavior.bubbles.label:
+            rendererMode = .symbol; particleContent = "circle"; coloring = .rainbow; solidColor = .cyan
+        case ParticleBehavior.smoke.label:
+            rendererMode = .automatic; particleContent = "circle.fill"; coloring = .none; solidColor = .white
+        case ParticleBehavior.fire.label:
+            rendererMode = .symbol; particleContent = "drop.fill"; coloring = .fire; solidColor = .orange
+        case ParticleBehavior.sparkle.label:
+            rendererMode = .symbol; particleContent = "sparkle"; coloring = .rainbow; solidColor = .yellow
+        case ParticleBehavior.sun.label:
+            rendererMode = .symbol; particleContent = "star.fill"; coloring = .fire; solidColor = .yellow
+        default: break
+        }
+    }
+
+    /// Cycles a typed configuration value while preserving the option order exposed by the model.
+    private func nextOption<Value: Equatable>(_ current: Value, in values: [Value]) -> Value {
+        guard let index = values.firstIndex(of: current), !values.isEmpty else { return current }
+        return values[(index + 1) % values.count]
+    }
+
+    /// Cycles emission between the eight compass points used by the keyboard shortcut map.
+    private func cycleEmissionAngle() {
+        let angles: [Double] = [270, 315, 0, 45, 90, 135, 180, 225]
+        let current = angles.firstIndex(of: system.behavior.emissionAngle.rawValue) ?? 0
+        system.behavior.emissionAngle = Degrees(floatLiteral: angles[(current + 1) % angles.count])
     }
 
     /// Determines whether the available width is sufficient for a useful side-by-side editor and preview.
@@ -346,6 +450,29 @@ ParticleSystemView(
         }
     }
 }
+
+/// Gives supported Apple platforms a focused surface for the same letter controls used in the terminal app.
+#if !os(watchOS)
+@available(iOS 17, macOS 14, tvOS 17, visionOS 1, *)
+private struct KeyboardEnabledDemoContent<Content: View>: View {
+    let onKeyPress: (KeyPress) -> KeyPress.Result
+    let content: () -> Content
+    @FocusState private var isFocused: Bool
+
+    init(onKeyPress: @escaping (KeyPress) -> KeyPress.Result, @ViewBuilder content: @escaping () -> Content) {
+        self.onKeyPress = onKeyPress
+        self.content = content
+    }
+
+    var body: some View {
+        content()
+            .focusable()
+            .focused($isFocused)
+            .onAppear { isFocused = true }
+            .onKeyPress(phases: .down, action: onKeyPress)
+    }
+}
+#endif
 
 /// Demo surface that moves the emitter center around a triangle path.
 ///

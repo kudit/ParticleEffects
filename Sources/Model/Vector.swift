@@ -1,6 +1,15 @@
 public struct Vector: Hashable, Sendable {
     public var x: Double
     public var y: Double
+
+    /// Creates a vector from its horizontal and vertical components.
+    ///
+    /// The explicit public initializer lets package clients construct normalized positions and velocities;
+    /// Swift's synthesized memberwise initializer is internal for public structs.
+    public init(x: Double, y: Double) {
+        self.x = x
+        self.y = y
+    }
     
     public static let zero = Self(x: 0, y: 0)
     

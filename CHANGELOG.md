@@ -1,7 +1,9 @@
 # Changelog
 
-## TODO: Terminal renderer and CLI example
-Implement a platform-neutral particle renderer that maps ``ParticleState`` values to an ANSI terminal frame using ASCII, Unicode, or emoji glyphs. Add a command-line demonstration with an alternate-screen, full-terminal text UI, nonblocking controls, terminal-size adaptation, and deterministic renderer tests. Keep the terminal UI as a small retained-mode composition layer rather than attempting to duplicate SwiftUI's view/layout system.
+## v2.1.0 2026-10-04
+Added a platform-neutral ANSI terminal renderer, deterministic frame tests, and an interactive terminal demonstration with nonblocking controls and terminal-size adaptation.
+Added preset and physics controls, discrete ANSI foreground colors, text and symbol glyph mapping, and aligned bottom controls to the terminal demo; added matching hardware-keyboard controls to the SwiftUI demo.
+Updated Compatibility and synchronized Xcode marketing, Package, and module versions.
 
 ## v2.0.6 2026-09-03
 Backported code to decrease the minimum versions required.  UI still requires minimum iOS 15.
