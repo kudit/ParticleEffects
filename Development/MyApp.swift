@@ -11,6 +11,11 @@ struct MyApp: App {
     /// Registers the app's highest-level package module before support reporting begins.
     init() {
         // ParticleEffects declares Compatibility as a dependency, so recursive registration includes both modules.
+        // UI tests run without an iCloud container entitlement; keep their version tracking local instead of
+        // probing the macOS security/iCloud services during app startup.
+        if ProcessInfo.processInfo.environment["TESTING"] == "1" {
+            Application.iCloudSupported = false
+        }
         Application.track(ParticleEffects.self)
     }
 

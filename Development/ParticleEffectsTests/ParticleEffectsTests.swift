@@ -13,22 +13,22 @@ import ParticleEffects
 import CompatibilityTesting
 import Testing
 
-/// Bridges ParticleEffects' ordered reusable tests into individually reported Swift Testing cases.
+/// Bridges ParticleEffects and its registered dependencies into individually reported Swift Testing cases.
 ///
 /// Animation timing and SwiftUI layout remain excluded because wall-clock and view-hosting checks would be
 /// fragile across the package's supported platforms. The deterministic checks live on ``ParticleEffects/tests``.
-@Suite("ParticleEffects Tests")
+@Suite("Module Tests")
 struct ParticleEffectsTests {
-    /// Runs one shared test while retaining its section name in Swift Testing's argument report.
+    /// Runs each module test entry and retains its module, section, and test name in Swift Testing's report.
     @Test(
-        "Reusable ParticleEffects test",
+        "Reusable module test",
         .serialized,
         arguments: await ParticleEffects.testEntries()
     )
     @MainActor
     @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
-    func reusableParticleEffectsTest(entry: ModuleTestEntry) async throws {
-        // Execute the shared closure through the adapter so each catalog entry has a stable identity.
+    func moduleTest(entry: ModuleTestEntry) async throws {
+        // Compatibility's adapter traverses ParticleEffects and Compatibility dependency catalogs once each.
         try await entry.execute()
     }
 }

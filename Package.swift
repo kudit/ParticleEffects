@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.1.0"
+let version = "2.1.1"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.

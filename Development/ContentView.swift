@@ -158,25 +158,40 @@ struct ContentView: View {
     @available(iOS 17, macOS 14, tvOS 17, visionOS 1, *)
     private func handleKeyboardPress(_ press: KeyPress) -> KeyPress.Result {
         guard !contentFieldIsFocused else { return .ignored }
+        let command: String
         switch press.key {
-        case .upArrow, .downArrow, .leftArrow, .rightArrow:
+        case .upArrow: command = "up"
+        case .downArrow: command = "down"
+        case .leftArrow: command = "left"
+        case .rightArrow: command = "right"
+        default:
+            guard let character = press.characters.lowercased().first else { return .ignored }
+            command = String(character)
+        }
+
+        // SwiftUI can invoke onKeyPress during a view update. Defer ObservableObject and @State writes until
+        // that update finishes to avoid publishing changes from inside the rendering transaction.
+        DispatchQueue.main.async { [self] in
+            applyKeyboardCommand(command)
+        }
+        return .handled
+    }
+
+    /// Applies a keyboard command after SwiftUI's key event update has completed.
+    private func applyKeyboardCommand(_ command: String) {
+        switch command {
+        case "up", "down", "left", "right":
             let step = 0.02
             var x = Double(system.center.x)
             var y = Double(system.center.y)
-            switch press.key {
-            case .upArrow: y -= step
-            case .downArrow: y += step
-            case .leftArrow: x -= step
-            case .rightArrow: x += step
+            switch command {
+            case "up": y -= step
+            case "down": y += step
+            case "left": x -= step
+            case "right": x += step
             default: break
             }
             system.center = UnitPoint(x: min(1, max(0, x)), y: min(1, max(0, y)))
-            return .handled
-        default:
-            break
-        }
-        guard let key = press.characters.lowercased().first else { return .ignored }
-        switch key {
         case "p":
             let presets = ParticleBehavior.presets
             // Behavior controls can be changed independently, so full-value equality stops matching the
@@ -197,9 +212,8 @@ struct ContentView: View {
         case "s": system.behavior.spread = nextOption(system.behavior.spread, in: SpreadArc.allCases)
         case "i": system.behavior.initialVelocity = nextOption(system.behavior.initialVelocity, in: InitialVelocity.allCases)
         case "g": system.behavior.acceleration = nextOption(system.behavior.acceleration, in: Array(Acceleration.allCases))
-        default: return .ignored
+        default: break
         }
-        return .handled
     }
 #endif
 

@@ -3,7 +3,9 @@
     {
       "id" : "9C7BA7E2-0E80-4A8B-9C34-7C8F4F9F7E4A",
       "name" : "Test Scheme Action",
-      "options" : { }
+      "options" : {
+
+      }
     }
   ],
   "defaultOptions" : {

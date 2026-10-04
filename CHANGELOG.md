@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.1 2026-10-04
+Fixed the Xcode development project’s local package product reference so its library dependency resolves.
+Deferred SwiftUI keyboard shortcut state changes until after view updates to prevent runtime publishing warnings.
+Aligned the Swift Testing bridge with Color and replaced blocking UI-test waits with asynchronous polling.
+Aligned the ParticleEffects test catalog availability with Compatibility so parameterized tests include both package and dependency catalogs.
+
 ## v2.1.0 2026-10-04
 Added a platform-neutral ANSI terminal renderer, deterministic frame tests, and an interactive terminal demonstration with nonblocking controls and terminal-size adaptation.
 Added preset and physics controls, discrete ANSI foreground colors, text and symbol glyph mapping, and aligned bottom controls to the terminal demo; added matching hardware-keyboard controls to the SwiftUI demo.

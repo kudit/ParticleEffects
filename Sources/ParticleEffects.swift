@@ -19,7 +19,7 @@ public struct ParticleEffects: Module {
     ///
     /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
     /// `Package.swift`, the changelog, the development project, tests, and README release examples.
-    public static let version: Version = "2.1.0"
+    public static let version: Version = "2.1.1"
 
     /// Modules used directly by ParticleEffects.
     ///
@@ -41,7 +41,8 @@ public struct ParticleEffects: Module {
     /// Compatibility's in-app module test UI and the Swift Testing bridge both execute these same
     /// ``TestCase`` instances so assertions remain authored in one place.
     @MainActor
-    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+    // Match Compatibility.Module.tests so dependency traversal can read this catalog through Module.Type.
+    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     public static var tests: OrderedDictionary<String, [TestCase]> {
         // Keep metadata checks first because they quickly identify an incorrectly integrated package release.
         var sections: OrderedDictionary<String, [TestCase]> = [
@@ -135,17 +136,20 @@ public struct ParticleEffects: Module {
 					let first = ParticleState(particle: Particle(index: 0, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0, y: 0), opacity: 1, blur: .none)
 					let second = ParticleState(particle: Particle(index: 1, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 1, y: 1), opacity: 0.2, blur: .none)
 					let renderer = TerminalParticleRenderer(glyphs: .ascii, background: ".")
-					try expectEqual(renderer.rows(for: [first, second], columns: 3, lines: 2), ["*..", "..+"])
-					try expectEqual(renderer.frame(for: [first], columns: 3, lines: 2), "\u{001B}[H*  \n   ")
+					try expectEqual(renderer.rows(for: [first, second], columns: 3, lines: 2), ["*..\u{001B}[0m", "...\u{001B}[0m"])
+					try expectEqual(renderer.frame(for: [first], columns: 3, lines: 2), "\u{001B}[H*..\u{001B}[0m\n...\u{001B}[0m")
 					let fullCanvas = renderer.rows(for: [], columns: 50, lines: 20)
 					try expectEqual(fullCanvas.count, 20)
-					try expect(fullCanvas.allSatisfy { $0.count == 50 }, "Expected every terminal cell to be part of the rendered canvas")
+					try expect(
+						fullCanvas.allSatisfy { $0.replacingOccurrences(of: "\u{001B}[0m", with: "").count == 50 },
+						"Expected every terminal cell to be part of the rendered canvas"
+					)
 				},
 				TestCase("Terminal renderer clips invalid positions and cycles emoji deterministically") {
 					let outside = ParticleState(particle: Particle(index: 3, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: .infinity, y: 0.5), opacity: 1, blur: .none)
 					let emoji = ParticleState(particle: Particle(index: -1, initialPosition: .zero, initialVelocity: .zero), position: Vector(x: 0.5, y: 0.5), opacity: 1, blur: .none)
 					let renderer = TerminalParticleRenderer(glyphs: .emoji(["A", "B", "C"]), background: "-")
-					try expectEqual(renderer.rows(for: [outside, emoji], columns: 3, lines: 3), ["---", "-C-", "---"])
+					try expectEqual(renderer.rows(for: [outside, emoji], columns: 3, lines: 3), ["---\u{001B}[0m", "-C-\u{001B}[0m", "---\u{001B}[0m"])
 					try expectEqual(renderer.rows(for: [emoji], columns: 0, lines: 3), [])
 				},
 				TestCase("Terminal coloring emits foreground-only ANSI codes and resets styles") {
