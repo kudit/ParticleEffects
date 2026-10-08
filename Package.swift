@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "2.1.1"
+let version = "2.1.2"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -18,7 +18,7 @@ var products = [
 	),
 ]
 
-#if !canImport(AppleProductTypes)
+#if !canImport(AppleProductTypes) && !os(Android) && !os(WASI)
 products.append(.executable(name: "ParticleEffectsTerminalDemo", targets: ["ParticleEffectsTerminalDemo"]))
 #endif
 
@@ -124,7 +124,7 @@ targets += [
 
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
 
-#if !canImport(AppleProductTypes)
+#if !canImport(AppleProductTypes) && !os(Android) && !os(WASI)
 targets.append(.executableTarget(
 	name: "ParticleEffectsTerminalDemo",
 	dependencies: [.init(stringLiteral: packageLibraryName)],

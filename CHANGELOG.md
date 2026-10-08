@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.1.2 2026-10-08
+Excluded the interactive POSIX terminal demo from Android and WASI package builds.
+
 ## v2.1.1 2026-10-04
 Fixed the Xcode development project’s local package product reference so its library dependency resolves.
 Deferred SwiftUI keyboard shortcut state changes until after view updates to prevent runtime publishing warnings.

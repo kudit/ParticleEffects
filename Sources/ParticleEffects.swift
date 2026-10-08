@@ -19,7 +19,7 @@ public struct ParticleEffects: Module {
     ///
     /// Swift packages cannot read their manifest version at runtime, so this value stays synchronized with
     /// `Package.swift`, the changelog, the development project, tests, and README release examples.
-    public static let version: Version = "2.1.1"
+    public static let version: Version = "2.1.2"
 
     /// Modules used directly by ParticleEffects.
     ///
