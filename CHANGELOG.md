@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.3 2026-10-14
+Excluded the POSIX terminal demo from SPI Android and WASI builds, which invoke SwiftPM directly and ignore the manifest's destination-platform conditions.
+Updated Compatibility.
+Coverage at 58%.
+
 ## v2.1.2 2026-10-08
 Excluded the interactive POSIX terminal demo from Android and WASI package builds.
 

@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50707082C60A00100000001 /* ParticleEffectsUITests.swift */; };
 		B568DF192C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
 		B568DF1A2C2C7A4D00042487 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568DF182C2C7A4D00042487 /* DemoViews.swift */; };
 		B56E28622BD7575F0041A567 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B56E28582BD7575F0041A567 /* Assets.xcassets */; };
@@ -22,16 +21,10 @@
 		B5EC71842BE2A7A500D380BA /* DraggableParticleSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */; };
 		B5F71F4B2BE9F40600BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4A2BE9F40600BA22FA /* ParticleEffects Library */; };
 		B5F71F4D2BE9F40C00BA22FA /* ParticleEffects Library in Frameworks */ = {isa = PBXBuildFile; productRef = B5F71F4C2BE9F40C00BA22FA /* ParticleEffects Library */; };
+		C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50707082C60A00100000001 /* ParticleEffectsUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C5070701C60A00100000001 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B5C1B6152BAB7997001D5CFA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B5DD79B22BC94C8800457681;
-			remoteInfo = ParticleEffectsTest;
-		};
 		B5D6A4BD2BD7579A00AC0C60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B5C1B6152BAB7997001D5CFA /* Project object */;
@@ -45,6 +38,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B5F033FE2BABA93500CA6396;
 			remoteInfo = "EffectsTest Watch App";
+		};
+		C5070701C60A00100000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5C1B6152BAB7997001D5CFA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5DD79B22BC94C8800457681;
+			remoteInfo = ParticleEffectsTest;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -72,8 +72,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParticleEffectsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C50707082C60A00100000001 /* ParticleEffectsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectsUITests.swift; sourceTree = "<group>"; };
 		B524AFA12DFA839400FF6AF7 /* ParticleEffectsTest-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ParticleEffectsTest-Watch-App-Info.plist"; sourceTree = "<group>"; };
 		B568DF182C2C7A4D00042487 /* DemoViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViews.swift; sourceTree = "<group>"; };
 		B56E28582BD7575F0041A567 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -88,6 +86,8 @@
 		B5EC71802BE2A7A500D380BA /* DraggableParticleSystemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableParticleSystemView.swift; sourceTree = "<group>"; };
 		B5F4F0532BD6E328009486AC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B5F71F492BE9F38700BA22FA /* ParticleEffects.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ParticleEffects.swiftpm; path = ..; sourceTree = "<group>"; };
+		C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParticleEffectsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C50707082C60A00100000001 /* ParticleEffectsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffectsUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,12 +110,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C50707062C60A00100000001 /* ParticleEffectsUITests */ = {
-			isa = PBXGroup;
-			children = ( C50707082C60A00100000001 /* ParticleEffectsUITests.swift */, );
-			path = ParticleEffectsUITests;
-			sourceTree = "<group>";
-		};
 		B56E285B2BD7575F0041A567 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,20 +148,17 @@
 			);
 			sourceTree = "<group>";
 		};
+		C50707062C60A00100000001 /* ParticleEffectsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C50707082C60A00100000001 /* ParticleEffectsUITests.swift */,
+			);
+			path = ParticleEffectsUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C50707012C60A00100000001 /* ParticleEffectsUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */;
-			buildPhases = ( C50707022C60A00100000001 /* Sources */, C50707032C60A00100000001 /* Frameworks */, C50707042C60A00100000001 /* Resources */ );
-			buildRules = ( );
-			dependencies = ( C5070700C60A00100000001 /* PBXTargetDependency */ );
-			name = ParticleEffectsUITests;
-			productName = ParticleEffectsUITests;
-			productReference = C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		B5DD79B22BC94C8800457681 /* ParticleEffectsTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5DD79D52BC94C8A00457681 /* Build configuration list for PBXNativeTarget "ParticleEffectsTest" */;
@@ -212,6 +203,23 @@
 			productReference = B571502F2C486B2500E89014 /* ParticleEffectsWatchTest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C50707012C60A00100000001 /* ParticleEffectsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */;
+			buildPhases = (
+				C50707022C60A00100000001 /* Sources */,
+				C50707042C60A00100000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5070700C60A00100000001 /* PBXTargetDependency */,
+			);
+			name = ParticleEffectsUITests;
+			productName = ParticleEffectsUITests;
+			productReference = C50707072C60A00100000001 /* ParticleEffectsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -220,7 +228,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					B5DD79B22BC94C8800457681 = {
 						CreatedOnToolsVersion = 15.3;
@@ -254,7 +262,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C50707042C60A00100000001 /* Resources */ = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
 		B5DD79B12BC94C8800457681 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -271,10 +278,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C50707042C60A00100000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C50707022C60A00100000001 /* Sources */ = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
 		B5DD79AF2BC94C8800457681 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,14 +312,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C50707022C60A00100000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C50707092C60A00100000001 /* ParticleEffectsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C5070700C60A00100000001 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B5DD79B22BC94C8800457681 /* ParticleEffectsTest */;
-			targetProxy = C5070701C60A00100000001 /* PBXContainerItemProxy */;
-		};
 		B5D6A4BE2BD7579A00AC0C60 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B5F033FE2BABA93500CA6396 /* ParticleEffectsTest Watch App */;
@@ -318,11 +334,14 @@
 			target = B5F033FE2BABA93500CA6396 /* ParticleEffectsTest Watch App */;
 			targetProxy = B5F4F05A2BD6E414009486AC /* PBXContainerItemProxy */;
 		};
+		C5070700C60A00100000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5DD79B22BC94C8800457681 /* ParticleEffectsTest */;
+			targetProxy = C5070701C60A00100000001 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C507070CC60A00100000001 /* Debug */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ParticleEffectsTest; }; name = Debug; };
-		C507070DC60A00100000001 /* Release */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ParticleEffectsTest; }; name = Release; };
 		B5C1B6292BAB7999001D5CFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -484,8 +503,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -496,6 +517,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -521,8 +545,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -533,6 +559,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Release;
 		};
@@ -551,10 +580,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kudit.ParticleEffectsTest;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.watchkitapp;
 				PRODUCT_NAME = ParticleEffectsWatchTest;
 				SDKROOT = watchos;
@@ -562,6 +593,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -580,10 +614,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kudit.ParticleEffectsTest;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.watchkitapp;
 				PRODUCT_NAME = ParticleEffectsWatchTest;
 				SDKROOT = watchos;
@@ -591,13 +627,55 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
+			};
+			name = Release;
+		};
+		C507070CC60A00100000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3QPV894C33;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ParticleEffectsTest;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
+			};
+			name = Debug;
+		};
+		C507070DC60A00100000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3QPV894C33;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ParticleEffectsTest.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ParticleEffectsTest;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				WATCHOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_WATCHOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */ = { isa = XCConfigurationList; buildConfigurations = ( C507070CC60A00100000001 /* Debug */, C507070DC60A00100000001 /* Release */ ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		B5C1B6182BAB7997001D5CFA /* Build configuration list for PBXProject "ParticleEffects" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -625,7 +703,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		C50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ParticleEffectsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C507070CC60A00100000001 /* Debug */,
+				C507070DC60A00100000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		C52A10002D7A000100000001 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
+		};
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		B5F71F4A2BE9F40600BA22FA /* ParticleEffects Library */ = {
@@ -639,13 +733,6 @@
 			productName = "ParticleEffects Library";
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		C52A10002D7A000100000001 /* XCLocalSwiftPackageReference ".." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ..;
-		};
-/* End XCLocalSwiftPackageReference section */
 	};
 	rootObject = B5C1B6152BAB7997001D5CFA /* Project object */;
 }

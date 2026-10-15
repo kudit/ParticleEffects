@@ -6,6 +6,7 @@
 // Do not edit it by hand because the contents will be replaced.
 
 import PackageDescription
+import Foundation
 
 let version = "2.1.2"
 let packageLibraryName = "ParticleEffects"
@@ -19,7 +20,13 @@ var products = [
 ]
 
 #if !canImport(AppleProductTypes) && !os(Android) && !os(WASI)
-products.append(.executable(name: "ParticleEffectsTerminalDemo", targets: ["ParticleEffectsTerminalDemo"]))
+// SPI invokes `swift build --swift-sdk` on a Linux host, so manifest OS checks
+// cannot identify its Android or WASI destination. SPI_BUILD is set by SPI's
+// build environment; omitting the terminal-only target there avoids importing
+// POSIX modules unavailable in those SDKs while preserving local demo builds.
+if ProcessInfo.processInfo.environment["SPI_BUILD"] == nil {
+	products.append(.executable(name: "ParticleEffectsTerminalDemo", targets: ["ParticleEffectsTerminalDemo"]))
+}
 #endif
 
 // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -125,11 +132,13 @@ targets += [
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
 
 #if !canImport(AppleProductTypes) && !os(Android) && !os(WASI)
-targets.append(.executableTarget(
-	name: "ParticleEffectsTerminalDemo",
-	dependencies: [.init(stringLiteral: packageLibraryName)],
-	path: "TerminalDemo"
-))
+if ProcessInfo.processInfo.environment["SPI_BUILD"] == nil {
+	targets.append(.executableTarget(
+		name: "ParticleEffectsTerminalDemo",
+		dependencies: [.init(stringLiteral: packageLibraryName)],
+		path: "TerminalDemo"
+	))
+}
 #endif
 
 // MARK: - Package tests
