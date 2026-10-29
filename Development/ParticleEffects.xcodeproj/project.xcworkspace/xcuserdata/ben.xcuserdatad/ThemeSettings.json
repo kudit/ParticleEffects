@@ -1,0 +1,12 @@
+{
+  "dark" : {
+    "preset" : {
+      "_0" : "Ember"
+    }
+  },
+  "light" : {
+    "preset" : {
+      "_0" : "Ember"
+    }
+  }
+}

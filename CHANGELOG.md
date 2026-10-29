@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.4 2026-10-29
+Forgot to update the Module and Package versions in the last update.
+Updated Compatibility.
+Uses Compatibility's AStack for the demo panes and an AdaptablePicker that chooses its presentation by fit, with justified menu rows and a hidden scroll indicator.
+Hides decorative particles from accessibility and uses the automatic picker style on tvOS versions before menu style is available.
+
 ## v2.1.3 2026-10-14
 Excluded the POSIX terminal demo from SPI Android and WASI builds, which invoke SwiftPM directly and ignore the manifest's destination-platform conditions.
 Updated Compatibility.

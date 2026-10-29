@@ -46,7 +46,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "ParticleEffects App"
             BuildableName = "ParticleEffects App"
-            BlueprintName = "ParticleEffects App"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +62,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "ParticleEffects App"
             BuildableName = "ParticleEffects App"
-            BlueprintName = "ParticleEffects App"
             ReferencedContainer = "container:">
          </BuildableReference>
       </BuildableProductRunnable>

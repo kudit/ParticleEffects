@@ -84,56 +84,66 @@ struct ContentView: View {
     @State var requestContentFocus = false
     @State var contentFieldIsFocused = false
             
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-
     @ViewBuilder
     var body: some View {
+        Group {
 #if os(watchOS)
-        demoLayout
+            demoLayout
 #else
-        if #available(iOS 17, macOS 14, tvOS 17, visionOS 1, *) {
-            KeyboardEnabledDemoContent(onKeyPress: handleKeyboardPress) {
+            if #available(iOS 17, macOS 14, tvOS 17, *) {
+                KeyboardEnabledDemoContent(onKeyPress: handleKeyboardPress) {
+                    demoLayout
+                }
+            } else {
                 demoLayout
             }
-        } else {
-            demoLayout
+#endif
+        }
+#if !os(watchOS) && !os(tvOS)
+        .sheet(isPresented: $showConfiguration) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Configuration")
+                        .font(.headline)
+                    Spacer()
+                    Button("Dismiss") {
+                        showConfiguration = false
+                    }
+                    .accessibilityIdentifier("configuration.dismiss")
+                    .buttonStyle(.bordered)
+                }
+                TextEditor(text: .constant(demoConfigurationCode))
+                    .font(.system(.body, design: .monospaced))
+                    .frame(minHeight: 260)
+            }
+            .padding()
+            .frame(width: 500, height: 340)
         }
 #endif
     }
 
     private var demoLayout: some View {
-        GeometryReader { geometry in
-            if usesSideBySideLayout(for: geometry.size) {
+        AStack(alignment: .topOrLeading, spacing: 0, orientation: .adaptive) { orientation in
+            if orientation == .horizontal {
                 HStack(spacing: 0) {
                     configurationScrollView
-                        .frame(width: configurationWidth(for: geometry.size))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     demoSurface
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .background(.black)
                 }
             } else {
-                VStack(spacing: 0) {
-                    // Keep the particle surface visible first on compact screens; the remaining controls scroll
-                    // independently so a long configuration cannot push the live effect off-screen.
+                VStack(alignment: .leading, spacing: 0) {
+                    // AStack selects this leading-aligned vertical arrangement when the container is narrow.
+                    // Both regions share the available height while the configuration remains independently scrollable.
                     demoSurface
-                        .frame(maxWidth: .infinity, minHeight: max(geometry.size.height * 0.33, 220))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .background(.black)
                     configurationScrollView
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 }
             }
         }
-        #if !os(watchOS) && !os(tvOS)
-        .sheet(isPresented: $showConfiguration) {
-            Button("Dismiss") {
-                showConfiguration = false
-            }.buttonStyle(.bordered)
-            TextEditor(text: Binding(get: {
-                demoConfigurationCode
-            }, set: { _,_ in 
-                // do nothing
-            }))
-        }
-        #endif
     }
     
     /// The demo configuration panel is split to mirror the v2 API: renderer content, coloring, and behavior.
@@ -155,7 +165,7 @@ struct ContentView: View {
 
     /// Applies the terminal demo's letter controls to the SwiftUI demo when a hardware keyboard is available.
 #if !os(watchOS)
-    @available(iOS 17, macOS 14, tvOS 17, visionOS 1, *)
+    @available(iOS 17, macOS 14, tvOS 17, *)
     private func handleKeyboardPress(_ press: KeyPress) -> KeyPress.Result {
         guard !contentFieldIsFocused else { return .ignored }
         let command: String
@@ -252,28 +262,14 @@ struct ContentView: View {
         system.behavior.emissionAngle = Degrees(floatLiteral: angles[(current + 1) % angles.count])
     }
 
-    /// Determines whether the available width is sufficient for a useful side-by-side editor and preview.
-    private func usesSideBySideLayout(for size: CGSize) -> Bool {
-        // A width threshold avoids placing narrow phone and watch layouts beside a cramped configuration.
-        // Segmented controls need roughly 420 points before they remain readable; reserve side-by-side mode
-        // for windows that can provide that width while still leaving a useful particle preview beside it.
-        return size.width >= 900 || (verticalSizeClass == .compact && size.width >= 700)
-    }
-
-    /// Gives the configuration a bounded share of wide layouts while leaving most space for the particle preview.
-    private func configurationWidth(for size: CGSize) -> CGFloat {
-        // One third is the default requested balance; the bounds keep controls usable on both iPad and Mac.
-        return min(max(size.width * 0.40, 420), 520)
-    }
-
     /// Scrolls only the controls so the live particle surface remains independently visible.
     private var configurationScrollView: some View {
         ScrollView(.vertical) {
             configuration
                 .padding()
         }
-        // Use the local Compatibility-style wrapper until this backport is moved into Compatibility itself.
-        .backport.scrollIndicators(.visible)
+        // Hide the macOS scroll bar, whose yellow accent tint reads as a stray divider in the demo.
+        .backport.scrollIndicators(.hidden)
     }
     
     /// Chooses between a draggable emitter and the triangle-path emitter demo.
@@ -301,7 +297,7 @@ struct ContentView: View {
             }
         }
         .font(.largeTitle)
-        .ignoresSafeArea()
+        .accessibilityHidden(rendererMode != .toggle)
     }
     
     /// Builds the currently selected renderer demo.
@@ -467,7 +463,7 @@ ParticleSystemView(
 
 /// Gives supported Apple platforms a focused surface for the same letter controls used in the terminal app.
 #if !os(watchOS)
-@available(iOS 17, macOS 14, tvOS 17, visionOS 1, *)
+@available(iOS 17, macOS 14, tvOS 17, *)
 private struct KeyboardEnabledDemoContent<Content: View>: View {
     let onKeyPress: (KeyPress) -> KeyPress.Result
     let content: () -> Content

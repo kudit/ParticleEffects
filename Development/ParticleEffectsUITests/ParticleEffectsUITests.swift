@@ -23,10 +23,12 @@ final class ParticleEffectsUITests: XCTestCase {
 
         let configuration = app.buttons["View Configuration"]
         if await waitForElement(configuration, timeout: 5) {
-            configuration.tap()
-            let dismissVisible = await waitForElement(app.buttons["Dismiss"], timeout: 5)
-            XCTAssertTrue(dismissVisible)
-            app.buttons["Dismiss"].tap()
+            configuration.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).click()
+            let dismissButton = app.buttons["configuration.dismiss"]
+            let dismissVisible = await waitForElement(dismissButton, timeout: 5)
+            XCTAssertTrue(dismissVisible, app.debugDescription)
+            guard dismissVisible else { return }
+            dismissButton.tap()
         } else {
             // tvOS and watchOS intentionally omit this action because their compact layouts show controls inline.
             XCTAssertTrue(app.staticTexts["Content"].exists)

@@ -36,11 +36,11 @@ struct ConfigurationView: View {
                 }
             }
             configurationSection("Coloring") {
-                Picker("Coloring", selection: $coloring ) {
+                AdaptablePicker("Coloring", selection: $coloring) {
                     ForEach(Coloring.allCases, id: \.self) { item in
                         Text(item.description).tag(item)
                     }
-                }.pickerStyle(.segmentedBackport)
+                }
                 if coloring == .none {
 #if os(watchOS) || os(tvOS)
                     Text("Solid Color")
@@ -58,13 +58,13 @@ struct ConfigurationView: View {
 				.font(.caption)
 				.foregroundColor(.secondary)
         }
-		.onChange(of: requestContentFocus) { requested in
+        .backport.onChange(of: requestContentFocus) { _, requested in
 			if requested {
 				particleContentFocused = true
 				requestContentFocus = false
 			}
 		}
-		.onChange(of: particleContentFocused) { isFocused in
+        .backport.onChange(of: particleContentFocused) { _, isFocused in
 			contentFieldIsFocused = isFocused
 		}
     }
@@ -99,11 +99,11 @@ struct ConfigurationView: View {
     /// control concerns, while the renderer selection below only changes what each particle looks like.
     private var controlControls: some View {
         VStack(alignment: .leading) {
-            Picker("Control", selection: $controlMode) {
+            AdaptablePicker("Control", selection: $controlMode) {
                 ForEach(DemoEmitterControlMode.allCases) { item in
                     Text(item.label).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
+            }
 #if !os(watchOS) && !os(tvOS)
             Button("View Configuration") {
                 showConfiguration = true
@@ -118,7 +118,7 @@ struct ConfigurationView: View {
     /// complete example even though v2 keeps motion and rendering separated internally.
     private var contentControls: some View {
         VStack(alignment: .leading) {
-            Picker("Presets", selection: Binding(get: {
+            AdaptablePicker("Presets", selection: Binding(get: {
                 behavior
             }, set: {
                 applyPreset($0)
@@ -126,8 +126,8 @@ struct ConfigurationView: View {
                 ForEach(ParticleBehavior.presets, id: \.self) { item in
                     Text(item.label).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Renderer", selection: Binding(get: {
+            }
+            AdaptablePicker("Renderer", selection: Binding(get: {
                 rendererMode
             }, set: {
                 selectRendererMode($0)
@@ -135,13 +135,13 @@ struct ConfigurationView: View {
                 ForEach(DemoRendererMode.allCases) { item in
                     Text(item.label).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
+            }
             if rendererMode == .shape {
-                Picker("Shape", selection: $shapeMode) {
+                AdaptablePicker("Shape", selection: $shapeMode) {
                     ForEach(DemoShapeMode.allCases) { item in
                         Text(item.label).tag(item)
                     }
-                }.pickerStyle(.segmentedBackport)
+                }
             } else if rendererMode != .toggle {
                 TextField("Particle", text: $particleContent)
 					.focused($particleContentFocused)
@@ -219,22 +219,22 @@ struct ConfigurationView: View {
     /// Renderer content and coloring live in the other sections so the demo mirrors the v2 API split between
     /// particle motion and particle rendering.
     private var behaviorControls: some View {
-        VStack {
-            Picker("Birth Rate", selection: $behavior.birthRate) {
+        VStack(alignment: .leading) {
+            AdaptablePicker("Birth Rate", selection: $behavior.birthRate) {
                 ForEach(BirthRate.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Lifetime", selection: $behavior.lifetime) {
+            }
+            AdaptablePicker("Lifetime", selection: $behavior.lifetime) {
                 ForEach(Lifetime.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Fade Out", selection: $behavior.fadeOut) {
+            }
+            AdaptablePicker("Fade Out", selection: $behavior.fadeOut) {
                 ForEach(FadeOut.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
+            }
             #if !os(tvOS)
             Slider(value: Binding(get: {
                 var normalized = behavior.emissionAngle.rawValue / 360
@@ -246,33 +246,34 @@ struct ConfigurationView: View {
                 behavior.emissionAngle = Degrees(floatLiteral: $0 * 360)
             }))
             #endif
-            Picker("Spread", selection: $behavior.spread) {
+            AdaptablePicker("Spread", selection: $behavior.spread) {
                 ForEach(SpreadArc.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Initial Velocity", selection: $behavior.initialVelocity) {
+            }
+            AdaptablePicker("Initial Velocity", selection: $behavior.initialVelocity) {
                 ForEach(InitialVelocity.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Acceleration", selection: $behavior.acceleration) {
+            }
+            AdaptablePicker("Acceleration", selection: $behavior.acceleration) {
                 ForEach(Acceleration.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Blur", selection: $behavior.blur) {
+            }
+            AdaptablePicker("Blur", selection: $behavior.blur) {
                 ForEach(Blur.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
-            Picker("Spin", selection: $behavior.spin) {
+            }
+            AdaptablePicker("Spin", selection: $behavior.spin) {
                 ForEach(Spin.allCases, id: \.self) { item in
                     Text(String(describing: item)).tag(item)
                 }
-            }.pickerStyle(.segmentedBackport)
+            }
         }
     }
+
 }
 
 #if swift(>=5.9)

@@ -60,7 +60,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B5F033FE2BABA93500CA6396"
             BuildableName = "ParticleEffectsWatchTest.app"
-            BlueprintName = "ParticleEffectsTest Watch App"
             ReferencedContainer = "container:ParticleEffects.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
