@@ -30,22 +30,21 @@ public struct AdaptablePicker<SelectionValue: Hashable, PickerContent: View>: Vi
 		self.content = content
 	}
 
+    private var fallback: some View {
+        Picker(title, selection: selection, content: content)
+            .pickerStyle(.automatic)
+    }
+
     public var body: some View {
 #if os(watchOS)
-		Picker(title, selection: selection, content: content)
-			.pickerStyle(.automatic)
-#elseif os(tvOS)
-		if #available(tvOS 17, *) {
-			AnyView(fittingPicker)
-		} else {
-			Picker(title, selection: selection, content: content)
-				.pickerStyle(.automatic)
-		}
+		fallback
 #else
-		if #available(iOS 16, macOS 13, tvOS 16, *) {
+		if #available(iOS 16, macOS 13, tvOS 17, *) {
 			AnyView(fittingPicker)
+        } else if #available(iOS 14, macOS 11, tvOS 17, *) {
+            AnyView(menuPicker)
 		} else {
-			AnyView(menuPicker)
+			fallback
 		}
 #endif
 	}
@@ -75,7 +74,7 @@ public struct AdaptablePicker<SelectionValue: Hashable, PickerContent: View>: Vi
 	}
 
 	/// Uses a justified menu where ViewThatFits is unavailable on the deployment target.
-	@available(iOS 13, macOS 10.15, tvOS 17, *)
+	@available(iOS 14, macOS 11, tvOS 17, *)
 	private var menuPicker: some View {
 		HStack(spacing: 12) {
 			Text(title)

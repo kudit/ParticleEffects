@@ -6,9 +6,8 @@
 // Do not edit it by hand because the contents will be replaced.
 
 import PackageDescription
-import Foundation
 
-let version = "2.1.4"
+let version = "2.1.5"
 let packageLibraryName = "ParticleEffects"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -23,8 +22,9 @@ var products = [
 // SPI invokes `swift build --swift-sdk` on a Linux host, so manifest OS checks
 // cannot identify its Android or WASI destination. SPI_BUILD is set by SPI's
 // build environment; omitting the terminal-only target there avoids importing
-// POSIX modules unavailable in those SDKs while preserving local demo builds.
-if ProcessInfo.processInfo.environment["SPI_BUILD"] == nil {
+// POSIX modules unavailable in those SDKs. The terminal demo supports both
+// Glibc and Musl so local Linux builds can still include it.
+if Context.environment["SPI_BUILD"] == nil {
 	products.append(.executable(name: "ParticleEffectsTerminalDemo", targets: ["ParticleEffectsTerminalDemo"]))
 }
 #endif
@@ -132,7 +132,7 @@ targets += [
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
 
 #if !canImport(AppleProductTypes) && !os(Android) && !os(WASI)
-if ProcessInfo.processInfo.environment["SPI_BUILD"] == nil {
+if Context.environment["SPI_BUILD"] == nil {
 	targets.append(.executableTarget(
 		name: "ParticleEffectsTerminalDemo",
 		dependencies: [.init(stringLiteral: packageLibraryName)],

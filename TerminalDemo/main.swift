@@ -2,8 +2,11 @@ import Foundation
 import ParticleEffects
 #if canImport(Darwin)
 import Darwin
-#else
+#elseif canImport(Glibc)
 import Glibc
+#elseif canImport(Musl)
+// Swift's Static Linux SDK uses musl, whose POSIX APIs are exposed by Musl.
+import Musl
 #endif
 
 // The terminal app composes a status line, particle frame, and bottom help rows; it does not implement a general view system.

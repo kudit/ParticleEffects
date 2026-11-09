@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.5 2026-11-09
+Updated Compatibilty.  Added spichecks.
+Use Musl for the terminal demo with Swift's Static Linux SDK and omit the demo in WASI checker builds.
+Read SPI_BUILD from PackageDescription.Context so older Swift manifests do not import Foundation from a newer host SDK.
+Use the automatic picker on macOS 10.15 and iOS 13, before menu picker styles are available.
+Coverage at 62%.
+
 ## v2.1.4 2026-10-29
 Forgot to update the Module and Package versions in the last update.
 Updated Compatibility.
